@@ -2,7 +2,9 @@ import React from 'react'
 
 // Contexts
 import ThemeProvider from './Contexts/ThemeContext';
+import MonIVProvider from './Contexts/MonIVContext';
 import NavigationProvider from './Contexts/NavigationContext';
+
 
 
 // Components
@@ -14,8 +16,10 @@ function App() {
     return (
         <ThemeProvider>
             <NavigationProvider>
-                <Navbar />
-                <PageNavigator />
+                <MonIVProvider>
+                    <Navbar />
+                    <PageNavigator />
+                </MonIVProvider>
             </NavigationProvider>
         </ThemeProvider>
     )

@@ -1,5 +1,5 @@
-import React from 'react'
-import { useContext } from 'react'
+import React, { useContext } from 'react'
+
 // Contexts
 import { NavigationContext } from '../Contexts/NavigationContext';
 // Pages
