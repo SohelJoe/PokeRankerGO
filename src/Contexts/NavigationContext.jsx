@@ -13,9 +13,19 @@ const NavigationProvider = ({ children }) => {
         }
     }
 
+    const addSelectedMonToBreadCrump = (selectedMonName) => {
+        const breadCrumpLength = breadCrumps.length;
+
+        if (breadCrumpLength == 1) {
+            setBreadCrumps((e) => [...e, selectedMonName])
+        } else if (breadCrumpLength == 2) {
+            setBreadCrumps(([e,]) => [e, selectedMonName])
+        }
+    }
+
 
     return (
-        <NavigationContext.Provider value={{ changePage, page, breadCrumps }}>
+        <NavigationContext.Provider value={{ changePage, page, breadCrumps, addSelectedMonToBreadCrump }}>
             {children}
         </NavigationContext.Provider>
     )

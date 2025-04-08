@@ -7,48 +7,22 @@ export const MonIVContext = createContext();
 
 const MonIVProvider = ({ children }) => {
     const [selectedMon, setSelectedMon] = useState(null)
+    const [isBestBuddy, setIsBestBuddy] = useState(false);
 
-    const setSelectedMonDetails = (id, type1, type2, form, name) => {
+    const toggleBestBuddy = () => {
+        setIsBestBuddy((e) => !e)
+    }
 
-        if (name.includes('Mime')) {
-            var search_name = name.replaceAll('.', '')
-            search_name = ((search_name.split(' ')).slice(-2)).join('_');
-        } else {
-            var search_name = (name.split(' ')).slice(-1);
-        }
+    const setSelectedMonDetails = (monData) => {
+        const [name, id, form, type1, type2, bAtt, bDef, bHp, ...family] = monData;
 
 
-        if (search_name && id && id > 0) {
-            if (form) {
-                if (!form.includes('Mega')) {
-                    search_name = search_name + '_' + form;
-                } else {
-                    if (form.includes(' ')) {
-                        search_name = 'Mega_' + search_name + '_' + form.split(' ')[1]
-                    } else {
-                        search_name = name.replaceAll(' ', '_');
-                    }
-                }
-            }
+        // console.log(monData);
 
-            // console.log(search_name);
-
-            if (pokeListObj[search_name] && pokeListObj[search_name][0] == id) {
-                const details = [...pokeListObj[search_name]];
-                details.splice(1, 0, form, type1, type2);
-                details[4] = parseInt(details[4]);
-                details[5] = parseInt(details[5]);
-                details[6] = parseInt(details[6]);
-
-                // console.log([name, ...details]);
-
-                rankCalc(details[4], details[5], details[6], 0, 0, 50, false, 1500).then((data) => {
-                    // console.log(data);
-                    setSelectedMon([name, ...details]);
-                })
-            }
-        }
-
+        rankCalc(bAtt, bDef, bHp, 0, 0, isBestBuddy ? 51 : 50, false, 1500).then((data) => {
+            // console.log(data);
+            setSelectedMon(monData);
+        })
     }
 
     /* floor = 0: Wild Caught, 1: Trade, Good Friend, 2: Trade, Great | Purified, 3: Trade, Ultra Friend, 4: Weather Boost, 5: Trade, Best Friend, 6: Shadow Legendary, 10: Raid | Hatch, 12: Lucky Trade */
@@ -258,7 +232,7 @@ const MonIVProvider = ({ children }) => {
 
 
     return (
-        <MonIVContext.Provider value={{ selectedMon, setSelectedMonDetails }}>
+        <MonIVContext.Provider value={{ selectedMon, setSelectedMonDetails, isBestBuddy, toggleBestBuddy }}>
             {children}
         </MonIVContext.Provider>
     )
