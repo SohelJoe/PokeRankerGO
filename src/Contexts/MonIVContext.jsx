@@ -10,25 +10,30 @@ const MonIVProvider = ({ children }) => {
     const [pvpRankings, setPvpRankings] = useState({});
     const [selectedMon, setSelectedMon] = useState(null);
     const [isBestBuddy, setIsBestBuddy] = useState(false);
-    const [stats, setStats] = useState({ attack: 0, defense: 0, hp: 0, lv: 15 });
+    const [stats, setStats] = useState({ attack: 10, defense: 10, hp: 10, lv: 15 });
 
 
     const toggleBestBuddy = () => {
-        Promise.all([
-            rankCalc(selectedMon[5], selectedMon[6], selectedMon[7], 0, 0, isBestBuddy ? 50 : 51, false, 1500),
-            rankCalc(selectedMon[5], selectedMon[6], selectedMon[7], 0, 0, isBestBuddy ? 50 : 51, false, 2500),
-            rankCalc(selectedMon[5], selectedMon[6], selectedMon[7], 0, 0, isBestBuddy ? 50 : 51, false, 'ML')
-        ]).then((data) => {
-            // console.log(data);
-            setPvpRankings({ 1500: data[0], 2500: data[1], 'ML': data[2] })
+        calculateFamilyRanks(monFamily, isBestBuddy ? 50 : 51).then(familyRankingByMon => {
+            setPvpRankings(familyRankingByMon);
             setIsBestBuddy((e) => !e)
         })
     }
 
-    const setSelectedMonDetails = (monData) => {
+    const toggleMonFromFamily = (monKey, monData) => {
+        const [name, id, form, type1, type2, bAtt, bDef, bHp, ...family] = monData;
+        const numBAtll = Number(bAtt)
+        const numBDef = Number(bDef)
+        const numBHP = Number(bHp)
+
+        setSelectedMon([monKey, name, id, form, type1, type2, numBAtll, numBDef, numBHP, ...family]);
+    }
+
+    const setSelectedMonDetails = (monKey, monData) => {
         const [name, id, form, type1, type2, bAtt, bDef, bHp, ...family] = monData;
 
         const tempMonFamily = {}
+        tempMonFamily[monKey] = monData;
 
         family.forEach((monID) => {
             tempMonFamily[monID] = pokeListDB[monID];
@@ -38,16 +43,41 @@ const MonIVProvider = ({ children }) => {
         const bNumDef = Number(bDef);
         const bNumHp = Number(bHp);
 
-        Promise.all([
-            rankCalc(bNumAtt, bNumDef, bNumHp, 0, 0, isBestBuddy ? 51 : 50, false, 1500),
-            rankCalc(bNumAtt, bNumDef, bNumHp, 0, 0, isBestBuddy ? 51 : 50, false, 2500),
-            rankCalc(bNumAtt, bNumDef, bNumHp, 0, 0, isBestBuddy ? 51 : 50, false, 'ML')
-        ]).then((data) => {
-            // console.log(data);
+        calculateFamilyRanks(tempMonFamily, isBestBuddy ? 51 : 50).then(familyRankingByMon => {
             setMonFamily(tempMonFamily);
-            setPvpRankings({ 1500: data[0], 2500: data[1], 'ML': data[2] })
-            setSelectedMon([name, id, form, type1, type2, bNumAtt, bNumDef, bNumHp, ...family]);
+            setPvpRankings(familyRankingByMon);
+            setSelectedMon([monKey, name, id, form, type1, type2, bNumAtt, bNumDef, bNumHp, ...family]);
         })
+    }
+
+    const calculateFamilyRanks = async (familyObj, maxLevel) => {
+        var rankPromiseList = [];
+
+        for (var mon in familyObj) {
+            const numBAtll = Number(familyObj[mon][5])
+            const numBDef = Number(familyObj[mon][6])
+            const numBHP = Number(familyObj[mon][7])
+
+            rankPromiseList = rankPromiseList.concat([
+                calculateAllRanks(numBAtll, numBDef, numBHP, 0, 0, maxLevel, false, 1500),
+                calculateAllRanks(numBAtll, numBDef, numBHP, 0, 0, maxLevel, false, 2500),
+                calculateAllRanks(numBAtll, numBDef, numBHP, 0, 0, maxLevel, false, 'ML')
+            ])
+        }
+
+        const familyRankList = await Promise.all(rankPromiseList);
+        const tempRankByMon = {};
+
+        Object.keys(familyObj).forEach((monKey, i) => {
+            tempRankByMon[monKey] = {
+                1500: familyRankList[i + (i * 2)],
+                2500: familyRankList[i + (i * 2) + 1],
+                'ML': familyRankList[i + (i * 2) + 2]
+            }
+        })
+
+
+        return tempRankByMon
     }
 
     const calculateCP = (attack, defense, hp, level) => {
@@ -56,17 +86,8 @@ const MonIVProvider = ({ children }) => {
         return Math.max(10, Math.floor(attack * Math.sqrt(defense) * Math.sqrt(hp) * cpm[level] * cpm[level] / 10));
     }
 
-    const calculateStatProd = (attack, defense, hp, level) => {
-        var attSt = attack * cpm[level];
-        var defSt = defense * cpm[level];
-        var staSt = Math.max(10, Math.floor(hp * cpm[level]));
-        var statProd = Math.round(attSt * defSt * staSt); /* update maxStats if necessary */
 
-        return ([attSt, defSt, staSt, statProd])
-    }
-
-
-    const rankCalc = async (baseatk, basedef, basesta, floor, minLvl, maxLvl, invalid, league) => {
+    const calculateAllRanks = async (baseatk, basedef, basesta, floor, minLvl, maxLvl, invalid, league) => {
         // returns sorted list of all (up to 4096) combinations indexed by statProd + CP
         // console.log("calculate: Received: baseatk= " + baseatk + " basedef= " + basedef + " basesta= " + basesta + " league= " + league + " floor=" + floor + " minLvl= " + minLvl + " maxLvl= " + maxLvl);
         var ranks = [], invalids = [];
@@ -104,7 +125,10 @@ const MonIVProvider = ({ children }) => {
                             maxLvl = level;
                         }
 
-                        const [aSt, dSt, sSt, statProd] = calculateStatProd(baseatk + atk, basedef + def, basesta + sta, level)
+                        var aSt = (baseatk + atk) * cpm[level];
+                        var dSt = (basedef + def) * cpm[level];
+                        var sSt = Math.max(10, Math.floor((basesta + sta) * cpm[level]));
+                        var statProd = Math.round(aSt * dSt * sSt); /* update maxStats if necessary */
 
                         if ((maxAtk.value < aSt) || ((maxAtk.sp < statProd) && (maxAtk.value <= aSt))) {
                             maxAtk.value = aSt;
@@ -271,7 +295,7 @@ const MonIVProvider = ({ children }) => {
 
 
     return (
-        <MonIVContext.Provider value={{ selectedMon, setSelectedMonDetails, pvpRankings, monFamily, stats, setStats, calculateCP, isBestBuddy, toggleBestBuddy }}>
+        <MonIVContext.Provider value={{ selectedMon, setSelectedMonDetails, toggleMonFromFamily, pvpRankings, monFamily, stats, setStats, calculateCP, isBestBuddy, toggleBestBuddy }}>
             {children}
         </MonIVContext.Provider>
     )

@@ -14,7 +14,7 @@ const RankingWindow = ({ className = '' }) => {
     const attackBar = useRef()
     const defenseBar = useRef()
 
-    const { selectedMon, monFamily, setSelectedMonDetails, pvpRankings, stats, setStats, isBestBuddy, calculateCP, toggleBestBuddy } = useContext(MonIVContext);
+    const { selectedMon, monFamily, toggleMonFromFamily, pvpRankings, stats, setStats, isBestBuddy, calculateCP, toggleBestBuddy } = useContext(MonIVContext);
 
     const updateHoverBG = (parentElm, pos) => {
         parentElm.childNodes.forEach((elm, i) => {
@@ -32,13 +32,26 @@ const RankingWindow = ({ className = '' }) => {
         })
     }
 
+    const getRankingForFamily = () => {
+        const familyRankByStat = {};
+
+        Object.keys(pvpRankings).forEach(mon => {
+            familyRankByStat[mon] = {
+                GreatLeague: pvpRankings[mon][1500][(stats.attack + '.' + stats.defense + '.' + stats.hp)],
+                UltraLeague: pvpRankings[mon][2500][(stats.attack + '.' + stats.defense + '.' + stats.hp)],
+                MasterLeague: pvpRankings[mon]['ML'][(stats.attack + '.' + stats.defense + '.' + stats.hp)],
+            }
+        })
+
+        // console.log(familyRankByStat);
+        return familyRankByStat;
+    }
+
 
     if (selectedMon) {
-        const [monName, id, form, type1, type2, bAtt, bDef, bHp, ...family] = selectedMon;
+        const [key, monName, id, form, type1, type2, bAtt, bDef, bHp, ...family] = selectedMon;
 
-        const GreatLeague = pvpRankings[1500] && pvpRankings[1500][(stats.attack + '.' + stats.defense + '.' + stats.hp)];
-        const UltraLeague = pvpRankings[2500] && pvpRankings[2500][(stats.attack + '.' + stats.defense + '.' + stats.hp)];
-        const MasterLeague = pvpRankings['ML'] && pvpRankings['ML'][(stats.attack + '.' + stats.defense + '.' + stats.hp)];
+        const familyRankings = getRankingForFamily();
 
         return (<div className={`max-w-4xl ${className}`}>
             <div className="relative p-4 border-2 border-sky-600 bg-sky-50 dark:border-sky-600/60 dark:bg-sky-700/10 rounded-2xl overflow-hidden">
@@ -75,6 +88,7 @@ const RankingWindow = ({ className = '' }) => {
                         </div>
                     </div>
                 </div>
+
                 <div className='relative flex items-center before:absolute'>
                     <div className='flex w-full max-w-3/10 justify-center align-middle items-center gap-1'>
                         <h6 className='block leading-none max-h-max mr-1 md:mr-2 text-xl md:text-2xl font-bold text-sky-600'>#{('000' + id).slice(-3)}</h6>
@@ -90,6 +104,7 @@ const RankingWindow = ({ className = '' }) => {
                         </p>
                     </div>
                 </div>
+
                 <div className="mt-3 relative before:block before:w-full before:h-0.5 before:bg-gradient-to-r before:from-transparent before:via-gray-800/50 dark:before:via-gray-200/50 before:to-transparent before:z-[1] before:left-0.25 before:bottom-0 before:rounded-l-full">
                     <div className='flex items-center mt-3'>
                         <div className='flex gap-4 w-full ml-1 text-lg font-semibold text-gray-500 dark:text-gray-100/60'>
@@ -108,31 +123,60 @@ const RankingWindow = ({ className = '' }) => {
                     </div>
                     <input className='w-full' type="range" min="1" max={isBestBuddy ? 51 : 50} step={0.5} value={stats.lv} name="level" onChange={({ target }) => setStats((e) => ({ ...e, lv: target.value }))} />
                 </div>
+
                 {family.length > 0 && <div className="mt-4 flex gap-4 items-center">
                     <h2 className='text-lg font-semibold leading-5 mr-3 text-sky-700 dark:text-sky-600'>{monName}'s <br /> Family</h2>
-                    {family.map((key) => <div key={key} className={`relative z-0 min-w-max text-center cursor-pointer text-gray-600/80 hover:text-gray-600 dark:text-gray-400/70 dark:hover:text-gray-400 ${monFamily[key][2] && monFamily[key][2].includes('Mega') && 'ml-4'}`} onClick={() => setSelectedMonDetails(monFamily[key])}>
+                    {family.map((key) => <div key={key} className={`relative z-0 min-w-max text-center cursor-pointer text-gray-600/80 hover:text-gray-600 dark:text-gray-400/70 dark:hover:text-gray-400 ${monFamily[key][2] && monFamily[key][2].includes('Mega') && 'ml-4'}`} onClick={() => toggleMonFromFamily(key, monFamily[key])}>
                         {monFamily[key][2] && monFamily[key][2].includes('Mega') && <img className='absolute h-14 w-14 -z-999 opacity-30 left-[50%] transform-[translateX(-50%)]' src={megaSvg} alt="Mega BG" />}
                         <img key={key} className='h-14 w-full max-w-14 mx-auto' src={`https://db.pokemongohub.net/_next/image?url=%2Fimages%2Fofficial%2Ffull%2F${('000' + monFamily[key][1]).slice(-3)}${monFamily[key][2] == 'Mega Y' ? '_f3' : monFamily[key][2] == 'Galar' ? '_galar' : monFamily[key][2] ? '_f2' : ''}.webp&w=64&q=75`} alt={monFamily[key][0]} />
                         <p className='font-semibold text-sm leading-none'>{monFamily[key][0]}</p>
                     </div>)}
                 </div>}
-                <div className="flex w-full gap-2 mt-4">
-                    <div className={`w-full max-w-4/12 text-center font-semibold p-1 bg-sky-200/40 dark:bg-sky-800/40 rounded-lg border-2 border-sky-600 dark:border-sky-800${!GreatLeague && ' opacity-50'}`}>
+
+                <div className="flex items-center w-full gap-1 mt-4 p-1 border-1 border-sky-600 dark:border-sky-800 rounded-lg bg-sky-100/40 dark:bg-sky-900/20">
+                    <div className="relative z-0 w-full max-w-25 text-center text-sky-700 dark:text-sky-50 px-4">
+                        {form && form.includes('Mega') && <img className='absolute h-15 w-15 -z-999 opacity-30 left-[50%] transform-[translateX(-50%)]' src={megaSvg} alt="Mega BG" />}
+                        <img className='h-15 w-full max-w-15 mx-auto' src={`https://db.pokemongohub.net/_next/image?url=%2Fimages%2Fofficial%2Ffull%2F${('000' + id).slice(-3)}${form == 'Mega Y' ? '_f3' : form == 'Galar' ? '_galar' : form ? '_f2' : ''}.webp&w=64&q=75`} alt={monName} />
+                        <p className='font-semibold text-sm leading-none mt-0.5'>{monName}</p>
+                    </div>
+                    <div className={`w-full max-w-4/12 text-center font-semibold p-1 bg-sky-200/40 dark:bg-sky-800/40 rounded-md border-2 border-sky-600 dark:border-sky-800${(!familyRankings[key].GreatLeague || familyRankings[key].GreatLeague.L < stats.lv) && ' opacity-50'}`}>
                         <h6 className='text-lg uppercase text-sky-700/90 dark:text-sky-50/90'>Great League</h6>
-                        <h2 className='text-md text-sky-700/60 font-normal dark:text-sky-50/60'>Rank. <span className='text-2xl font-semibold uppercase text-sky-700 dark:text-sky-50'>{GreatLeague ? GreatLeague.rank : '-'}</span></h2>
-                        <p className='flex gap-2 justify-center text-sm my-1 text-gray-600/80 hover:text-gray-600 dark:text-gray-400/70 dark:hover:text-gray-400'><span>CP {GreatLeague ? GreatLeague.CP : '-'}</span> <span>Lvl. {GreatLeague ? GreatLeague.L : '-'}</span></p>
+                        <h2 className='text-md text-sky-700/60 font-normal dark:text-sky-50/60'>Rank. <span className='text-2xl font-semibold uppercase text-sky-700 dark:text-sky-50'>{familyRankings[key].GreatLeague ? familyRankings[key].GreatLeague.rank : '-'}</span></h2>
+                        <p className='flex gap-2 justify-center text-sm my-1 text-gray-600/80 dark:text-gray-400/70'><span>CP {familyRankings[key].GreatLeague ? familyRankings[key].GreatLeague.CP : '-'}</span> <span>Lvl. {familyRankings[key].GreatLeague ? familyRankings[key].GreatLeague.L : '-'}</span></p>
                     </div>
-                    <div className={`w-full max-w-4/12 text-center font-semibold p-1 bg-sky-200/40 dark:bg-sky-800/40 rounded-lg border-2 border-sky-600 dark:border-sky-800${!UltraLeague && ' opacity-50'}`}>
+                    <div className={`w-full max-w-4/12 text-center font-semibold p-1 bg-sky-200/40 dark:bg-sky-800/40 rounded-md border-2 border-sky-600 dark:border-sky-800${(!familyRankings[key].UltraLeague || familyRankings[key].UltraLeague.L < stats.lv) && ' opacity-50'}`}>
                         <h6 className='text-lg uppercase text-sky-700/90 dark:text-sky-50/90'>Ultra League</h6>
-                        <h2 className='text-md text-sky-700/60 font-normal dark:text-sky-50/60'>Rank. <span className='text-2xl font-semibold uppercase text-sky-700 dark:text-sky-50'>{UltraLeague ? UltraLeague.rank : '-'}</span></h2>
-                        <p className='flex gap-2 justify-center text-sm my-1 text-gray-600/80 hover:text-gray-600 dark:text-gray-400/70 dark:hover:text-gray-400'><span>CP {UltraLeague ? UltraLeague.CP : '-'}</span> <span>Lvl. {UltraLeague ? UltraLeague.L : '-'}</span></p>
+                        <h2 className='text-md text-sky-700/60 font-normal dark:text-sky-50/60'>Rank. <span className='text-2xl font-semibold uppercase text-sky-700 dark:text-sky-50'>{familyRankings[key].UltraLeague ? familyRankings[key].UltraLeague.rank : '-'}</span></h2>
+                        <p className='flex gap-2 justify-center text-sm my-1 text-gray-600/80 dark:text-gray-400/70'><span>CP {familyRankings[key].UltraLeague ? familyRankings[key].UltraLeague.CP : '-'}</span> <span>Lvl. {familyRankings[key].UltraLeague ? familyRankings[key].UltraLeague.L : '-'}</span></p>
                     </div>
-                    <div className={`w-full max-w-4/12 text-center font-semibold p-1 bg-sky-200/40 dark:bg-sky-800/40 rounded-lg border-2 border-sky-600 dark:border-sky-800${!MasterLeague && ' opacity-50'}`}>
+                    <div className={`w-full max-w-4/12 text-center font-semibold p-1 bg-sky-200/40 dark:bg-sky-800/40 rounded-md border-2 border-sky-600 dark:border-sky-800${(!familyRankings[key].MasterLeague) && ' opacity-50'}`}>
                         <h6 className='text-lg uppercase text-sky-700/90 dark:text-sky-50/90'>Master League</h6>
-                        <h2 className='text-md text-sky-700/60 font-normal dark:text-sky-50/60'>Rank. <span className='text-2xl font-semibold uppercase text-sky-700 dark:text-sky-50'>{MasterLeague ? MasterLeague.rank : '-'}</span></h2>
-                        <p className='flex gap-2 justify-center text-sm my-1 text-gray-600/80 hover:text-gray-600 dark:text-gray-400/70 dark:hover:text-gray-400'><span>CP {MasterLeague ? MasterLeague.CP : '-'}</span> <span>Lvl. {MasterLeague ? MasterLeague.L : '-'}</span></p>
+                        <h2 className='text-md text-sky-700/60 font-normal dark:text-sky-50/60'>Rank. <span className='text-2xl font-semibold uppercase text-sky-700 dark:text-sky-50'>{familyRankings[key].MasterLeague ? familyRankings[key].MasterLeague.rank : '-'}</span></h2>
+                        <p className='flex gap-2 justify-center text-sm my-1 text-gray-600/80 dark:text-gray-400/70'><span>CP {familyRankings[key].MasterLeague ? familyRankings[key].MasterLeague.CP : '-'}</span> <span>Lvl. {familyRankings[key].MasterLeague ? familyRankings[key].MasterLeague.L : '-'}</span></p>
                     </div>
                 </div>
+                {family.map(monKey => <div key={monKey} className="flex items-center w-full gap-1 mt-2 p-1 border-1 border-sky-600 dark:border-sky-800 rounded-lg bg-sky-100/40 dark:bg-sky-900/20">
+                    <div className="relative z-0 w-full max-w-25 text-center text-sky-700 dark:text-sky-50 px-4">
+                        {monFamily[monKey][2] && monFamily[monKey][2].includes('Mega') && <img className='absolute h-15 w-15 -z-999 opacity-30 left-[50%] transform-[translateX(-50%)]' src={megaSvg} alt="Mega BG" />}
+                        <img key={monKey} className='h-15 w-full max-w-15 mx-auto' src={`https://db.pokemongohub.net/_next/image?url=%2Fimages%2Fofficial%2Ffull%2F${('000' + monFamily[monKey][1]).slice(-3)}${monFamily[monKey][2] == 'Mega Y' ? '_f3' : monFamily[monKey][2] == 'Galar' ? '_galar' : monFamily[monKey][2] ? '_f2' : ''}.webp&w=64&q=75`} alt={monFamily[monKey][0]} />
+                        <p className='font-semibold text-sm leading-none mt-0.5'>{monFamily[monKey][0]}</p>
+                    </div>
+                    <div className={`w-full max-w-4/12 text-center font-semibold p-1 bg-sky-200/40 dark:bg-sky-800/40 rounded-md border-2 border-sky-600 dark:border-sky-800${(!familyRankings[monKey].GreatLeague || familyRankings[monKey].GreatLeague.L < stats.lv) && ' opacity-50'}`}>
+                        <h6 className='text-lg uppercase text-sky-700/90 dark:text-sky-50/90'>Great League</h6>
+                        <h2 className='text-md text-sky-700/60 font-normal dark:text-sky-50/60'>Rank. <span className='text-2xl font-semibold uppercase text-sky-700 dark:text-sky-50'>{familyRankings[monKey].GreatLeague ? familyRankings[monKey].GreatLeague.rank : '-'}</span></h2>
+                        <p className='flex gap-2 justify-center text-sm my-1 text-gray-600/80 dark:text-gray-400/70'><span>CP {familyRankings[monKey].GreatLeague ? familyRankings[monKey].GreatLeague.CP : '-'}</span> <span>Lvl. {familyRankings[monKey].GreatLeague ? familyRankings[monKey].GreatLeague.L : '-'}</span></p>
+                    </div>
+                    <div className={`w-full max-w-4/12 text-center font-semibold p-1 bg-sky-200/40 dark:bg-sky-800/40 rounded-md border-2 border-sky-600 dark:border-sky-800${(!familyRankings[monKey].UltraLeague || familyRankings[monKey].UltraLeague.L < stats.lv) && ' opacity-50'}`}>
+                        <h6 className='text-lg uppercase text-sky-700/90 dark:text-sky-50/90'>Ultra League</h6>
+                        <h2 className='text-md text-sky-700/60 font-normal dark:text-sky-50/60'>Rank. <span className='text-2xl font-semibold uppercase text-sky-700 dark:text-sky-50'>{familyRankings[monKey].UltraLeague ? familyRankings[monKey].UltraLeague.rank : '-'}</span></h2>
+                        <p className='flex gap-2 justify-center text-sm my-1 text-gray-600/80 dark:text-gray-400/70'><span>CP {familyRankings[monKey].UltraLeague ? familyRankings[monKey].UltraLeague.CP : '-'}</span> <span>Lvl. {familyRankings[monKey].UltraLeague ? familyRankings[monKey].UltraLeague.L : '-'}</span></p>
+                    </div>
+                    <div className={`w-full max-w-4/12 text-center font-semibold p-1 bg-sky-200/40 dark:bg-sky-800/40 rounded-md border-2 border-sky-600 dark:border-sky-800${(!familyRankings[monKey].MasterLeague) && ' opacity-50'}`}>
+                        <h6 className='text-lg uppercase text-sky-700/90 dark:text-sky-50/90'>Master League</h6>
+                        <h2 className='text-md text-sky-700/60 font-normal dark:text-sky-50/60'>Rank. <span className='text-2xl font-semibold uppercase text-sky-700 dark:text-sky-50'>{familyRankings[monKey].MasterLeague ? familyRankings[monKey].MasterLeague.rank : '-'}</span></h2>
+                        <p className='flex gap-2 justify-center text-sm my-1 text-gray-600/80 dark:text-gray-400/70'><span>CP {familyRankings[monKey].MasterLeague ? familyRankings[monKey].MasterLeague.CP : '-'}</span> <span>Lvl. {familyRankings[monKey].MasterLeague ? familyRankings[monKey].MasterLeague.L : '-'}</span></p>
+                    </div>
+                </div>)}
             </div>
         </div>)
     }

@@ -23,11 +23,11 @@ const SearchBar = ({ className = '' }) => {
         return (lowerKey.includes(searchString) || (pokeListDB[key][2] && pokeListDB[key][2].toLowerCase() == searchString) || (pokeListDB[key][0].toLowerCase()).includes(searchString))
     }
 
-    const onItemClick = (monData) => {
+    const onItemClick = (monKey, monData) => {
         setSearchValue('');
         isBestBuddy && toggleBestBuddy();
         addSelectedMonToBreadCrump(monData[0]);
-        setSelectedMonDetails(monData);
+        setSelectedMonDetails(monKey, monData);
     }
 
     return (<div className={`max-w-4xl ${className}`}>
@@ -41,7 +41,7 @@ const SearchBar = ({ className = '' }) => {
             </div>
             {searchValue.length > 0 && <ol className='w-full max-h-107 text-lg space-y-1 cursor-pointer overflow-y-auto overflow-x-hidden'>
                 {Object.keys(pokeListDB).filter(searchFilter).map((mon, i) =>
-                    <SearchListElement key={i} data={pokeListDB[mon]} onClick={onItemClick} />
+                    <SearchListElement key={i} monKey={mon} monData={pokeListDB[mon]} onClick={onItemClick} />
                 )}
             </ol>}
         </div>
