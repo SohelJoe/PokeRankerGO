@@ -1,38 +1,74 @@
 import { useState, createContext } from "react";
 
 import cpm from '../utils/cpmList.json';
-import pokeListObj from '../utils/pokeListObj.json';
+import pokeListDB from '../utils/pokeListDB.json';
 
 export const MonIVContext = createContext();
 
 const MonIVProvider = ({ children }) => {
-    const [selectedMon, setSelectedMon] = useState(null)
+    const [monFamily, setMonFamily] = useState({});
+    const [pvpRankings, setPvpRankings] = useState({});
+    const [selectedMon, setSelectedMon] = useState(null);
     const [isBestBuddy, setIsBestBuddy] = useState(false);
+    const [stats, setStats] = useState({ attack: 0, defense: 0, hp: 0, lv: 15 });
+
 
     const toggleBestBuddy = () => {
-        setIsBestBuddy((e) => !e)
+        Promise.all([
+            rankCalc(selectedMon[5], selectedMon[6], selectedMon[7], 0, 0, isBestBuddy ? 50 : 51, false, 1500),
+            rankCalc(selectedMon[5], selectedMon[6], selectedMon[7], 0, 0, isBestBuddy ? 50 : 51, false, 2500),
+            rankCalc(selectedMon[5], selectedMon[6], selectedMon[7], 0, 0, isBestBuddy ? 50 : 51, false, 'ML')
+        ]).then((data) => {
+            // console.log(data);
+            setPvpRankings({ 1500: data[0], 2500: data[1], 'ML': data[2] })
+            setIsBestBuddy((e) => !e)
+        })
     }
 
     const setSelectedMonDetails = (monData) => {
         const [name, id, form, type1, type2, bAtt, bDef, bHp, ...family] = monData;
 
+        const tempMonFamily = {}
 
-        // console.log(monData);
+        family.forEach((monID) => {
+            tempMonFamily[monID] = pokeListDB[monID];
+        })
 
-        rankCalc(bAtt, bDef, bHp, 0, 0, isBestBuddy ? 51 : 50, false, 1500).then((data) => {
+        const bNumAtt = Number(bAtt);
+        const bNumDef = Number(bDef);
+        const bNumHp = Number(bHp);
+
+        Promise.all([
+            rankCalc(bNumAtt, bNumDef, bNumHp, 0, 0, isBestBuddy ? 51 : 50, false, 1500),
+            rankCalc(bNumAtt, bNumDef, bNumHp, 0, 0, isBestBuddy ? 51 : 50, false, 2500),
+            rankCalc(bNumAtt, bNumDef, bNumHp, 0, 0, isBestBuddy ? 51 : 50, false, 'ML')
+        ]).then((data) => {
             // console.log(data);
-            setSelectedMon(monData);
+            setMonFamily(tempMonFamily);
+            setPvpRankings({ 1500: data[0], 2500: data[1], 'ML': data[2] })
+            setSelectedMon([name, id, form, type1, type2, bNumAtt, bNumDef, bNumHp, ...family]);
         })
     }
 
-    /* floor = 0: Wild Caught, 1: Trade, Good Friend, 2: Trade, Great | Purified, 3: Trade, Ultra Friend, 4: Weather Boost, 5: Trade, Best Friend, 6: Shadow Legendary, 10: Raid | Hatch, 12: Lucky Trade */
-    /* minLvl, maxLvl = 1...40, 1...51 */
-    /* invalid = true|false [Show Trade Improvement %] */
+    const calculateCP = (attack, defense, hp, level) => {
+        // console.log(attack, defense, hp, level);
+
+        return Math.max(10, Math.floor(attack * Math.sqrt(defense) * Math.sqrt(hp) * cpm[level] * cpm[level] / 10));
+    }
+
+    const calculateStatProd = (attack, defense, hp, level) => {
+        var attSt = attack * cpm[level];
+        var defSt = defense * cpm[level];
+        var staSt = Math.max(10, Math.floor(hp * cpm[level]));
+        var statProd = Math.round(attSt * defSt * staSt); /* update maxStats if necessary */
+
+        return ([attSt, defSt, staSt, statProd])
+    }
+
+
     const rankCalc = async (baseatk, basedef, basesta, floor, minLvl, maxLvl, invalid, league) => {
-        /* returns sorted list of all (up to 4096) combinations indexed by statProd + CP */
-        /*console.log("calculate: Received: baseatk="+baseatk+" basedef="+basedef+" basesta="+basesta+" league="+league+" floor="+floor+" minLvl="+minLvl);*/
-        /* Each item stored by statProd.CP */
-        /* Rank definition:{"12613615.1500":{"IVs":{"A":14, "D":14, "S":14, "star": "3*"}, "base":{"A":145, "D":105, "S":115}, "battle":{"A":145, "D":105, "S":115}, "L":25}, */
+        // returns sorted list of all (up to 4096) combinations indexed by statProd + CP
+        // console.log("calculate: Received: baseatk= " + baseatk + " basedef= " + basedef + " basesta= " + basesta + " league= " + league + " floor=" + floor + " minLvl= " + minLvl + " maxLvl= " + maxLvl);
         var ranks = [], invalids = [];
         var maxAtk = { value: 0, aIV: 0, dIV: 0, sIV: 0, sp: 0 };
         var maxDef = { value: 0, aIV: 0, dIV: 0, sIV: 0, sp: 0 };
@@ -50,10 +86,7 @@ const MonIVProvider = ({ children }) => {
             for (var def = floor / 1; def <= 15; def++) {
                 for (var sta = floor / 1; sta <= 15; sta++) {
                     for (var level = maxLvl; level >= minLvl; level--) {
-                        var cp = Math.max(
-                            10,
-                            Math.floor((baseatk + atk) * Math.sqrt(basedef + def) * Math.sqrt(basesta + sta) * cpm[level] * cpm[level] / 10)
-                        );
+                        var cp = calculateCP(baseatk + atk, basedef + def, basesta + sta, level)
 
                         if ((league) && (cp > league)) {
                             if ((level == minLvl) && (invalid)) {
@@ -71,10 +104,7 @@ const MonIVProvider = ({ children }) => {
                             maxLvl = level;
                         }
 
-                        var aSt = (baseatk + atk) * cpm[level];
-                        var dSt = (basedef + def) * cpm[level];
-                        var sSt = Math.max(10, Math.floor((basesta + sta) * cpm[level]));
-                        var statProd = Math.round(aSt * dSt * sSt); /* update maxStats if necessary */
+                        const [aSt, dSt, sSt, statProd] = calculateStatProd(baseatk + atk, basedef + def, basesta + sta, level)
 
                         if ((maxAtk.value < aSt) || ((maxAtk.sp < statProd) && (maxAtk.value <= aSt))) {
                             maxAtk.value = aSt;
@@ -152,7 +182,7 @@ const MonIVProvider = ({ children }) => {
                         /* Tie Breaking Order: 1)StatProd -> 2)AtkStat -> 3)HPval -> 4)finalCP -> 5)StaIV -> 6)ERROR */
                         var newIndex = statProd + '.' + Math.round(100000 * aSt);
 
-                        if (!(newIndex in ranks)) {
+                        if (!((newIndex) in ranks)) {
                             ranks[newIndex] = [
                                 {
                                     'IVs': {
@@ -181,7 +211,9 @@ const MonIVProvider = ({ children }) => {
                                     if (cp > ranks[newIndex][i].CP) {
                                         break;
                                     } else if (cp == ranks[newIndex][i].CP) {
-                                        if (sta > ranks[newIndex][i].IVs.S) { /*console.log("Used 5th tie breaker (Stamina IV) for newIndex("+newIndex+"):"+JSON.stringify(ranks[newIndex]));*/ break;
+                                        if (sta > ranks[newIndex][i].IVs.S) {
+                                            // console.log("Used 5th tie breaker (Stamina IV) for newIndex("+newIndex+"):"+JSON.stringify(ranks[newIndex]));
+                                            break;
                                         } else if (sta == ranks[newIndex][i].IVs.S) {
                                             console.log(
                                                 'Need 6th tie breaker for newIndex(' + newIndex + '):' + JSON.stringify(ranks[newIndex])
@@ -202,6 +234,8 @@ const MonIVProvider = ({ children }) => {
                                 }
                             );
                         }
+
+
                         numRanks = numRanks + 1;
                         break; /* stop evaluating this IV combination */
                     }
@@ -209,11 +243,16 @@ const MonIVProvider = ({ children }) => {
             }
         } /* sort by statProd+CP before returning */
 
+        var rankNo = 0;
         const sorted = {};
-        Object.keys(ranks).sort(function (a, b) {
+
+        Object.keys(ranks).sort((a, b) => {
             return b - a;
-        }).forEach(function (key) {
-            sorted[key] = ranks[key];
+        }).forEach((key) => {
+            ranks[key].forEach(data => {
+                const { IVs: { A, D, S } } = data;
+                sorted[(A + '.' + D + '.' + S)] = { ...data, rank: ++rankNo, statProd: key }
+            })
         });
 
         sorted.maxAtk = maxAtk;
@@ -232,7 +271,7 @@ const MonIVProvider = ({ children }) => {
 
 
     return (
-        <MonIVContext.Provider value={{ selectedMon, setSelectedMonDetails, isBestBuddy, toggleBestBuddy }}>
+        <MonIVContext.Provider value={{ selectedMon, setSelectedMonDetails, pvpRankings, monFamily, stats, setStats, calculateCP, isBestBuddy, toggleBestBuddy }}>
             {children}
         </MonIVContext.Provider>
     )
