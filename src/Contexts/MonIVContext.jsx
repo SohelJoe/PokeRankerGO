@@ -10,7 +10,6 @@ const MonIVProvider = ({ children }) => {
     const [pvpRankings, setPvpRankings] = useState({});
     const [selectedMon, setSelectedMon] = useState(null);
     const [isBestBuddy, setIsBestBuddy] = useState(false);
-    const [stats, setStats] = useState({ attack: 10, defense: 10, hp: 10, lv: 15 });
 
 
     const toggleBestBuddy = () => {
@@ -268,6 +267,7 @@ const MonIVProvider = ({ children }) => {
         } /* sort by statProd+CP before returning */
 
         var rankNo = 0;
+        var maxStatProd;
         const sorted = {};
 
         Object.keys(ranks).sort((a, b) => {
@@ -275,7 +275,9 @@ const MonIVProvider = ({ children }) => {
         }).forEach((key) => {
             ranks[key].forEach(data => {
                 const { IVs: { A, D, S } } = data;
-                sorted[(A + '.' + D + '.' + S)] = { ...data, rank: ++rankNo, statProd: key }
+                const statProd = key.split('.')[0];
+                if (rankNo == 0) maxStatProd = statProd;
+                sorted[(A + '.' + D + '.' + S)] = { ...data, rank: ++rankNo, statProd: statProd }
             })
         });
 
@@ -287,6 +289,7 @@ const MonIVProvider = ({ children }) => {
         sorted.minHP = minHP;
         sorted.minLvl = 1 + (minRankLvl / 2);
         sorted.maxLvl = 1 + (maxRankLvl / 2);
+        sorted.maxStatProd = maxStatProd;
         sorted.numRanks = numRanks;
         sorted.invalids = invalids; /* console.log("calculate output:"+JSON.stringify(sorted, null, 2)); */
 
@@ -295,7 +298,7 @@ const MonIVProvider = ({ children }) => {
 
 
     return (
-        <MonIVContext.Provider value={{ selectedMon, setSelectedMonDetails, toggleMonFromFamily, pvpRankings, monFamily, stats, setStats, calculateCP, isBestBuddy, toggleBestBuddy }}>
+        <MonIVContext.Provider value={{ selectedMon, setSelectedMonDetails, toggleMonFromFamily, pvpRankings, monFamily, calculateCP, isBestBuddy, toggleBestBuddy }}>
             {children}
         </MonIVContext.Provider>
     )

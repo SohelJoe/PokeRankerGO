@@ -11,7 +11,7 @@ const PageNavigator = () => {
     const { page, breadCrumps } = useContext(NavigationContext);
 
     return (
-        <main className="mx-auto max-w-7xl px-4 pt-3 pb-6 sm:px-6 lg:px-8">
+        <main className="relative mx-auto max-w-7xl px-4 pt-3 pb-6 sm:px-6 lg:px-8">
             <nav aria-label="Breadcrumb" className="mb-6">
                 <ol role="list" className="flex items-center space-x-4 text-gray-500">
                     <li>

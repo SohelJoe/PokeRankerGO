@@ -1,4 +1,4 @@
-import React, { useRef, useState, useContext } from 'react'
+import React, { useRef, useState, useEffect, useContext } from 'react'
 
 import AddSVG from '../assets/add.svg';
 import megaSvg from '../assets/mega.svg';
@@ -14,7 +14,12 @@ const RankingWindow = ({ className = '' }) => {
     const attackBar = useRef()
     const defenseBar = useRef()
 
-    const { selectedMon, monFamily, toggleMonFromFamily, pvpRankings, stats, setStats, isBestBuddy, calculateCP, toggleBestBuddy } = useContext(MonIVContext);
+    const [tableRows, setTableRows] = useState(20);
+    const [openedTab, setOpenedTab] = useState('1500');
+    const [page, setPage] = useState({ 1500: 1, 2500: 1, ML: 1 });
+    const [stats, setStats] = useState({ attack: 10, defense: 10, hp: 10, lv: 15 });
+
+    const { selectedMon, monFamily, toggleMonFromFamily, pvpRankings, isBestBuddy, calculateCP, toggleBestBuddy } = useContext(MonIVContext);
 
     const updateHoverBG = (parentElm, pos) => {
         parentElm.childNodes.forEach((elm, i) => {
@@ -43,9 +48,21 @@ const RankingWindow = ({ className = '' }) => {
             }
         })
 
-        // console.log(familyRankByStat);
+        // console.log(pvpRankings);
         return familyRankByStat;
     }
+
+    useEffect(() => {
+        // console.log('Update Table Rows');
+        setTableRows(20);
+        setStats({ attack: 10, defense: 10, hp: 10, lv: 15 });
+    }, [monFamily])
+
+    useEffect(() => {
+        // console.log('Update Table Pages');
+        setPage({ 1500: 1, 2500: 1, ML: 1 });
+    }, [selectedMon])
+
 
 
     if (selectedMon) {
@@ -133,50 +150,139 @@ const RankingWindow = ({ className = '' }) => {
                     </div>)}
                 </div>}
 
-                <div className="flex items-center w-full gap-1 mt-4 p-1 border-1 border-sky-600 dark:border-sky-800 rounded-lg bg-sky-100/40 dark:bg-sky-900/20">
+                <div className="flex items-center w-full gap-1 mt-4 p-1 border-1 border-sky-600 dark:border-sky-800 rounded-lg bg-sky-50 dark:bg-sky-950/60 drop-shadow-sm">
                     <div className="relative z-0 w-full max-w-25 text-center text-sky-700 dark:text-sky-50 px-4">
                         {form && form.includes('Mega') && <img className='absolute h-15 w-15 -z-999 opacity-30 left-[50%] transform-[translateX(-50%)]' src={megaSvg} alt="Mega BG" />}
                         <img className='h-15 w-full max-w-15 mx-auto' src={`https://db.pokemongohub.net/_next/image?url=%2Fimages%2Fofficial%2Ffull%2F${('000' + id).slice(-3)}${form == 'Mega Y' ? '_f3' : form == 'Galar' ? '_galar' : form ? '_f2' : ''}.webp&w=64&q=75`} alt={monName} />
                         <p className='font-semibold text-sm leading-none mt-0.5'>{monName}</p>
                     </div>
-                    <div className={`w-full max-w-4/12 text-center font-semibold p-1 bg-sky-200/40 dark:bg-sky-800/40 rounded-md border-2 border-sky-600 dark:border-sky-800${(!familyRankings[key].GreatLeague || familyRankings[key].GreatLeague.L < stats.lv) && ' opacity-50'}`}>
+                    <div className={`w-full max-w-4/12 text-center font-semibold p-1 rounded-md border-2${(!familyRankings[key].GreatLeague || familyRankings[key].GreatLeague.L < stats.lv) ? ' opacity-50 bg-red-300/40 dark:bg-red-800/40 border-red-800/80 dark:border-red-600/40' : ' bg-sky-200/40 dark:bg-sky-800/40 border-sky-600 dark:border-sky-800'}`}>
                         <h6 className='text-lg uppercase text-sky-700/90 dark:text-sky-50/90'>Great League</h6>
                         <h2 className='text-md text-sky-700/60 font-normal dark:text-sky-50/60'>Rank. <span className='text-2xl font-semibold uppercase text-sky-700 dark:text-sky-50'>{familyRankings[key].GreatLeague ? familyRankings[key].GreatLeague.rank : '-'}</span></h2>
                         <p className='flex gap-2 justify-center text-sm my-1 text-gray-600/80 dark:text-gray-400/70'><span>CP {familyRankings[key].GreatLeague ? familyRankings[key].GreatLeague.CP : '-'}</span> <span>Lvl. {familyRankings[key].GreatLeague ? familyRankings[key].GreatLeague.L : '-'}</span></p>
                     </div>
-                    <div className={`w-full max-w-4/12 text-center font-semibold p-1 bg-sky-200/40 dark:bg-sky-800/40 rounded-md border-2 border-sky-600 dark:border-sky-800${(!familyRankings[key].UltraLeague || familyRankings[key].UltraLeague.L < stats.lv) && ' opacity-50'}`}>
+                    <div className={`w-full max-w-4/12 text-center font-semibold p-1 rounded-md border-2${(!familyRankings[key].UltraLeague || familyRankings[key].UltraLeague.L < stats.lv) ? ' opacity-50 bg-red-300/40 dark:bg-red-800/40 border-red-800/80 dark:border-red-600/40' : ' bg-sky-200/40 dark:bg-sky-800/40 border-sky-600 dark:border-sky-800'}`}>
                         <h6 className='text-lg uppercase text-sky-700/90 dark:text-sky-50/90'>Ultra League</h6>
                         <h2 className='text-md text-sky-700/60 font-normal dark:text-sky-50/60'>Rank. <span className='text-2xl font-semibold uppercase text-sky-700 dark:text-sky-50'>{familyRankings[key].UltraLeague ? familyRankings[key].UltraLeague.rank : '-'}</span></h2>
                         <p className='flex gap-2 justify-center text-sm my-1 text-gray-600/80 dark:text-gray-400/70'><span>CP {familyRankings[key].UltraLeague ? familyRankings[key].UltraLeague.CP : '-'}</span> <span>Lvl. {familyRankings[key].UltraLeague ? familyRankings[key].UltraLeague.L : '-'}</span></p>
                     </div>
-                    <div className={`w-full max-w-4/12 text-center font-semibold p-1 bg-sky-200/40 dark:bg-sky-800/40 rounded-md border-2 border-sky-600 dark:border-sky-800${(!familyRankings[key].MasterLeague) && ' opacity-50'}`}>
+                    <div className={`w-full max-w-4/12 text-center font-semibold p-1 rounded-md border-2${(!familyRankings[key].MasterLeague || familyRankings[key].MasterLeague.L < stats.lv) ? ' opacity-50 bg-red-300/40 dark:bg-red-800/40 border-red-800/80 dark:border-red-600/40' : ' bg-sky-200/40 dark:bg-sky-800/40 border-sky-600 dark:border-sky-800'}`}>
                         <h6 className='text-lg uppercase text-sky-700/90 dark:text-sky-50/90'>Master League</h6>
                         <h2 className='text-md text-sky-700/60 font-normal dark:text-sky-50/60'>Rank. <span className='text-2xl font-semibold uppercase text-sky-700 dark:text-sky-50'>{familyRankings[key].MasterLeague ? familyRankings[key].MasterLeague.rank : '-'}</span></h2>
                         <p className='flex gap-2 justify-center text-sm my-1 text-gray-600/80 dark:text-gray-400/70'><span>CP {familyRankings[key].MasterLeague ? familyRankings[key].MasterLeague.CP : '-'}</span> <span>Lvl. {familyRankings[key].MasterLeague ? familyRankings[key].MasterLeague.L : '-'}</span></p>
                     </div>
                 </div>
-                {family.map(monKey => <div key={monKey} className="flex items-center w-full gap-1 mt-2 p-1 border-1 border-sky-600 dark:border-sky-800 rounded-lg bg-sky-100/40 dark:bg-sky-900/20">
+                {family.map(monKey => <div key={monKey} className="flex items-center w-full gap-1 mt-2 p-1 border-1 border-sky-600 dark:border-sky-800 rounded-lg bg-sky-50 dark:bg-sky-950/60 drop-shadow-sm">
                     <div className="relative z-0 w-full max-w-25 text-center text-sky-700 dark:text-sky-50 px-4">
                         {monFamily[monKey][2] && monFamily[monKey][2].includes('Mega') && <img className='absolute h-15 w-15 -z-999 opacity-30 left-[50%] transform-[translateX(-50%)]' src={megaSvg} alt="Mega BG" />}
                         <img key={monKey} className='h-15 w-full max-w-15 mx-auto' src={`https://db.pokemongohub.net/_next/image?url=%2Fimages%2Fofficial%2Ffull%2F${('000' + monFamily[monKey][1]).slice(-3)}${monFamily[monKey][2] == 'Mega Y' ? '_f3' : monFamily[monKey][2] == 'Galar' ? '_galar' : monFamily[monKey][2] ? '_f2' : ''}.webp&w=64&q=75`} alt={monFamily[monKey][0]} />
                         <p className='font-semibold text-sm leading-none mt-0.5'>{monFamily[monKey][0]}</p>
                     </div>
-                    <div className={`w-full max-w-4/12 text-center font-semibold p-1 bg-sky-200/40 dark:bg-sky-800/40 rounded-md border-2 border-sky-600 dark:border-sky-800${(!familyRankings[monKey].GreatLeague || familyRankings[monKey].GreatLeague.L < stats.lv) && ' opacity-50'}`}>
+                    <div className={`w-full max-w-4/12 text-center font-semibold p-1 rounded-md border-2${(!familyRankings[monKey].GreatLeague || familyRankings[monKey].GreatLeague.L < stats.lv) ? ' opacity-50 bg-red-300/40 dark:bg-red-800/40 border-red-800/80 dark:border-red-600/40' : ' bg-sky-200/40 dark:bg-sky-800/40 border-sky-600 dark:border-sky-800'}`}>
                         <h6 className='text-lg uppercase text-sky-700/90 dark:text-sky-50/90'>Great League</h6>
                         <h2 className='text-md text-sky-700/60 font-normal dark:text-sky-50/60'>Rank. <span className='text-2xl font-semibold uppercase text-sky-700 dark:text-sky-50'>{familyRankings[monKey].GreatLeague ? familyRankings[monKey].GreatLeague.rank : '-'}</span></h2>
                         <p className='flex gap-2 justify-center text-sm my-1 text-gray-600/80 dark:text-gray-400/70'><span>CP {familyRankings[monKey].GreatLeague ? familyRankings[monKey].GreatLeague.CP : '-'}</span> <span>Lvl. {familyRankings[monKey].GreatLeague ? familyRankings[monKey].GreatLeague.L : '-'}</span></p>
                     </div>
-                    <div className={`w-full max-w-4/12 text-center font-semibold p-1 bg-sky-200/40 dark:bg-sky-800/40 rounded-md border-2 border-sky-600 dark:border-sky-800${(!familyRankings[monKey].UltraLeague || familyRankings[monKey].UltraLeague.L < stats.lv) && ' opacity-50'}`}>
+                    <div className={`w-full max-w-4/12 text-center font-semibold p-1 rounded-md border-2${(!familyRankings[monKey].UltraLeague || familyRankings[monKey].UltraLeague.L < stats.lv) ? ' opacity-50 bg-red-300/40 dark:bg-red-800/40 border-red-800/80 dark:border-red-600/40' : ' bg-sky-200/40 dark:bg-sky-800/40 border-sky-600 dark:border-sky-800'}`}>
                         <h6 className='text-lg uppercase text-sky-700/90 dark:text-sky-50/90'>Ultra League</h6>
                         <h2 className='text-md text-sky-700/60 font-normal dark:text-sky-50/60'>Rank. <span className='text-2xl font-semibold uppercase text-sky-700 dark:text-sky-50'>{familyRankings[monKey].UltraLeague ? familyRankings[monKey].UltraLeague.rank : '-'}</span></h2>
                         <p className='flex gap-2 justify-center text-sm my-1 text-gray-600/80 dark:text-gray-400/70'><span>CP {familyRankings[monKey].UltraLeague ? familyRankings[monKey].UltraLeague.CP : '-'}</span> <span>Lvl. {familyRankings[monKey].UltraLeague ? familyRankings[monKey].UltraLeague.L : '-'}</span></p>
                     </div>
-                    <div className={`w-full max-w-4/12 text-center font-semibold p-1 bg-sky-200/40 dark:bg-sky-800/40 rounded-md border-2 border-sky-600 dark:border-sky-800${(!familyRankings[monKey].MasterLeague) && ' opacity-50'}`}>
+                    <div className={`w-full max-w-4/12 text-center font-semibold p-1 rounded-md border-2${(!familyRankings[monKey].MasterLeague || familyRankings[monKey].MasterLeague.L < stats.lv) ? ' opacity-50 bg-red-300/40 dark:bg-red-800/40 border-red-800/80 dark:border-red-600/40' : ' bg-sky-200/40 dark:bg-sky-800/40 border-sky-600 dark:border-sky-800'}`}>
                         <h6 className='text-lg uppercase text-sky-700/90 dark:text-sky-50/90'>Master League</h6>
                         <h2 className='text-md text-sky-700/60 font-normal dark:text-sky-50/60'>Rank. <span className='text-2xl font-semibold uppercase text-sky-700 dark:text-sky-50'>{familyRankings[monKey].MasterLeague ? familyRankings[monKey].MasterLeague.rank : '-'}</span></h2>
                         <p className='flex gap-2 justify-center text-sm my-1 text-gray-600/80 dark:text-gray-400/70'><span>CP {familyRankings[monKey].MasterLeague ? familyRankings[monKey].MasterLeague.CP : '-'}</span> <span>Lvl. {familyRankings[monKey].MasterLeague ? familyRankings[monKey].MasterLeague.L : '-'}</span></p>
                     </div>
                 </div>)}
+
+                <div className="relative mt-4 border-2 rounded-lg border-sky-600 bg-sky-50 dark:bg-sky-950/60 drop-shadow-lg">
+                    <nav aria-label="Tabs" className="flex text-lg text-gray-600 dark:text-gray-200 font-semibold border-b-1 border-gray-300 dark:border-gray-500">
+                        <button className={`relative flex-1/3 py-1.5 cursor-pointer uppercase ${openedTab == '1500' ? 'text-sky-700 dark:text-sky-400 before:absolute before:w-full before:h-0.5 before:bg-sky-700/90 dark:before:bg-sky-500 before:-bottom-0.25 before:left-0' : 'opacity-80 hover:opacity-90 hover:before:absolute hover:before:w-full hover:before:h-0.5 hover:before:bg-gray-400/60 hover:before:-bottom-0.25 hover:before:left-0'}`} onClick={() => openedTab != '1500' && setOpenedTab('1500')}>Great League</button>
+                        <button className={`relative flex-1/3 py-1.5 cursor-pointer uppercase ${openedTab == '2500' ? 'text-sky-700 dark:text-sky-400 before:absolute before:w-full before:h-0.5 before:bg-sky-700/90 dark:before:bg-sky-500 before:-bottom-0.25 before:left-0' : 'opacity-80 hover:opacity-90 hover:before:absolute hover:before:w-full hover:before:h-0.5 hover:before:bg-gray-400/60 hover:before:-bottom-0.25 hover:before:left-0'}`} onClick={() => openedTab != '2500' && setOpenedTab('2500')}>Ultra League</button>
+                        <button className={`relative flex-1/3 py-1.5 cursor-pointer uppercase ${openedTab == 'ML' ? 'text-sky-700 dark:text-sky-400 before:absolute before:w-full before:h-0.5 before:bg-sky-700/90 dark:before:bg-sky-500 before:-bottom-0.25 before:left-0' : 'opacity-80 hover:opacity-90 hover:before:absolute hover:before:w-full hover:before:h-0.5 hover:before:bg-gray-400/60 hover:before:-bottom-0.25 hover:before:left-0'}`} onClick={() => openedTab != 'ML' && setOpenedTab('ML')}>Master League</button>
+                    </nav>
+                    <table className="w-full">
+                        <thead className='border-b-1 border-sky-600/60 dark:border-sky-400/60 bg-sky-400/10 text-sky-800/90 dark:text-sky-200'>
+                            <tr>
+                                <th scope="col" className="py-2 font-semibold!">Rank</th>
+                                <th scope="col" className="py-2 font-semibold!">IVs</th>
+                                <th scope="col" className="py-2 font-semibold!">CP</th>
+                                <th scope="col" className="py-2 font-semibold!">Level</th>
+                                <th scope="col" className="py-2 font-semibold!">%</th>
+                                <th scope="col" className="py-2 font-semibold!">Attack</th>
+                                <th scope="col" className="py-2 font-semibold!">Defense</th>
+                                <th scope="col" className="py-2 font-semibold!">Stamina</th>
+                                <th scope="col" className="py-2 font-semibold!">PROD</th>
+                            </tr>
+                        </thead>
+                        <tbody className="">
+                            <tr className='text-center font-semibold bg-green-200 dark:bg-green-900 not-last:border-b border-green-400 dark:border-green-700'>
+                                <td className="py-1"> # {pvpRankings[key][openedTab][(stats.attack + '.' + stats.defense + '.' + stats.hp)].rank} </td>
+                                <td className="py-1"> {pvpRankings[key][openedTab][(stats.attack + '.' + stats.defense + '.' + stats.hp)].IVs?.A} / {pvpRankings[key][openedTab][(stats.attack + '.' + stats.defense + '.' + stats.hp)].IVs?.D} / {pvpRankings[key][openedTab][(stats.attack + '.' + stats.defense + '.' + stats.hp)].IVs?.S} </td>
+                                <td className="py-1"> {pvpRankings[key][openedTab][(stats.attack + '.' + stats.defense + '.' + stats.hp)].CP} </td>
+                                <td className="py-1"> {pvpRankings[key][openedTab][(stats.attack + '.' + stats.defense + '.' + stats.hp)].L} </td>
+                                <td className="py-1">{(pvpRankings[key][openedTab][(stats.attack + '.' + stats.defense + '.' + stats.hp)].statProd / pvpRankings[key][openedTab].maxStatProd * 100).toFixed(2)}%</td>
+                                <td className="py-1">{pvpRankings[key][openedTab][(stats.attack + '.' + stats.defense + '.' + stats.hp)].battle?.A.toFixed(2)}</td>
+                                <td className="py-1">{pvpRankings[key][openedTab][(stats.attack + '.' + stats.defense + '.' + stats.hp)].battle?.D.toFixed(2)}</td>
+                                <td className="py-1">{pvpRankings[key][openedTab][(stats.attack + '.' + stats.defense + '.' + stats.hp)].battle?.S}</td>
+                                <td className="py-1">{pvpRankings[key][openedTab][(stats.attack + '.' + stats.defense + '.' + stats.hp)].statProd}</td>
+                            </tr>
+                            {pvpRankings && Object.values(pvpRankings[key][openedTab]).slice((page[openedTab] - 1) * tableRows, (pvpRankings[key][openedTab].numRanks > page[openedTab] * tableRows) ? page[openedTab] * tableRows : pvpRankings[key][openedTab].numRanks).map((row, i) => <tr key={i} className='text-center not-last:border-b not-last:border-gray-200 dark:not-last:border-gray-700'>
+                                <td className="py-1 font-semibold"> # {row.rank} </td>
+                                <td className="py-1"> {row.IVs?.A} / {row.IVs?.D} / {row.IVs?.S} </td>
+                                <td className="py-1"> {row.CP} </td>
+                                <td className="py-1"> {row.L} </td>
+                                <td className="py-1">{(row.statProd / pvpRankings[key][openedTab].maxStatProd * 100).toFixed(2)}%</td>
+                                <td className="py-1">{row.battle?.A.toFixed(2)}</td>
+                                <td className="py-1">{row.battle?.D.toFixed(2)}</td>
+                                <td className="py-1">{row.battle?.S}</td>
+                                <td className="py-1">{row.statProd}</td>
+                            </tr>)}
+                        </tbody>
+                    </table>
+                    <div className="flex items-center justify-between border-t border-gray-400 dark:border-gray-500 p-2">
+                        <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
+                            <div className='flex text-gray-700 dark:text-gray-300/80 ml-2 gap-2'>
+                                <p> Showing </p>
+                                <select className='border-1 border-gray-700 rounded-sm px-1 py-0.5' value={tableRows} onChange={({ target }) => setTableRows(target.value)}>
+                                    <option value="20">20</option>
+                                    <option value="35">35</option>
+                                    <option value="50">50</option>
+                                    <option value="100">100</option>
+                                </select>
+                                <p>of {pvpRankings[key][openedTab].numRanks} Results </p>
+                            </div>
+
+                            <nav className="isolate inline-flex -space-x-px rounded-md shadow-xs" aria-label="Pagination">
+                                <button className="relative not-disabled:cursor-pointer inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-gray-300 ring-inset not-disabled:hover:bg-gray-50 focus:z-20 focus:outline-offset-0" disabled={page[openedTab] == 1} onClick={() => setPage(e => ({ ...e, [openedTab]: e[openedTab] - 1 }))}>
+                                    <span className="sr-only">Previous</span>
+                                    <svg className="size-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
+                                        <path fillRule="evenodd" d="M11.78 5.22a.75.75 0 0 1 0 1.06L8.06 10l3.72 3.72a.75.75 0 1 1-1.06 1.06l-4.25-4.25a.75.75 0 0 1 0-1.06l4.25-4.25a.75.75 0 0 1 1.06 0Z" clipRule="evenodd" />
+                                    </svg>
+                                </button>
+
+                                {(page[openedTab] == 1 ? [0, 1, 2] : [-1, 0, 1]).map(i => <button key={i} className={`relative cursor-pointer inline-flex items-center px-4 py-2 min-w-11.5 text-sm justify-center font-semibold focus:z-20 ${page[openedTab] == (Math.round(pvpRankings[key][openedTab].numRanks / tableRows) - page[openedTab] > 3 ? page[openedTab] + i : Math.round(pvpRankings[key][openedTab].numRanks / tableRows) - 4 + i) ? 'z-10 text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-600 bg-sky-600' : 'text-gray-900 dark:text-gray-100 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:outline-offset-0 md:inline-flex'}`} onClick={() => setPage(e => ({ ...e, [openedTab]: page[openedTab] + i }))}>
+                                    {Math.round(pvpRankings[key][openedTab].numRanks / tableRows) - page[openedTab] > 3 ? page[openedTab] + i : Math.round(pvpRankings[key][openedTab].numRanks / tableRows) - 4 + i}
+                                </button>)}
+
+                                {Math.round(pvpRankings[key][openedTab].numRanks / tableRows) - page[openedTab] > 4 ? <span className="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-700 ring-1 ring-gray-300 ring-inset focus:outline-offset-0">...</span> : <button className={`relative cursor-pointer inline-flex items-center px-4 py-2 min-w-11.5 text-sm justify-center font-semibold focus:z-20 ${page[openedTab] == Math.round(pvpRankings[key][openedTab].numRanks / tableRows) - 2 ? 'z-10 text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-600 bg-sky-600' : 'text-gray-900 dark:text-gray-100 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:outline-offset-0 md:inline-flex'}`} onClick={() => setPage(e => ({ ...e, [openedTab]: Math.round(pvpRankings[key][openedTab].numRanks / tableRows) - 2 }))}>{Math.round(pvpRankings[key][openedTab].numRanks / tableRows) - 2}</button>}
+
+                                {[1, 2].map(i => <button className={`relative cursor-pointer inline-flex items-center px-4 py-2 min-w-11.5 text-sm justify-center font-semibold focus:z-20 ${page[openedTab] == Math.round(pvpRankings[key][openedTab].numRanks / tableRows) - 2 + i ? 'z-10 text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-600 bg-sky-600' : 'text-gray-900 dark:text-gray-100 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:outline-offset-0 md:inline-flex'}`} onClick={() => setPage(e => ({ ...e, [openedTab]: Math.round(pvpRankings[key][openedTab].numRanks / tableRows) - 2 + i }))}>{Math.round(pvpRankings[key][openedTab].numRanks / tableRows) - 2 + i}</button>)}
+
+                                <button className="relative not-disabled:cursor-pointer inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-gray-300 ring-inset not-disabled:hover:bg-gray-50 focus:z-20 focus:outline-offset-0" disabled={page[openedTab] == Math.round(pvpRankings[key][openedTab].numRanks / tableRows)} onClick={() => setPage(e => ({ ...e, [openedTab]: e[openedTab] + 1 }))}>
+                                    <span className="sr-only">Next</span>
+                                    <svg className="size-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
+                                        <path fillRule="evenodd" d="M8.22 5.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L11.94 10 8.22 6.28a.75.75 0 0 1 0-1.06Z" clipRule="evenodd" />
+                                    </svg>
+                                </button>
+                            </nav>
+                        </div>
+                        <div className="flex flex-1 justify-between sm:hidden">
+                            <button className="relative inline-flex items-center rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">Previous</button>
+                            <button className="relative ml-3 inline-flex items-center rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">Next</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>)
     }

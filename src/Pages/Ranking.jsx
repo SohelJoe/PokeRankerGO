@@ -8,8 +8,8 @@ import RankingWindow from '../Components/RankingWindow'
 
 const Ranking = () => {
     return (<>
-        <SearchBar className='relative mx-auto' />
-        <RankingWindow className='relative mx-auto mt-5' />
+        <SearchBar className='absolute w-full left-[50%] transform-[translateX(-50%)] z-99' />
+        <RankingWindow className='relative mx-auto mt-28' />
     </>)
 }
 
