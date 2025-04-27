@@ -1,7 +1,10 @@
 import React, { useContext, useState } from 'react'
 
-import SunSVG from '../assets/sun.svg';
-import MoonSVG from '../assets/moon.svg';
+
+import { RxCross2 } from "react-icons/rx";
+import { PiSunDuotone } from "react-icons/pi";
+import { HiMiniBars3 } from "react-icons/hi2";
+import { PiMoonStarsDuotone } from "react-icons/pi";
 
 // Contexts
 import { ThemeContext } from '../Contexts/ThemeContext';
@@ -34,19 +37,19 @@ const Navbar = () => {
                         <button type="link" className="text-lg font-semibold ml-4">PokéRankerGO</button>
                     </div>
                     <div className="hidden sm:flex ml-15 items-baseline space-x-4">
-                        <button type="link" className={`rounded-md px-5 pt-1 pb-1.5 font-medium cursor-pointer focus:outline-sky-700/70 hover:bg-gray-300/50 dark:hover:bg-gray-50/10 ${page == 'ranking' && 'bg-gray-500/10 outline-2 outline-sky-700/50 focus:outline-2'}`} onClick={() => changePage('ranking')}>Ranking</button>
-                        <button type="link" className={`rounded-md px-5 pt-1 pb-1.5 font-medium cursor-pointer focus:outline-sky-700/70 hover:bg-gray-300/50 dark:hover:bg-gray-50/10 ${page == 'pokémon' && 'bg-gray-500/10 outline-2 outline-sky-700/50 focus:outline-2'}`} onClick={() => changePage('pokémon')}>Pokémon</button>
+                        <button type="link" className={`rounded-md px-5 pt-1 pb-1.5 font-medium cursor-pointer focus:outline-sky-700/70 hover:bg-gray-300/50 dark:hover:bg-gray-50/10 ${page == 'ranking' && 'bg-gray-300/50 dark:bg-gray-50/10 outline-2 outline-sky-700/50 focus:outline-2'}`} onClick={() => changePage('ranking')}>Ranking</button>
+                        <button type="link" className={`rounded-md px-5 pt-1 pb-1.5 font-medium cursor-pointer focus:outline-sky-700/70 hover:bg-gray-300/50 dark:hover:bg-gray-50/10 ${page == 'pokémon' && 'bg-gray-300/50 dark:bg-gray-50/10 outline-2 outline-sky-700/50 focus:outline-2'}`} onClick={() => changePage('pokémon')}>Pokémon</button>
                     </div>
                 </div>
                 <div className="-mr-2 flex">
                     <button type="button" className="relative rounded-full p-1 aspect-square cursor-pointer hover:bg-gray-300/50 dark:hover:bg-gray-50/10 focus:ring-2 dark:focus:ring-white focus:ring-gray-800 focus:outline-hidden" onClick={toggleTheme}>
                         <span className="sr-only">Toogle Theme</span>
-                        <img className="block size-8 dark:invert-90" src={darkMode ? SunSVG : MoonSVG} alt={darkMode ? 'Dark' : 'Light'} />
+                        {darkMode ? <PiSunDuotone className='size-8' /> : <PiMoonStarsDuotone className='size-8' />}
                     </button>
                     <button type="button" className="relative sm:hidden inline-flex ml-4 items-center justify-center rounded-md cursor-pointer bg-gray-500/30 hover:bg-gray-500/40 dark:bg-gray-800 p-2 dark:text-gray-400 dark:hover:bg-gray-700 focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 focus:outline-hidden" aria-controls="mobile-menu" aria-expanded={navOpen} onClick={toggleNavState}>
                         <span className="sr-only">Open main menu</span>
-                        <svg className={navOpen ? 'hidden' : 'block size-6'} fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon"><path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" /></svg>
-                        <svg className={!navOpen ? 'hidden' : 'block size-6'} fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon"><path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
+                        <HiMiniBars3 className={navOpen ? 'hidden' : 'block size-6'} />
+                        <RxCross2 className={!navOpen ? 'hidden' : 'block size-6'} />
                     </button>
                 </div>
             </div>
