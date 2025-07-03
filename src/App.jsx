@@ -3,6 +3,7 @@ import React from 'react'
 // Contexts
 import ThemeProvider from './Contexts/ThemeContext';
 import MonIVProvider from './Contexts/MonIVContext';
+import MonDexProvider from './Contexts/MonDexContext';
 import NavigationProvider from './Contexts/NavigationContext';
 
 
@@ -17,8 +18,10 @@ function App() {
         <ThemeProvider>
             <NavigationProvider>
                 <MonIVProvider>
-                    <Navbar />
-                    <PageNavigator />
+                    <MonDexProvider>
+                        <Navbar />
+                        <PageNavigator />
+                    </MonDexProvider>
                 </MonIVProvider>
             </NavigationProvider>
         </ThemeProvider>

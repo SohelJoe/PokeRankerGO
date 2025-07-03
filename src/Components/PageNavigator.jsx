@@ -42,7 +42,7 @@ const PageNavigator = () => {
             </nav>
 
             {page == 'ranking' ? <Ranking /> :
-                page == 'pokémon' ? <Pokemon /> :
+                page == 'pokédex' ? <Pokemon /> :
                     <Error404 />}
         </main>
     )

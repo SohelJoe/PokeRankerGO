@@ -65,8 +65,14 @@ const Ranking = () => {
         return familyRankByStat;
     }
 
+    const setModalOpen = () => {
+        setModalState('opening');
+        document.body.className = "h-screen overflow-y-hidden"
+    }
+
     const setModalClose = () => {
         setModalState('closing');
+        document.body.removeAttribute("class");
 
         setTimeout(() => {
             setModalState(false);
@@ -96,12 +102,13 @@ const Ranking = () => {
     }, [selectedMon])
 
 
+
     return <> <SearchBar className='absolute left-0 right-0 z-99' />
 
         {selectedMon && <div ref={rankingWindow} className='max-w-4xl relative mx-auto mt-24 xs:mt-26 sm:mt-28 scroll-m-18'>
             <div className="relative p-1 2xs:p-2 md:p-3 xl:p-4 border-2 border-sky-600 bg-sky-50 dark:border-sky-600/60 dark:bg-sky-700/10 rounded-2xl overflow-hidden">
                 <div className='flex items-center xs:items-stretch sm:items-center relative z-0'>
-                    <ImageBox id={id} form={form} name={monName} megaClassName="w-full max-w-2/10 opacity-40 ml-7 xs:ml-10 px-1" className="mr-2 w-full max-w-3/10 aspect-square h-max" w="256" />
+                    <ImageBox id={id} form={form} name={monName} className="mr-2" megaClassName="w-full max-w-2/3 left-[50%] -translate-x-[50%] opacity-40" imgClassName="w-full aspect-square h-max" w="256" />
                     <div className='font-semibold w-full max-w-7/10'>
                         <span className='text-xs xl:text-sm leading-none text-gray-500/80 dark:text-gray-500'>Selected Pokémon</span>
                         <div className='flex relative gap-1.25 sm:gap-2 items-baseline pb-1.75 before:absolute before:block before:w-full before:h-0.5 before:bg-linear-to-r before:from-gray-800/60 dark:before:from-gray-200/60 before:from-30% before:to-transparent before:z-[1] before:left-0.25 before:bottom-0 before:rounded-l-full mb-2'>
@@ -175,25 +182,24 @@ const Ranking = () => {
                             <h4 className='w-20 sm:w-22'>Level: <span className='text-gray-800 dark:text-gray-200'>{stats.lv}</span></h4>
                             <h4>CP: <span className='text-gray-800 dark:text-gray-200'>{selectedMonCP}</span></h4>
                         </div>
-                        <div className='flex min-w-max items-center gap-1.5 -mt-0.5 mb-0.5'>
+                        <div className='flex min-w-max items-center gap-1.5'>
                             <button className={`relative flex items-center gap-0.75 text-md z-0 pl-0.25 pr-3 pt-0 pb-0.25 border-2 border-sky-700 dark:border-sky-600/80 dark:hover:border-sky-600/90 rounded-full h-max cursor-pointer ${isBestBuddy ? 'text-white dark:text-white bg-sky-800/80 dark:bg-sky-600/70 hover:bg-sky-800 dark:hover:bg-sky-600/80' : 'text-sky-800 dark:text-sky-500/80 dark:hover:text-sky-500/90 bg-sky-300/20 dark:bg-sky-100/10 hover:bg-sky-300/30 dark:hover:bg-sky-200/10'} text-center uppercase font-semibold hover:drop-shadow-lg`} onClick={() => { toggleBestBuddy(); (stats.lv > 50 && setStats((e) => ({ ...e, lv: 50 }))) }}>
                                 {isBestBuddy ? <MdOutlineCheckCircle className='h-6 w-6 mt-0.25' /> : <MdOutlineCancel className='h-6 w-6 mt-0.25' />}
                                 Best Buddy
                             </button>
-                            <button className='p-1 border-2 text-sky-700 dark:text-sky-600/80 border-sky-700 dark:border-sky-600/80 rounded-full h-max cursor-pointer bg-sky-300/20 dark:bg-sky-100/10 hover:bg-sky-300/30 dark:hover:bg-sky-50/10 dark:hover:brightness-[1.2] hover:drop-shadow-lg' onClick={() => setModalState('opening')}>
+                            <button className='p-1 border-2 text-sky-700 dark:text-sky-600/80 border-sky-700 dark:border-sky-600/80 rounded-full h-max cursor-pointer bg-sky-300/20 dark:bg-sky-100/10 hover:bg-sky-300/30 dark:hover:bg-sky-50/10 dark:hover:brightness-[1.2] hover:drop-shadow-lg' onClick={setModalOpen}>
                                 <FaPlus className='size-4.5' />
-                                {/* <img className='h-4 w-4 dark:brightness-[1.15]' src={AddSVG} alt="Add" /> */}
                             </button>
                         </div>
                     </div>
                     <input className='w-full mt-3 sm:mt-2 lg:mt-1' type="range" min="1" max={isBestBuddy ? 51 : 50} step={0.5} value={stats.lv} name="level" onChange={({ target }) => setStats((e) => ({ ...e, lv: target.value }))} />
                 </div>
 
-                {family.length > 0 && <div className="mt-4 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+                {family.length > 0 && <div className="mt-4 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 mb-4">
                     <h2 className='text-lg font-semibold leading-5 mr-3 text-sky-700 dark:text-sky-600'>{monName}'s <br className='hidden sm:block' /> Family</h2>
                     <div className="flex gap-4 items-center flex-wrap">
                         {family.map((key) => <div key={key} className={`relative z-0 min-w-max text-center cursor-pointer text-gray-600/80 hover:text-gray-600 dark:text-gray-400/70 dark:hover:text-gray-400 ${monFamily[key][2] && monFamily[key][2].includes('Mega') && 'sm:ml-4'}`} onClick={() => toggleMonFromFamily(key, monFamily[key])}>
-                            <ImageBox id={monFamily[key][1]} form={monFamily[key][2]} name={monFamily[key][0]} megaClassName="h-14 w-14 opacity-30 left-[50%] transform-[translateX(-50%)]" className="h-14 w-full max-w-14 mx-auto" w="64" />
+                            <ImageBox id={monFamily[key][1]} form={monFamily[key][2]} name={monFamily[key][0]} megaClassName="h-14 w-14 opacity-30 left-[50%] transform-[translateX(-50%)]" imgClassName="h-14 w-full max-w-14 mx-auto" w="64" />
                             <p className='font-semibold text-sm leading-none'>{monFamily[key][0]}</p>
                         </div>)}
                     </div>

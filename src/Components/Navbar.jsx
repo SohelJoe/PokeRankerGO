@@ -38,7 +38,7 @@ const Navbar = () => {
                     </div>
                     <div className="hidden sm:flex ml-15 items-baseline space-x-4">
                         <button type="link" className={`rounded-md px-5 pt-1 pb-1.5 font-medium cursor-pointer focus:outline-sky-700/70 hover:bg-gray-300/50 dark:hover:bg-gray-50/10 ${page == 'ranking' && 'bg-gray-300/50 dark:bg-gray-50/10 outline-2 outline-sky-700/50 focus:outline-2'}`} onClick={() => changePage('ranking')}>Ranking</button>
-                        <button type="link" className={`rounded-md px-5 pt-1 pb-1.5 font-medium cursor-pointer focus:outline-sky-700/70 hover:bg-gray-300/50 dark:hover:bg-gray-50/10 ${page == 'pokémon' && 'bg-gray-300/50 dark:bg-gray-50/10 outline-2 outline-sky-700/50 focus:outline-2'}`} onClick={() => changePage('pokémon')}>Pokémon</button>
+                        <button type="link" className={`rounded-md px-5 pt-1 pb-1.5 font-medium cursor-pointer focus:outline-sky-700/70 hover:bg-gray-300/50 dark:hover:bg-gray-50/10 ${page == 'pokédex' && 'bg-gray-300/50 dark:bg-gray-50/10 outline-2 outline-sky-700/50 focus:outline-2'}`} onClick={() => changePage('pokédex')}>Pokédex</button>
                     </div>
                 </div>
                 <div className="-mr-2 flex">
@@ -57,7 +57,7 @@ const Navbar = () => {
             {navOpen && <div className={`overflow-hidden sm:hidden ${navOpen == 'opening' ? 'animate-Down' : 'animate-Up'}`} id="mobile-menu">
                 <div className="flex flex-col pb-2 pt-0.5">
                     <button type="link" className="text-left px-4 py-2 font-medium w-full cursor-pointer hover:bg-gray-300/20 focus:ring-2 focus:ring-white focus:ring-offset-1 focus:ring-offset-gray-800 focus:outline-hidden" onClick={() => changePage('ranking')}>Ranking</button>
-                    <button type="link" className="text-left px-4 py-2 font-medium w-full cursor-pointer hover:bg-gray-300/20 focus:ring-2 focus:ring-white focus:ring-offset-1 focus:ring-offset-gray-800 focus:outline-hidden" onClick={() => changePage('pokémon')}>Pokémon</button>
+                    <button type="link" className="text-left px-4 py-2 font-medium w-full cursor-pointer hover:bg-gray-300/20 focus:ring-2 focus:ring-white focus:ring-offset-1 focus:ring-offset-gray-800 focus:outline-hidden" onClick={() => changePage('pokédex')}>Pokédex</button>
                 </div>
             </div>}
         </nav>
