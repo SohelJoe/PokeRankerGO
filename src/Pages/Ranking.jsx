@@ -6,7 +6,6 @@ import { MdOutlineCancel } from "react-icons/md";
 import { IoIosArrowForward } from "react-icons/io";
 import { MdOutlineCheckCircle } from "react-icons/md";
 
-import BestBuddyRibon from '../assets/bestBuddyRibbon.png';
 
 // Contexts
 import { MonIVContext } from '../Contexts/MonIVContext';
@@ -108,11 +107,10 @@ const Ranking = () => {
         {selectedMon && <div ref={rankingWindow} className='max-w-4xl relative mx-auto mt-24 xs:mt-26 sm:mt-28 scroll-m-18'>
             <div className="relative p-1 2xs:p-2 md:p-3 xl:p-4 border-2 border-sky-600 bg-sky-50 dark:border-sky-600/60 dark:bg-sky-700/10 rounded-2xl overflow-hidden">
                 <div className='flex items-center xs:items-stretch sm:items-center relative z-0'>
-                    <ImageBox id={id} form={form} name={monName} className="mr-2" megaClassName="w-full max-w-2/3 left-[50%] -translate-x-[50%] opacity-40" imgClassName="w-full aspect-square h-max" w="256" />
+                    <ImageBox id={id} form={form} name={monName} className="mr-2" megaClassName="w-full max-w-2/3 left-[50%] -translate-x-[50%] opacity-40" imgClassName="w-full aspect-square h-max" isBestBuddy={isBestBuddy} w="256" />
                     <div className='font-semibold w-full max-w-7/10'>
                         <span className='text-xs xl:text-sm leading-none text-gray-500/80 dark:text-gray-500'>Selected Pokémon</span>
                         <div className='flex relative gap-1.25 sm:gap-2 items-baseline pb-1.75 before:absolute before:block before:w-full before:h-0.5 before:bg-linear-to-r before:from-gray-800/60 dark:before:from-gray-200/60 before:from-30% before:to-transparent before:z-[1] before:left-0.25 before:bottom-0 before:rounded-l-full mb-2'>
-                            {isBestBuddy && <img className='block h-4 xs:h-5 xl:h-6 3xl:h-7' src={BestBuddyRibon} alt="Best Buddy Ribbon" />}
                             <h2 className='text-3xl xl:text-4xl leading-none text-sky-700 dark:text-sky-600 font-bold'>
                                 {monName}
                             </h2>
@@ -198,7 +196,7 @@ const Ranking = () => {
                 {family.length > 0 && <div className="mt-4 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 mb-4">
                     <h2 className='text-lg font-semibold leading-5 mr-3 text-sky-700 dark:text-sky-600'>{monName}'s <br className='hidden sm:block' /> Family</h2>
                     <div className="flex gap-4 items-center flex-wrap">
-                        {family.map((key) => <div key={key} className={`relative z-0 min-w-max text-center cursor-pointer text-gray-600/80 hover:text-gray-600 dark:text-gray-400/70 dark:hover:text-gray-400 ${monFamily[key][2] && monFamily[key][2].includes('Mega') && 'sm:ml-4'}`} onClick={() => toggleMonFromFamily(key, monFamily[key])}>
+                        {family.map((key) => <div key={key} className={`relative z-0 min-w-max text-center cursor-pointer text-gray-600/80 hover:text-gray-600 dark:text-gray-200/70 dark:hover:text-gray-200 ${monFamily[key][2] && monFamily[key][2].includes('Mega') && 'sm:ml-4'}`} onClick={() => toggleMonFromFamily(key, monFamily[key])}>
                             <ImageBox id={monFamily[key][1]} form={monFamily[key][2]} name={monFamily[key][0]} megaClassName="h-14 w-14 opacity-30 left-[50%] transform-[translateX(-50%)]" imgClassName="h-14 w-full max-w-14 mx-auto" w="64" />
                             <p className='font-semibold text-sm leading-none'>{monFamily[key][0]}</p>
                         </div>)}
@@ -256,7 +254,7 @@ const Ranking = () => {
                     </div>
                     <div className="flex items-center justify-between border-t border-gray-400 dark:border-gray-500 p-2">
                         <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
-                            <div className='flex text-gray-700 dark:text-gray-300/80 ml-2 gap-2'>
+                            <div className='flex text-gray-700 dark:text-gray-200/80 ml-2 gap-2'>
                                 <p> Showing </p>
                                 <select className='border-1 border-gray-700 rounded-sm px-1 py-0.5' value={tableRows} onChange={({ target }) => setTableRows(target.value)}>
                                     <option value="20">20</option>
@@ -273,15 +271,15 @@ const Ranking = () => {
                                     <IoIosArrowBack className='w-5' />
                                 </button>
 
-                                {(page[openedTab] == 1 ? [0, 1, 2] : [-1, 0, 1]).map(i => <button key={i} className={`relative cursor-pointer inline-flex items-center px-4 py-2 min-w-11.5 text-sm justify-center font-semibold focus:z-20 ${page[openedTab] == (Math.round(pvpRankings[key][openedTab].numRanks / tableRows) - page[openedTab] > 3 ? page[openedTab] + i : Math.round(pvpRankings[key][openedTab].numRanks / tableRows) - 4 + i) ? 'z-10 text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-600 bg-sky-600' : 'text-gray-900 dark:text-gray-100 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:outline-offset-0 md:inline-flex'}`} onClick={() => setPage(e => ({ ...e, [openedTab]: page[openedTab] + i }))}>
+                                {(page[openedTab] == 1 ? [0, 1, 2] : [-1, 0, 1]).map(i => <button key={i} className={`relative cursor-pointer inline-flex items-center px-4 py-2 min-w-11.5 text-sm justify-center font-semibold focus:z-20 ${page[openedTab] == (Math.round(pvpRankings[key][openedTab].numRanks / tableRows) - page[openedTab] > 3 ? page[openedTab] + i : Math.round(pvpRankings[key][openedTab].numRanks / tableRows) - 4 + i) ? 'z-10 text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-600 bg-sky-600' : 'text-gray-900 dark:text-gray-100 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 dark:hover:bg-gray-50/10 focus:outline-offset-0 md:inline-flex'}`} onClick={() => setPage(e => ({ ...e, [openedTab]: page[openedTab] + i }))}>
                                     {Math.round(pvpRankings[key][openedTab].numRanks / tableRows) - page[openedTab] > 3 ? page[openedTab] + i : Math.round(pvpRankings[key][openedTab].numRanks / tableRows) - 4 + i}
                                 </button>)}
 
-                                {Math.round(pvpRankings[key][openedTab].numRanks / tableRows) - page[openedTab] > 4 ? <span className="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-700 ring-1 ring-gray-300 ring-inset focus:outline-offset-0">...</span> : <button className={`relative cursor-pointer inline-flex items-center px-4 py-2 min-w-11.5 text-sm justify-center font-semibold focus:z-20 ${page[openedTab] == Math.round(pvpRankings[key][openedTab].numRanks / tableRows) - 2 ? 'z-10 text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-600 bg-sky-600' : 'text-gray-900 dark:text-gray-100 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:outline-offset-0 md:inline-flex'}`} onClick={() => setPage(e => ({ ...e, [openedTab]: Math.round(pvpRankings[key][openedTab].numRanks / tableRows) - 2 }))}>{Math.round(pvpRankings[key][openedTab].numRanks / tableRows) - 2}</button>}
+                                {Math.round(pvpRankings[key][openedTab].numRanks / tableRows) - page[openedTab] > 4 ? <span className="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-700 ring-1 ring-gray-300 ring-inset focus:outline-offset-0">...</span> : <button className={`relative cursor-pointer inline-flex items-center px-4 py-2 min-w-11.5 text-sm justify-center font-semibold focus:z-20 ${page[openedTab] == Math.round(pvpRankings[key][openedTab].numRanks / tableRows) - 2 ? 'z-10 text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-600 bg-sky-600' : 'text-gray-900 dark:text-gray-100 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 dark:hover:bg-gray-50/10 focus:outline-offset-0 md:inline-flex'}`} onClick={() => setPage(e => ({ ...e, [openedTab]: Math.round(pvpRankings[key][openedTab].numRanks / tableRows) - 2 }))}>{Math.round(pvpRankings[key][openedTab].numRanks / tableRows) - 2}</button>}
 
-                                {[1, 2].map(i => <button key={i} className={`relative cursor-pointer inline-flex items-center px-4 py-2 min-w-11.5 text-sm justify-center font-semibold focus:z-20 ${page[openedTab] == Math.round(pvpRankings[key][openedTab].numRanks / tableRows) - 2 + i ? 'z-10 text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-600 bg-sky-600' : 'text-gray-900 dark:text-gray-100 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:outline-offset-0 md:inline-flex'}`} onClick={() => setPage(e => ({ ...e, [openedTab]: Math.round(pvpRankings[key][openedTab].numRanks / tableRows) - 2 + i }))}>{Math.round(pvpRankings[key][openedTab].numRanks / tableRows) - 2 + i}</button>)}
+                                {[1, 2].map(i => <button key={i} className={`relative cursor-pointer inline-flex items-center px-4 py-2 min-w-11.5 text-sm justify-center font-semibold focus:z-20 ${page[openedTab] == Math.round(pvpRankings[key][openedTab].numRanks / tableRows) - 2 + i ? 'z-10 text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-600 bg-sky-600' : 'text-gray-900 dark:text-gray-100 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 dark:hover:bg-gray-50/10 focus:outline-offset-0 md:inline-flex'}`} onClick={() => setPage(e => ({ ...e, [openedTab]: Math.round(pvpRankings[key][openedTab].numRanks / tableRows) - 2 + i }))}>{Math.round(pvpRankings[key][openedTab].numRanks / tableRows) - 2 + i}</button>)}
 
-                                <button className="relative not-disabled:cursor-pointer inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-gray-300 ring-inset not-disabled:hover:bg-gray-50 focus:z-20 focus:outline-offset-0" disabled={page[openedTab] == Math.round(pvpRankings[key][openedTab].numRanks / tableRows)} onClick={() => setPage(e => ({ ...e, [openedTab]: e[openedTab] + 1 }))}>
+                                <button className="relative not-disabled:cursor-pointer inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-gray-300 ring-inset not-disabled:hover:bg-gray-50 not-disabled:dark:hover:bg-gray-50/10 focus:z-20 focus:outline-offset-0" disabled={page[openedTab] == Math.round(pvpRankings[key][openedTab].numRanks / tableRows)} onClick={() => setPage(e => ({ ...e, [openedTab]: e[openedTab] + 1 }))}>
                                     <span className="sr-only">Next</span>
                                     <IoIosArrowForward className='w-5' />
                                 </button>
@@ -294,7 +292,7 @@ const Ranking = () => {
                     </div>
                 </div>
 
-                <MonSaveModal state={modalState} close={setModalClose} mon={[key, monName, id, form, type1, type2]} stats={stats} CP={selectedMonCP} ranking={familyRankings[key]} />
+                <MonSaveModal state={modalState} close={setModalClose} mon={[key, monName, id, form, type1, type2]} stats={stats} CP={selectedMonCP} ranking={familyRankings[key]} isBestBuddy={isBestBuddy} />
             </div>
         </div>}
     </>

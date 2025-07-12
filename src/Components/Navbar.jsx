@@ -37,8 +37,8 @@ const Navbar = () => {
                         <button type="link" className="text-lg font-semibold ml-4">PokéRankerGO</button>
                     </div>
                     <div className="hidden sm:flex ml-15 items-baseline space-x-4">
-                        <button type="link" className={`rounded-md px-5 pt-1 pb-1.5 font-medium cursor-pointer focus:outline-sky-700/70 hover:bg-gray-300/50 dark:hover:bg-gray-50/10 ${page == 'ranking' && 'bg-gray-300/50 dark:bg-gray-50/10 outline-2 outline-sky-700/50 focus:outline-2'}`} onClick={() => changePage('ranking')}>Ranking</button>
-                        <button type="link" className={`rounded-md px-5 pt-1 pb-1.5 font-medium cursor-pointer focus:outline-sky-700/70 hover:bg-gray-300/50 dark:hover:bg-gray-50/10 ${page == 'pokédex' && 'bg-gray-300/50 dark:bg-gray-50/10 outline-2 outline-sky-700/50 focus:outline-2'}`} onClick={() => changePage('pokédex')}>Pokédex</button>
+                        <button type="link" className={`rounded-md px-5 pt-1 pb-1.5 font-medium cursor-pointer focus:outline-sky-700/70 hover:bg-gray-300/50 dark:hover:bg-gray-50/10 ${page == 'ranking' && 'bg-gray-300/50 dark:bg-gray-600/10 outline-2 outline-sky-700/50 dark:outline-sky-500/50 focus:outline-2 dark:hover:bg-gray-400/10'}`} onClick={() => changePage('ranking')}>Ranking</button>
+                        <button type="link" className={`rounded-md px-5 pt-1 pb-1.5 font-medium cursor-pointer focus:outline-sky-700/70 hover:bg-gray-300/50 dark:hover:bg-gray-50/10 ${page == 'pokédex' && 'bg-gray-300/50 dark:bg-gray-600/10 outline-2 outline-sky-700/50 dark:outline-sky-500/50 focus:outline-2 dark:hover:bg-gray-400/10'}`} onClick={() => changePage('pokédex')}>Pokédex</button>
                     </div>
                 </div>
                 <div className="-mr-2 flex">

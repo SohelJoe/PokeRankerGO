@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext } from 'react'
 
 
 import ImageBox from './ImageBox';
@@ -15,24 +15,23 @@ import { MonDexContext } from '../Contexts/MonDexContext';
 const typings = ['normal', 'fighting', 'flying', 'poison', 'ground', 'rock', 'bug', 'ghost', 'steel', 'fire', 'water', 'grass', 'electric', 'psychic', 'ice', 'dragon', 'dark', 'fairy']
 
 const MonRemoveModal = ({ state = false, close, monData }) => {
-    // const [monKey, monName, id, form, type1, type2] = mon;
-    // const { attack, defense, hp, lv } = stats;
 
-    const [monKey, monName, id, form, type1, type2, stats] = monData || ['', '', '', '', '', '', {}];
+    const [monKey, monName, id, form, type1, type2, stats, index] = monData || ['', '', '', '', '', '', {}, ''];
     const { attack, defense, hp, lv, cp, rank } = stats;
 
 
-    const { saveMonData, getMonData } = useContext(MonDexContext)
+    const { removeMonData } = useContext(MonDexContext)
 
-
-    const onFormSubmit = (e) => {
-
+    const onRemove = () => {
+        removeMonData(monKey, index);
+        close();
     }
+
 
 
     return (state && monData && <div className={`fixed inset-0 overflow-hidden bg-gray-600/70 dark:bg-gray-900/90 ${state == 'opening' ? 'animate-In' : 'animate-Out'}`}>
         <div className="flex h-full w-full justify-center items-center">
-            <div className={`relative border-2 border-sky-500 dark:border-sky-600/60 bg-white dark:bg-slate-900 shadow-lg p-3 sm:p-4 w-11/12 xs:max-w-md mx-auto rounded-lg z-500 overflow-y-auto ${state ? 'animate-Entering' : 'animate-Leaving'}`}>
+            <div className={`relative border-2 border-sky-500 dark:border-sky-600/60 bg-sky-50 dark:bg-slate-900 shadow-lg p-3 sm:p-4 w-11/12 xs:max-w-md mx-auto rounded-lg z-500 overflow-y-auto ${state ? 'animate-Entering' : 'animate-Leaving'}`}>
                 <RxCross2 onClick={close} className='h-5 w-5 cursor-pointer absolute right-2 top-2 text-gray-600 hover:text-black dark:hover:text-gray-300 z-99' />
                 <h3 className='relative text-center text-lg/5 font-semibold text-red-900 dark:text-red-600/90 pb-2 px-1 mb-2 before:absolute before:w-full before:h-0.5 before:bg-gradient-to-r before:from-transparent before:via-gray-800/50 dark:before:via-gray-200/70 before:to-transparent before:z-[1] before:left-0.25 before:bottom-0 before:rounded-l-full'>
                     Are you sure to delete the below mon from Pokédex?
@@ -87,8 +86,8 @@ const MonRemoveModal = ({ state = false, close, monData }) => {
                 </div>
 
                 <div className="flex mt-3 mb-0.25 gap-2">
-                    <button className='w-full border-1 rounded p-1 cursor-pointer' onClick={close}>No</button>
-                    <button className='w-full border-1 rounded p-1 cursor-pointer'>Yes, Remove it.</button>
+                    <button className='w-full font-semibold text-lg border-2 border-red-700/70 dark:border-red-600/60 hover:border-red-700 dark:hover:border-red-600/90 text-red-700/80 dark:text-red-600/70 hover:text-red-700 dark:hover:text-red-600/90 rounded p-1 cursor-pointer bg-red-200/50 dark:bg-red-900/30 hover:bg-red-200/70 dark:hover:bg-red-900/50' onClick={close}>No</button>
+                    <button className='w-full font-semibold text-lg border-2 border-green-700/70 dark:border-green-500/70 hover:border-green-700 dark:hover:border-green-500 text-green-700/80 dark:text-green-500/80 hover:text-green-700 dark:hover:text-green-500 rounded p-1 cursor-pointer bg-green-200/50 dark:bg-green-900/40 hover:bg-green-200/70 dark:hover:bg-green-900/60' onClick={onRemove}>Yes, Remove it.</button>
                 </div>
             </div>
         </div>

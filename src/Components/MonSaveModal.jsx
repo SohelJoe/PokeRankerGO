@@ -14,7 +14,7 @@ import { MonDexContext } from '../Contexts/MonDexContext';
 
 const typings = ['normal', 'fighting', 'flying', 'poison', 'ground', 'rock', 'bug', 'ghost', 'steel', 'fire', 'water', 'grass', 'electric', 'psychic', 'ice', 'dragon', 'dark', 'fairy']
 
-const MonSaveModal = ({ state = false, close, mon, stats, CP, ranking }) => {
+const MonSaveModal = ({ state = false, close, mon, stats, CP, ranking, isBestBuddy = false }) => {
 
     const [monKey, monName, id, form, type1, type2] = mon;
     const { attack, defense, hp, lv } = stats;
@@ -49,6 +49,7 @@ const MonSaveModal = ({ state = false, close, mon, stats, CP, ranking }) => {
             monKey,
             parseInt(selectData),
             { ...stats, cp: CP },
+            isBestBuddy,
             {
                 GreatLeague: ranking.GreatLeague.rank,
                 UltraLeague: ranking.UltraLeague.rank,
@@ -76,7 +77,7 @@ const MonSaveModal = ({ state = false, close, mon, stats, CP, ranking }) => {
             <div className={`relative border-2 border-sky-500 dark:border-sky-600/60 bg-white dark:bg-slate-900 shadow-lg p-3 sm:p-4 w-11/12 xs:max-w-md mx-auto rounded-lg z-50 overflow-y-auto ${state ? 'animate-Entering' : 'animate-Leaving'}`}>
                 <RxCross2 onClick={close} className='h-5 w-5 cursor-pointer absolute right-2 top-2 text-gray-600 hover:text-black dark:hover:text-gray-300 z-99' />
                 <div className="flex gap-2 items-center pr-2">
-                    <ImageBox id={id} form={form} name={monName} megaClassName="w-20 h-20 opacity-40" imgClassName="w-22" w="64" />
+                    <ImageBox id={id} form={form} name={monName} megaClassName="w-20 h-20 opacity-40" imgClassName="w-22" isBestBuddy={isBestBuddy} w="64" />
                     <div className='flex-1'>
                         <h2 className="text-sky-700 dark:text-sky-600 text-3xl font-bold">{monName}</h2>
                         <div className="flex gap-1 mt-1">

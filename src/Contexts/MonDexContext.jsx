@@ -9,12 +9,12 @@ const MonDexProvider = ({ children }) => {
     const LSName = 'PokeDEX';
     const [monDex, setMonDex] = useState(null);
 
-    const saveMonData = (key, index, stats, rank) => {
+    const saveMonData = (key, index, stats, isBestBuddy, rank) => {
         const pokeDex = JSON.parse(localStorage.getItem(LSName)) || {};
 
         const monDexList = pokeDex[key] || [];
 
-        monDexList.splice(index, index > -1 ? 1 : 0, { ...stats, rank: rank })
+        monDexList.splice(index, index > -1 ? 1 : 0, { ...stats, isBestBuddy, rank })
         pokeDex[key] = monDexList;
 
         setMonDex(pokeDex);
@@ -47,10 +47,22 @@ const MonDexProvider = ({ children }) => {
         });
     }
 
+    const removeMonData = (key, index) => {
+        const pokeDex = JSON.parse(localStorage.getItem(LSName)) || {};
+
+        const monDexList = pokeDex[key] || [];
+
+        monDexList.splice(index, index > -1 ? 1 : 0);
+        pokeDex[key] = monDexList;
+
+        setMonDex(pokeDex);
+        localStorage.setItem(LSName, JSON.stringify(pokeDex));
+    }
+
 
 
     return (
-        <MonDexContext.Provider value={{ saveMonData, getMonData, monDex, getMonDex, getMonByKey }}>
+        <MonDexContext.Provider value={{ saveMonData, getMonData, monDex, getMonDex, getMonByKey, removeMonData }}>
             {children}
         </MonDexContext.Provider>
     )

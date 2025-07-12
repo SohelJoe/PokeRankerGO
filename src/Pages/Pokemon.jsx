@@ -26,9 +26,9 @@ const Pokemon = () => {
     const { monDex, getMonDex, getMonByKey } = useContext(MonDexContext);
 
 
-    const setModalOpen = (key, name, id, form, type1, type2, mon) => {
+    const setModalOpen = (key, name, id, form, type1, type2, mon, index) => {
         setModalState('opening');
-        setMonData([key, name, id, form, type1, type2, mon]);
+        setMonData([key, name, id, form, type1, type2, mon, index]);
         document.body.className = "h-screen overflow-y-hidden";
     }
 
@@ -53,7 +53,7 @@ const Pokemon = () => {
                     const { name, id, form, type1, type2 } = getMonByKey(monKey);
 
                     return monDex[monKey].map((mon, i) => <li key={monKey + i} className="relative z-1 shadow-md rounded-lg overflow-hidden border-1 border-sky-400/80 dark:border-sky-700 bg-sky-100/20 dark:bg-sky-900/20">
-                        <ImageBox id={id} form={form} name={name} className="max-w-7/10 w-full mx-auto pt-2 z-0" megaClassName="w-full max-w-3/5 left-[50%] -translate-x-[45%] opacity-30" imgClassName="w-full aspect-square h-max" w="256" />
+                        <ImageBox id={id} form={form} name={name} className="max-w-7/10 w-full mx-auto pt-2 z-0" megaClassName="w-full max-w-3/5 left-[50%] -translate-x-[45%] opacity-30" imgClassName="w-full aspect-square h-max" isBestBuddy={mon.isBestBuddy} w="256" />
                         <div className='absolute flex w-full gap-0.5 top-0 p-1 z-2'>
                             <h6 className='block leading-none max-h-max mr-auto text-md md:text-base font-bold text-sky-600 dark:text-sky-500'>#{('000' + id).slice(-3)}</h6>
                             {type1 && <img className='w-full max-w-1/12' src={`https://db.pokemongohub.net/_next/image?url=%2Fimages%2Ficons%2Fico_${typings.indexOf(type1)}_${type1}.webp&w=32&q=75`} alt={type1} />}
@@ -108,7 +108,7 @@ const Pokemon = () => {
                             </div>
                         </div>
                         <div className="w-full flex">
-                            <button onClick={() => setModalOpen(monKey, name, id, form, type1, type2, mon)} className='flex gap-1 justify-center items-center w-full pt-1 pb-1.5 cursor-pointer uppercase font-semibold text-sm leading-none text-red-800 dark:text-red-600/80 bg-red-200/40 dark:bg-red-900/20 outline-1 outline-red-200 dark:outline-red-900/80'>
+                            <button onClick={() => setModalOpen(monKey, name, id, form, type1, type2, mon, i)} className='flex gap-1 justify-center items-center w-full pt-1 pb-1.5 cursor-pointer uppercase font-semibold text-sm leading-none text-red-800 dark:text-red-600/80 bg-red-200/40 dark:bg-red-900/20 outline-1 outline-red-200 dark:outline-red-900/80'>
                                 <RiDeleteBin2Line className='h-3.5 mt-0.25' /> Remove
                             </button>
                             <button className='flex gap-1 justify-center items-center w-full pt-1 pb-1.5 cursor-pointer uppercase font-semibold text-sm leading-none text-amber-600 dark:text-amber-500/90 bg-amber-200/40 dark:bg-amber-800/20 outline-1 outline-amber-300 dark:outline-amber-800/80'>
