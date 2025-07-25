@@ -10,6 +10,7 @@ const MonIVProvider = ({ children }) => {
     const [pvpRankings, setPvpRankings] = useState({});
     const [selectedMon, setSelectedMon] = useState(null);
     const [isBestBuddy, setIsBestBuddy] = useState(false);
+    const [isShadowMon, setIsShadowMon] = useState(false);
 
 
     const toggleBestBuddy = () => {
@@ -19,12 +20,19 @@ const MonIVProvider = ({ children }) => {
         })
     }
 
+    const toggleShadowMon = () => {
+        if (selectedMon && (!selectedMon[3] || ['Hisuian', 'Galar'].includes(selectedMon[3]))) {
+            setIsShadowMon((e) => !e)
+        }
+    }
+
     const toggleMonFromFamily = (monKey, monData) => {
         const [name, id, form, type1, type2, bAtt, bDef, bHp, ...family] = monData;
         const numBAtll = Number(bAtt)
         const numBDef = Number(bDef)
         const numBHP = Number(bHp)
 
+        if (isShadowMon) setIsShadowMon(false);
         setSelectedMon([monKey, name, id, form, type1, type2, numBAtll, numBDef, numBHP, ...family]);
     }
 
@@ -45,6 +53,7 @@ const MonIVProvider = ({ children }) => {
         calculateFamilyRanks(tempMonFamily, isBestBuddy ? 51 : 50).then(familyRankingByMon => {
             setMonFamily(tempMonFamily);
             setPvpRankings(familyRankingByMon);
+            if (isShadowMon) setIsShadowMon(false);
             setSelectedMon([monKey, name, id, form, type1, type2, bNumAtt, bNumDef, bNumHp, ...family]);
         })
     }
@@ -298,7 +307,7 @@ const MonIVProvider = ({ children }) => {
 
 
     return (
-        <MonIVContext.Provider value={{ selectedMon, setSelectedMonDetails, toggleMonFromFamily, pvpRankings, monFamily, calculateCP, isBestBuddy, toggleBestBuddy }}>
+        <MonIVContext.Provider value={{ selectedMon, setSelectedMonDetails, toggleMonFromFamily, pvpRankings, monFamily, calculateCP, calculateFamilyRanks, isBestBuddy, toggleBestBuddy, isShadowMon, toggleShadowMon }}>
             {children}
         </MonIVContext.Provider>
     )

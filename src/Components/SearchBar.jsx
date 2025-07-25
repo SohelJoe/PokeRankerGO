@@ -1,4 +1,4 @@
-import React, { useState, useRef, useContext } from 'react'
+import { useState, useRef, useContext } from 'react'
 
 import pokeListDB from '../utils/pokeListDB.json';
 
@@ -7,13 +7,12 @@ import { MdOutlineCancel } from "react-icons/md";
 
 // Contexts
 import { MonIVContext } from '../Contexts/MonIVContext';
+// Components
+import ImageBox from '../Components/ImageBox';
+import MonIdType from '../Components/MonIdType';
 
-import ImageBox from './ImageBox';
 
-
-const typings = ['normal', 'fighting', 'flying', 'poison', 'ground', 'rock', 'bug', 'ghost', 'steel', 'fire', 'water', 'grass', 'electric', 'psychic', 'ice', 'dragon', 'dark', 'fairy']
-
-const SearchBar = ({ className = '', window }) => {
+const SearchBar = ({ className = '' }) => {
     const searchInput = useRef()
     const [searchValue, setSearchValue] = useState('')
 
@@ -45,11 +44,8 @@ const SearchBar = ({ className = '', window }) => {
                 {Object.keys(pokeListDB).filter(searchFilter).map((mon, i) => <li key={i} className='flex relative z-0 first:mt-2 items-center gap-2 text-xl font-semibold hover:bg-sky-400/10 hover:text-sky-900 dark:hover:text-sky-100 py-2 px-4 rounded-lg' onClick={() => onItemClick(mon, pokeListDB[mon])}>
                     <ImageBox id={pokeListDB[mon][1]} form={pokeListDB[mon][2]} name={pokeListDB[mon][0]} megaClassName="h-14 w-14 opacity-40" className="h-14 w-full max-w-14" w="64" />
                     <p>{pokeListDB[mon][0]}</p>
-                    <div className='flex ml-auto justify-center align-middle items-center gap-1'>
-                        <span className='mr-2'>#{('000' + pokeListDB[mon][1]).slice(-3)}</span>
-                        {pokeListDB[mon][3] && <img className='w-6' src={`https://db.pokemongohub.net/_next/image?url=%2Fimages%2Ficons%2Fico_${typings.indexOf(pokeListDB[mon][3])}_${pokeListDB[mon][3]}.webp&w=32&q=75`} alt={pokeListDB[mon][3]} />}
-                        {pokeListDB[mon][4] && <img className='w-6' src={`https://db.pokemongohub.net/_next/image?url=%2Fimages%2Ficons%2Fico_${typings.indexOf(pokeListDB[mon][4])}_${pokeListDB[mon][4]}.webp&w=32&q=75`} alt={pokeListDB[mon][4]} />}
-                    </div>
+
+                    <MonIdType id={pokeListDB[mon][1]} type1={pokeListDB[mon][3]} type2={pokeListDB[mon][4]} className='flex ml-auto justify-center align-middle items-center gap-1' idClassName="!text-black dark:!text-white !font-semibold mr-2" typeClassName="w-6" />
                 </li>)}
             </ol>}
 

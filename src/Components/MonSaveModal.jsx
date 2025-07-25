@@ -1,7 +1,5 @@
-import React, { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 
-
-import ImageBox from './ImageBox';
 
 import { RxCross2 } from "react-icons/rx";
 import { FaRegHeart } from "react-icons/fa";
@@ -10,11 +8,12 @@ import { FaShieldAlt } from "react-icons/fa";
 
 // Contexts
 import { MonDexContext } from '../Contexts/MonDexContext';
+// Components
+import ImageBox from '../Components/ImageBox';
+import MonIdType from '../Components/MonIdType';
 
 
-const typings = ['normal', 'fighting', 'flying', 'poison', 'ground', 'rock', 'bug', 'ghost', 'steel', 'fire', 'water', 'grass', 'electric', 'psychic', 'ice', 'dragon', 'dark', 'fairy']
-
-const MonSaveModal = ({ state = false, close, mon, stats, CP, ranking, isBestBuddy = false }) => {
+const MonSaveModal = ({ state = false, close, mon, stats, CP, ranking, isBestBuddy = false, isShadow = false }) => {
 
     const [monKey, monName, id, form, type1, type2] = mon;
     const { attack, defense, hp, lv } = stats;
@@ -49,6 +48,7 @@ const MonSaveModal = ({ state = false, close, mon, stats, CP, ranking, isBestBud
             monKey,
             parseInt(selectData),
             { ...stats, cp: CP },
+            isShadow,
             isBestBuddy,
             {
                 GreatLeague: ranking.GreatLeague.rank,
@@ -77,16 +77,10 @@ const MonSaveModal = ({ state = false, close, mon, stats, CP, ranking, isBestBud
             <div className={`relative border-2 border-sky-500 dark:border-sky-600/60 bg-white dark:bg-slate-900 shadow-lg p-3 sm:p-4 w-11/12 xs:max-w-md mx-auto rounded-lg z-50 overflow-y-auto ${state ? 'animate-Entering' : 'animate-Leaving'}`}>
                 <RxCross2 onClick={close} className='h-5 w-5 cursor-pointer absolute right-2 top-2 text-gray-600 hover:text-black dark:hover:text-gray-300 z-99' />
                 <div className="flex gap-2 items-center pr-2">
-                    <ImageBox id={id} form={form} name={monName} megaClassName="w-20 h-20 opacity-40" imgClassName="w-22" isBestBuddy={isBestBuddy} w="64" />
+                    <ImageBox id={id} form={form} name={monName} megaClassName="w-20 h-20 opacity-40" shadowClassName="opacity-70" imgClassName="w-22" isBestBuddy={isBestBuddy} isShadow={isShadow} w="64" />
                     <div className='flex-1'>
                         <h2 className="text-sky-700 dark:text-sky-600 text-3xl font-bold">{monName}</h2>
-                        <div className="flex gap-1 mt-1">
-                            <p className='mb-0.5 mr-2 leading-none max-h-max text-base font-bold text-gray-700/80 dark:text-gray-300/80'>
-                                #{('000' + id).slice(-3)}
-                            </p>
-                            {type1 && <img className='w-5' src={`https://db.pokemongohub.net/_next/image?url=%2Fimages%2Ficons%2Fico_${typings.indexOf(type1)}_${type1}.webp&w=32&q=75`} alt={type1} />}
-                            {type2 && <img className='w-5' src={`https://db.pokemongohub.net/_next/image?url=%2Fimages%2Ficons%2Fico_${typings.indexOf(type2)}_${type2}.webp&w=32&q=75`} alt={type2} />}
-                        </div>
+                        <MonIdType id={id} type1={type1} type2={type2} className='flex gap-1 mt-1' idClassName="text-base !text-gray-700/80 dark:!text-gray-300/80 mt-0.5 mr-2" typeClassName="w-5" />
                     </div>
                 </div>
 

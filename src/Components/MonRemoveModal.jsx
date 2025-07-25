@@ -1,7 +1,5 @@
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 
-
-import ImageBox from './ImageBox';
 
 import { RxCross2 } from "react-icons/rx";
 import { FaRegHeart } from "react-icons/fa";
@@ -10,9 +8,10 @@ import { FaShieldAlt } from "react-icons/fa";
 
 // Contexts
 import { MonDexContext } from '../Contexts/MonDexContext';
+// Components
+import ImageBox from '../Components/ImageBox';
+import MonIdType from '../Components/MonIdType';
 
-
-const typings = ['normal', 'fighting', 'flying', 'poison', 'ground', 'rock', 'bug', 'ghost', 'steel', 'fire', 'water', 'grass', 'electric', 'psychic', 'ice', 'dragon', 'dark', 'fairy']
 
 const MonRemoveModal = ({ state = false, close, monData }) => {
 
@@ -41,13 +40,7 @@ const MonRemoveModal = ({ state = false, close, monData }) => {
                     <ImageBox id={id} form={form} name={monName} megaClassName="w-20 h-20 opacity-40 ml-1" imgClassName="w-22" w="64" />
                     <div className='flex-1'>
                         <h2 className="text-sky-700 dark:text-sky-600 text-3xl font-bold">{monName}</h2>
-                        <div className="flex gap-1 mt-1.5">
-                            <p className='mb-0.5 mr-2 leading-none max-h-max text-base font-bold text-gray-700/80 dark:text-gray-300/80'>
-                                #{('000' + id).slice(-3)}
-                            </p>
-                            {type1 && <img className='w-5' src={`https://db.pokemongohub.net/_next/image?url=%2Fimages%2Ficons%2Fico_${typings.indexOf(type1)}_${type1}.webp&w=32&q=75`} alt={type1} />}
-                            {type2 && <img className='w-5' src={`https://db.pokemongohub.net/_next/image?url=%2Fimages%2Ficons%2Fico_${typings.indexOf(type2)}_${type2}.webp&w=32&q=75`} alt={type2} />}
-                        </div>
+                        <MonIdType id={id} type1={type1} type2={type2} className='flex gap-1 mt-1.5' idClassName="text-base !text-gray-700/80 dark:!text-gray-300/80 mt-0.5 mr-2" typeClassName="w-5" />
                     </div>
                 </div>
 

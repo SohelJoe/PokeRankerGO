@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect, useContext } from 'react'
+import { useRef, useState, useEffect, useContext } from 'react'
 
 import { FaPlus } from "react-icons/fa6";
 import { IoIosArrowBack } from "react-icons/io";
@@ -12,16 +12,13 @@ import { MonIVContext } from '../Contexts/MonIVContext';
 // Components
 import ImageBox from '../Components/ImageBox';
 import SearchBar from '../Components/SearchBar';
+import MonIdType from '../Components/MonIdType';
 import MonSaveModal from '../Components/MonSaveModal';
 import MonRankingBox from '../Components/MonRankingBox';
+import MonIvSelector from '../Components/MonIvSelector';
 
-
-const typings = ['normal', 'fighting', 'flying', 'poison', 'ground', 'rock', 'bug', 'ghost', 'steel', 'fire', 'water', 'grass', 'electric', 'psychic', 'ice', 'dragon', 'dark', 'fairy']
 
 const Ranking = () => {
-    const hpBar = useRef()
-    const attackBar = useRef()
-    const defenseBar = useRef()
     const rankingWindow = useRef()
 
     const [tableRows, setTableRows] = useState(20);
@@ -30,24 +27,8 @@ const Ranking = () => {
     const [page, setPage] = useState({ 1500: 1, 2500: 1, ML: 1 });
     const [stats, setStats] = useState({ attack: 10, defense: 10, hp: 10, lv: 15 });
 
-    const { selectedMon, monFamily, toggleMonFromFamily, pvpRankings, isBestBuddy, calculateCP, toggleBestBuddy } = useContext(MonIVContext);
+    const { selectedMon, monFamily, toggleMonFromFamily, pvpRankings, isBestBuddy, calculateCP, toggleBestBuddy, isShadowMon, toggleShadowMon } = useContext(MonIVContext);
     const [key, monName, id, form, type1, type2, bAtt, bDef, bHp, ...family] = selectedMon || [...Array(10).keys()];
-
-    const updateHoverBG = (parentElm, pos) => {
-        parentElm.childNodes.forEach((elm, i) => {
-            if (i <= pos) {
-                elm.classList.add('bg-orange-500/30')
-            } else {
-                elm.classList.remove('bg-orange-500/30')
-            }
-        })
-    }
-
-    const removeHoverBG = (parentElm) => {
-        parentElm.childNodes.forEach((elm) => {
-            elm.classList.remove('bg-orange-500/30')
-        })
-    }
 
     const getRankingForFamily = () => {
         const familyRankByStat = {};
@@ -106,8 +87,9 @@ const Ranking = () => {
 
         {selectedMon && <div ref={rankingWindow} className='max-w-4xl relative mx-auto mt-24 xs:mt-26 sm:mt-28 scroll-m-18'>
             <div className="relative p-1 2xs:p-2 md:p-3 xl:p-4 border-2 border-sky-600 bg-sky-50 dark:border-sky-600/60 dark:bg-sky-700/10 rounded-2xl overflow-hidden">
+
                 <div className='flex items-center xs:items-stretch sm:items-center relative z-0'>
-                    <ImageBox id={id} form={form} name={monName} className="mr-2" megaClassName="w-full max-w-2/3 left-[50%] -translate-x-[50%] opacity-40" imgClassName="w-full aspect-square h-max" isBestBuddy={isBestBuddy} w="256" />
+                    <ImageBox id={id} form={form} name={monName} className="mr-2" megaClassName="w-full max-w-2/3 left-[50%] -translate-x-[50%] opacity-40" shadowClassName="w-full max-w-3/4 left-[50%] -translate-x-[50%] opacity-70 dark:opacity-60 bottom-[15%]" imgClassName="w-full aspect-square h-max" isBestBuddy={isBestBuddy} isShadow={isShadowMon} w="256" />
                     <div className='font-semibold w-full max-w-7/10'>
                         <span className='text-xs xl:text-sm leading-none text-gray-500/80 dark:text-gray-500'>Selected Pokémon</span>
                         <div className='flex relative gap-1.25 sm:gap-2 items-baseline pb-1.75 before:absolute before:block before:w-full before:h-0.5 before:bg-linear-to-r before:from-gray-800/60 dark:before:from-gray-200/60 before:from-30% before:to-transparent before:z-[1] before:left-0.25 before:bottom-0 before:rounded-l-full mb-2'>
@@ -115,55 +97,13 @@ const Ranking = () => {
                                 {monName}
                             </h2>
                         </div>
-                        <div className='hidden sm:block'>
-                            <h6>Attack</h6>
-                            <div className='flex gap-0.5 mb-1.5 text-center text-sm text-gray-600 dark:text-gray-50' ref={attackBar} onMouseLeave={() => removeHoverBG(attackBar.current)}>
-                                {[...Array(15).keys()].map((i) => <span key={i} className={`block flex-1 bg-gray-400/30 cursor-pointer ${i == 0 ? 'rounded-l-full' : i == 14 && 'rounded-r-full'} ${(i == 4 || i == 9) && 'mr-1'} hover:rounded-r-full ${i + 1 == stats.attack && 'rounded-r-full'} select-none ${stats.attack >= i + 1 && 'bg-orange-400/80! text-black'}`} onMouseEnter={() => updateHoverBG(attackBar.current, i)} onClick={() => setStats({ ...stats, attack: i + 1 })} onDoubleClick={() => i == 0 && setStats({ ...stats, attack: 0 })}>
-                                    {i + 1}
-                                </span>)}
-                            </div>
-                            <h6>Defense</h6>
-                            <div className='flex gap-0.5 mb-1.5 text-center text-sm text-gray-600 dark:text-gray-50' ref={defenseBar} onMouseLeave={() => removeHoverBG(defenseBar.current)}>
-                                {[...Array(15).keys()].map((i) => <span key={i} className={`block flex-1 bg-gray-400/30 cursor-pointer ${i == 0 ? 'rounded-l-full' : i == 14 && 'rounded-r-full'} ${(i == 4 || i == 9) && 'mr-1'} hover:rounded-r-full ${i + 1 == stats.defense && 'rounded-r-full'} select-none ${stats.defense >= i + 1 && 'bg-orange-400/80! text-black'}`} onMouseEnter={() => updateHoverBG(defenseBar.current, i)} onClick={() => setStats({ ...stats, defense: i + 1 })} onDoubleClick={() => i == 0 && setStats({ ...stats, defense: 0 })}>
-                                    {i + 1}
-                                </span>)}
-                            </div>
-                            <h6>HP</h6>
-                            <div className='flex gap-0.5 mb-1.5 text-center text-sm text-gray-600 dark:text-gray-50' ref={hpBar} onMouseLeave={() => removeHoverBG(hpBar.current)}>
-                                {[...Array(15).keys()].map((i) => <span key={i} className={`block flex-1 bg-gray-400/30 cursor-pointer ${i == 0 ? 'rounded-l-full' : i == 14 && 'rounded-r-full'} ${(i == 4 || i == 9) && 'mr-1'} hover:rounded-r-full ${i + 1 == stats.hp && 'rounded-r-full'} select-none ${stats.hp >= i + 1 && 'bg-orange-400/80! text-black'}`} onMouseEnter={() => updateHoverBG(hpBar.current, i)} onClick={() => setStats({ ...stats, hp: i + 1 })} onDoubleClick={() => i == 0 && setStats({ ...stats, hp: 0 })}>
-                                    {i + 1}
-                                </span>)}
-                            </div>
-                        </div>
-                        <div className='sm:hidden flex gap-2 2xs:gap-3 sm:gap-4 w-full mb-4'>
-                            <div className="w-full max-w-4/12">
-                                <h6 className='2xs:text-lg 2xs:mb-1 xs:mb-1.5'>Attack</h6>
-                                <select className='border-1 border-gray-700 rounded-sm px-1 py-0.5 w-9/10' value={stats.attack} onChange={({ target }) => setStats({ ...stats, attack: parseInt(target.value) })}>
-                                    {[...Array(16).keys()].map((i) => <option key={i} value={i}>{i}</option>)}
-                                </select>
-                            </div>
-                            <div className="w-full max-w-4/12">
-                                <h6 className='2xs:text-lg 2xs:mb-1 xs:mb-1.5'>Defense</h6>
-                                <select className='border-1 border-gray-700 rounded-sm px-1 py-0.5 w-9/10' value={stats.defense} onChange={({ target }) => setStats({ ...stats, defense: parseInt(target.value) })}>
-                                    {[...Array(16).keys()].map((i) => <option key={i} value={i}>{i}</option>)}
-                                </select>
-                            </div>
-                            <div className="w-full max-w-4/12">
-                                <h6 className='2xs:text-lg 2xs:mb-1 xs:mb-1.5'>Stamina</h6>
-                                <select className='border-1 border-gray-700 rounded-sm px-1 py-0.5 w-9/10' value={stats.hp} onChange={({ target }) => setStats({ ...stats, hp: parseInt(target.value) })}>
-                                    {[...Array(16).keys()].map((i) => <option key={i} value={i}>{i}</option>)}
-                                </select>
-                            </div>
-                        </div>
+
+                        <MonIvSelector stats={stats} setStats={setStats} />
                     </div>
                 </div>
 
                 <div className='relative flex items-center before:absolute'>
-                    <div className='flex w-full max-w-3/10 justify-center align-middle items-center gap-1'>
-                        <h6 className='block leading-none max-h-max mr-1 md:mr-2 text-xl md:text-2xl font-bold text-sky-600'>#{('000' + id).slice(-3)}</h6>
-                        {type1 && <img className='w-full max-w-1/7' src={`https://db.pokemongohub.net/_next/image?url=%2Fimages%2Ficons%2Fico_${typings.indexOf(type1)}_${type1}.webp&w=32&q=75`} alt={type1} />}
-                        {type2 && <img className='w-full max-w-1/7' src={`https://db.pokemongohub.net/_next/image?url=%2Fimages%2Ficons%2Fico_${typings.indexOf(type2)}_${type2}.webp&w=32&q=75`} alt={type2} />}
-                    </div>
+                    <MonIdType id={id} type1={type1} type2={type2} className='flex w-full max-w-3/10 justify-center align-middle items-center gap-1' idClassName="mr-1 md:mr-2 text-xl md:text-2xl" typeClassName="w-full max-w-1/7" />
                     <div className="text-center max-w-7/10 grow-1 text-gray-400 dark:text-gray-200/50 font-semibold gap-1">
                         <p className='min-w-fit text-xs 2xs:text-sm mb-0.5'> Species Base Stats </p>
                         <p className='max-w-fit text-sm 2xs:text-base flex gap-0.5 justify-center flex-wrap leading-[1.15] mx-auto'>
@@ -175,12 +115,16 @@ const Ranking = () => {
                 </div>
 
                 <div className="mt-3 relative before:block before:w-full before:h-0.5 before:bg-gradient-to-r before:from-transparent before:via-gray-800/50 dark:before:via-gray-200/50 before:to-transparent before:z-[1] before:left-0.25 before:bottom-0 before:rounded-l-full">
-                    <div className='flex items-center mt-3'>
-                        <div className='flex gap-2 sm:gap-4 w-full ml-1 text-lg font-semibold text-gray-500 dark:text-gray-100/60'>
+                    <div className='flex flex-col-reverse gap-2.5 2xs:flex-row 2xs:gap-0 items-center mt-3'>
+                        <div className='flex gap-2 justify-around 2xs:justify-start sm:gap-4 w-full ml-1 text-lg font-semibold text-gray-500 dark:text-gray-100/60'>
                             <h4 className='w-20 sm:w-22'>Level: <span className='text-gray-800 dark:text-gray-200'>{stats.lv}</span></h4>
                             <h4>CP: <span className='text-gray-800 dark:text-gray-200'>{selectedMonCP}</span></h4>
                         </div>
                         <div className='flex min-w-max items-center gap-1.5'>
+                            {(!form || ['Hisuian', 'Galar'].includes(form)) && <button className={`relative flex items-center gap-0.75 text-md z-0 pl-0.25 pr-3 pt-0 pb-0.25 border-2 border-sky-700 dark:border-sky-600/80 dark:hover:border-sky-600/90 rounded-full h-max cursor-pointer ${isShadowMon ? 'text-white dark:text-white bg-sky-800/80 dark:bg-sky-600/70 hover:bg-sky-800 dark:hover:bg-sky-600/80' : 'text-sky-800 dark:text-sky-500/80 dark:hover:text-sky-500/90 bg-sky-300/20 dark:bg-sky-100/10 hover:bg-sky-300/30 dark:hover:bg-sky-200/10'} text-center uppercase font-semibold hover:drop-shadow-lg`} onClick={toggleShadowMon}>
+                                {isShadowMon ? <MdOutlineCheckCircle className='h-6 w-6 mt-0.25' /> : <MdOutlineCancel className='h-6 w-6 mt-0.25' />}
+                                Shadow
+                            </button>}
                             <button className={`relative flex items-center gap-0.75 text-md z-0 pl-0.25 pr-3 pt-0 pb-0.25 border-2 border-sky-700 dark:border-sky-600/80 dark:hover:border-sky-600/90 rounded-full h-max cursor-pointer ${isBestBuddy ? 'text-white dark:text-white bg-sky-800/80 dark:bg-sky-600/70 hover:bg-sky-800 dark:hover:bg-sky-600/80' : 'text-sky-800 dark:text-sky-500/80 dark:hover:text-sky-500/90 bg-sky-300/20 dark:bg-sky-100/10 hover:bg-sky-300/30 dark:hover:bg-sky-200/10'} text-center uppercase font-semibold hover:drop-shadow-lg`} onClick={() => { toggleBestBuddy(); (stats.lv > 50 && setStats((e) => ({ ...e, lv: 50 }))) }}>
                                 {isBestBuddy ? <MdOutlineCheckCircle className='h-6 w-6 mt-0.25' /> : <MdOutlineCancel className='h-6 w-6 mt-0.25' />}
                                 Best Buddy
@@ -203,7 +147,7 @@ const Ranking = () => {
                     </div>
                 </div>}
 
-                <MonRankingBox family={[key, ...family]} monFamily={monFamily} rankings={familyRankings} level={stats.lv} />
+                <MonRankingBox family={[key, ...family]} monFamily={monFamily} rankings={familyRankings} level={stats.lv} isShadow={isShadowMon} />
 
                 <div className="relative mt-4 border-2 rounded-lg border-sky-600 bg-sky-50 dark:bg-sky-950/60 drop-shadow-lg">
                     <nav aria-label="Tabs" className="flex text-base xs:text-lg text-gray-600 dark:text-gray-200 font-semibold border-b-1 border-gray-300 dark:border-gray-500">
@@ -292,7 +236,7 @@ const Ranking = () => {
                     </div>
                 </div>
 
-                <MonSaveModal state={modalState} close={setModalClose} mon={[key, monName, id, form, type1, type2]} stats={stats} CP={selectedMonCP} ranking={familyRankings[key]} isBestBuddy={isBestBuddy} />
+                <MonSaveModal state={modalState} close={setModalClose} mon={[key, monName, id, form, type1, type2]} stats={stats} CP={selectedMonCP} ranking={familyRankings[key]} isBestBuddy={isBestBuddy} isShadow={isShadowMon} />
             </div>
         </div>}
     </>
