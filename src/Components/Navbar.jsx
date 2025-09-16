@@ -1,4 +1,5 @@
 import { useContext, useState } from 'react'
+import { NavLink, Link } from "react-router";
 
 
 import { RxCross2 } from "react-icons/rx";
@@ -8,13 +9,11 @@ import { PiMoonStarsDuotone } from "react-icons/pi";
 
 // Contexts
 import { ThemeContext } from '../Contexts/ThemeContext';
-import { NavigationContext } from '../Contexts/NavigationContext';
 
 const Navbar = () => {
     const [navOpen, setNavOpen] = useState(false);
 
     const { toggleTheme, darkMode } = useContext(ThemeContext);
-    const { changePage, page } = useContext(NavigationContext);
 
     const toggleNavState = () => {
         if (!navOpen) {
@@ -32,13 +31,17 @@ const Navbar = () => {
         <nav className="sticky top-0 left-0 right-0 z-199 backdrop-blur bg-gray-300/30 dark:bg-gray-900/60 dark:border-gray-700">
             <div className="flex items-center justify-between mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-3">
                 <div className="flex items-center">
-                    <div className="flex items-center shrink-0">
+                    <Link className="flex items-center shrink-0" to="/">
                         <img className="size-8" src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=500" alt="PokéRankerGO" />
                         <button type="link" className="text-lg font-semibold ml-4">PokéRankerGO</button>
-                    </div>
+                    </Link>
                     <div className="hidden sm:flex ml-15 items-baseline space-x-4">
-                        <button type="link" className={`rounded-md px-5 pt-1 pb-1.5 font-medium cursor-pointer focus:outline-sky-700/70 hover:bg-gray-300/50 dark:hover:bg-gray-50/10 ${page == 'ranking' && 'bg-gray-300/50 dark:bg-gray-600/10 outline-2 outline-sky-700/50 dark:outline-sky-500/50 focus:outline-2 dark:hover:bg-gray-400/10'}`} onClick={() => changePage('ranking')}>Ranking</button>
-                        <button type="link" className={`rounded-md px-5 pt-1 pb-1.5 font-medium cursor-pointer focus:outline-sky-700/70 hover:bg-gray-300/50 dark:hover:bg-gray-50/10 ${page == 'pokédex' && 'bg-gray-300/50 dark:bg-gray-600/10 outline-2 outline-sky-700/50 dark:outline-sky-500/50 focus:outline-2 dark:hover:bg-gray-400/10'}`} onClick={() => changePage('pokédex')}>Pokédex</button>
+                        <NavLink to="/ranking" className={({ isActive }) => isActive ? "rounded-md px-5 pt-1 pb-1.5 font-medium cursor-pointer focus:outline-sky-700/70 hover:bg-gray-300/50 bg-gray-300/50 dark:bg-gray-600/10 outline-2 outline-sky-700/50 dark:outline-sky-500/50 focus:outline-2 dark:hover:bg-gray-400/10" : "rounded-md px-5 pt-1 pb-1.5 font-medium cursor-pointer focus:outline-sky-700/70 hover:bg-gray-300/50 dark:hover:bg-gray-50/10"} >
+                            Ranking
+                        </NavLink>
+                        <NavLink to="/pokedex" className={({ isActive }) => isActive ? "rounded-md px-5 pt-1 pb-1.5 font-medium cursor-pointer focus:outline-sky-700/70 hover:bg-gray-300/50 bg-gray-300/50 dark:bg-gray-600/10 outline-2 outline-sky-700/50 dark:outline-sky-500/50 focus:outline-2 dark:hover:bg-gray-400/10" : "rounded-md px-5 pt-1 pb-1.5 font-medium cursor-pointer focus:outline-sky-700/70 hover:bg-gray-300/50 dark:hover:bg-gray-50/10"} >
+                            Pokédex
+                        </NavLink>
                     </div>
                 </div>
                 <div className="-mr-2 flex">
@@ -56,8 +59,8 @@ const Navbar = () => {
 
             {navOpen && <div className={`overflow-hidden sm:hidden ${navOpen == 'opening' ? 'animate-Down' : 'animate-Up'}`} id="mobile-menu">
                 <div className="flex flex-col pb-2 pt-0.5">
-                    <button type="link" className="text-left px-4 py-2 font-medium w-full cursor-pointer hover:bg-gray-300/20 focus:ring-2 focus:ring-white focus:ring-offset-1 focus:ring-offset-gray-800 focus:outline-hidden" onClick={() => changePage('ranking')}>Ranking</button>
-                    <button type="link" className="text-left px-4 py-2 font-medium w-full cursor-pointer hover:bg-gray-300/20 focus:ring-2 focus:ring-white focus:ring-offset-1 focus:ring-offset-gray-800 focus:outline-hidden" onClick={() => changePage('pokédex')}>Pokédex</button>
+                    <NavLink to="/ranking" className="text-left px-4 py-2 font-medium w-full cursor-pointer hover:bg-gray-300/20 focus:ring-2 focus:ring-white focus:ring-offset-1 focus:ring-offset-gray-800 focus:outline-hidden" >Ranking</NavLink>
+                    <NavLink to="/ranking" className="text-left px-4 py-2 font-medium w-full cursor-pointer hover:bg-gray-300/20 focus:ring-2 focus:ring-white focus:ring-offset-1 focus:ring-offset-gray-800 focus:outline-hidden">Pokédex</NavLink>
                 </div>
             </div>}
         </nav>

@@ -34,9 +34,6 @@ const MonDexProvider = ({ children }) => {
 
         const monDexList = pokeDex[key] || [];
 
-        console.log({ ...stats, isShadow, isBestBuddy, rank });
-
-
         if (index >= 0 && index < monDexList.length) {
             monDexList[index] = { ...stats, isShadow, isBestBuddy, rank };
         } else {

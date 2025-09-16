@@ -1,20 +1,15 @@
-import { useContext } from 'react'
+import { useLocation, Link } from 'react-router'
 
 import { AiTwotoneHome } from "react-icons/ai";
 import { IoIosArrowForward } from "react-icons/io";
 
-// Contexts
-import { MonIVContext } from '../Contexts/MonIVContext';
-import { NavigationContext } from '../Contexts/NavigationContext';
-// Pages
-import Ranking from '../Pages/Ranking';
-import Pokemon from '../Pages/Pokemon';
-import Error404 from '../Pages/Error404';
+// Functions
+import { getMonName } from '../utils/monFunctions';
 
-const PageNavigator = () => {
-    const { page } = useContext(NavigationContext);
-    const { selectedMon } = useContext(MonIVContext);
+const BodyWrapper = ({ children }) => {
+    const location = useLocation();
 
+    const pathnames = location.pathname.split('/').filter((x) => x);
 
     return (
         <main className="relative mx-auto max-w-7xl px-4 pt-3 pb-6 sm:px-6 lg:px-8">
@@ -29,23 +24,23 @@ const PageNavigator = () => {
                     <li>
                         <div className="flex items-center space-x-4">
                             <IoIosArrowForward className="block size-4" />
-                            <span className="leading-none pb-1 font-semibold capitalize">{page}</span>
+                            <Link to={pathnames[0]} className="leading-none pb-1 font-semibold capitalize hover:text-gray-800 dark:hover:text-gray-300">
+                                {pathnames[0]}
+                            </Link>
                         </div>
                     </li>
-                    {page == 'ranking' && selectedMon && <li>
+                    {pathnames[1] && <li>
                         <div className="flex items-center space-x-4">
                             <IoIosArrowForward className="block size-4" />
-                            <span className="leading-none pb-1 font-semibold capitalize">{selectedMon[1]}</span>
+                            <span className="leading-none pb-1 font-semibold capitalize">{getMonName(pathnames[1])}</span>
                         </div>
                     </li>}
                 </ol>
             </nav>
 
-            {page == 'ranking' ? <Ranking /> :
-                page == 'pokédex' ? <Pokemon /> :
-                    <Error404 />}
+            {children}
         </main>
     )
 }
 
-export default PageNavigator
+export default BodyWrapper

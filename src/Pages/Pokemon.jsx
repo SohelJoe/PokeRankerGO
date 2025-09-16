@@ -1,7 +1,6 @@
 import { useState, useContext } from 'react'
 
 // Contexts
-import { MonIVContext } from '../Contexts/MonIVContext';
 import { MonDexContext } from '../Contexts/MonDexContext';
 // Components
 import ImageBox from '../Components/ImageBox';
@@ -9,6 +8,8 @@ import MonIdType from '../Components/MonIdType';
 import MonRemoveModal from '../Components/MonRemoveModal';
 import MonIvSelector from '../Components/MonIvSelector';
 import MonRankingBox from '../Components/MonRankingBox';
+// Functions
+import { calculateFamilyRanks, calculateCP } from '../utils/monFunctions';
 
 import { GrUpdate } from "react-icons/gr";
 import { FaRegHeart } from "react-icons/fa";
@@ -28,26 +29,25 @@ const Pokemon = () => {
     const [monUpdate, setMonUpdate] = useState(false);
     const [modalState, setModalState] = useState(false);
 
-    const { calculateCP, calculateFamilyRanks } = useContext(MonIVContext);
     const { updateMonData, monDex, getMonByKey } = useContext(MonDexContext);
 
     const setUpdateMon = (key, name, id, form, type1, type2, base, mon, index) => {
 
-        calculateFamilyRanks({
+        const rankings = calculateFamilyRanks({
             [key]: [name, id, form, type1, type2, base.atk, base.def, base.hp]
-        }, mon.isBestBuddy ? 50 : 51).then(rankings => {
-            setMonUpdate({
-                index, key, name, id, form, type1, type2, base,
-                stats: {
-                    attack: mon.attack,
-                    defense: mon.defense,
-                    hp: mon.hp,
-                    lv: mon.lv,
-                },
-                isShadow: mon.isShadow,
-                isBestBuddy: mon.isBestBuddy,
-                fullRanking: rankings
-            })
+        }, mon.isBestBuddy ? 50 : 51)
+
+        setMonUpdate({
+            index, key, name, id, form, type1, type2, base,
+            stats: {
+                attack: mon.attack,
+                defense: mon.defense,
+                hp: mon.hp,
+                lv: mon.lv,
+            },
+            isShadow: mon.isShadow,
+            isBestBuddy: mon.isBestBuddy,
+            fullRanking: rankings
         })
     }
 
