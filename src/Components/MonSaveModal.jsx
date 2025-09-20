@@ -6,11 +6,11 @@ import { FaRegHeart } from "react-icons/fa";
 import { RiSwordLine } from "react-icons/ri";
 import { FaShieldAlt } from "react-icons/fa";
 
-// Contexts
-import { MonDexContext } from '../Contexts/MonDexContext';
 // Components
 import ImageBox from '../Components/ImageBox';
 import MonIdType from '../Components/MonIdType';
+// Functions
+import { getAllMonFromDex, saveMonToDex } from '../utils/pokeDexFunctions.js';
 
 
 const MonSaveModal = ({ state = false, close, mon, stats, CP, ranking, isBestBuddy = false, isShadow = false }) => {
@@ -20,8 +20,6 @@ const MonSaveModal = ({ state = false, close, mon, stats, CP, ranking, isBestBud
 
     const [savedMon, setSavedMon] = useState([])
     const [errorMsg, setErrorMsg] = useState('')
-
-    const { saveMonData, getMonData } = useContext(MonDexContext)
 
 
     const onFormSubmit = (e) => {
@@ -44,7 +42,7 @@ const MonSaveModal = ({ state = false, close, mon, stats, CP, ranking, isBestBud
         }
 
 
-        saveMonData(
+        saveMonToDex(
             monKey,
             parseInt(selectData),
             { ...stats, cp: CP },
@@ -64,7 +62,7 @@ const MonSaveModal = ({ state = false, close, mon, stats, CP, ranking, isBestBud
 
     useEffect(() => {
         if (state == 'opening') {
-            setSavedMon(getMonData(monKey))
+            setSavedMon(getAllMonFromDex(monKey))
         } else if (!state) {
             setErrorMsg('');
         }

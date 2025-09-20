@@ -1,6 +1,24 @@
 import cpm from './pokeMonCpm.json';
 import pokeListDB from './pokeListDB.json';
 
+
+export const getMonByKey = (key) => {
+    const mon = pokeListDB[key];
+
+    return ({
+        name: mon[0],
+        id: mon[1],
+        form: mon[2],
+        type1: mon[3],
+        type2: mon[4],
+        base: {
+            atk: parseInt(mon[5]),
+            def: parseInt(mon[6]),
+            hp: parseInt(mon[7])
+        }
+    });
+}
+
 export const getMonData = (monKey, isBestBuddy) => {
     const monData = pokeListDB[monKey];
     const [name, id, form, type1, type2, bAtt, bDef, bHp, ...family] = monData;
@@ -25,23 +43,36 @@ export const getMonData = (monKey, isBestBuddy) => {
     }
 }
 
+export const calculateRankByLeauge = (atk, def, hp, maxLevel, ivStr) => {
+    const allRanks = {
+        1500: calculateAllRanks(atk, def, hp, 0, 0, maxLevel, false, 1500),
+        2500: calculateAllRanks(atk, def, hp, 0, 0, maxLevel, false, 2500),
+        'ML': calculateAllRanks(atk, def, hp, 0, 0, maxLevel, false, 'ML')
+    }
+
+
+    return {
+        GreatLeague: allRanks[1500][ivStr],
+        UltraLeague: allRanks[2500][ivStr],
+        MasterLeague: allRanks['ML'][ivStr]
+    }
+}
 
 export const calculateFamilyRanks = (familyObj, maxLevel) => {
-    var rankPromiseList = [];
+    var familyRankList = [];
 
     for (var mon in familyObj) {
-        const numBAtll = Number(familyObj[mon][5])
-        const numBDef = Number(familyObj[mon][6])
-        const numBHP = Number(familyObj[mon][7])
+        const atk = Number(familyObj[mon][5])
+        const def = Number(familyObj[mon][6])
+        const hp = Number(familyObj[mon][7])
 
-        rankPromiseList = rankPromiseList.concat([
-            calculateAllRanks(numBAtll, numBDef, numBHP, 0, 0, maxLevel, false, 1500),
-            calculateAllRanks(numBAtll, numBDef, numBHP, 0, 0, maxLevel, false, 2500),
-            calculateAllRanks(numBAtll, numBDef, numBHP, 0, 0, maxLevel, false, 'ML')
+        familyRankList = familyRankList.concat([
+            calculateAllRanks(atk, def, hp, 0, 0, maxLevel, false, 1500),
+            calculateAllRanks(atk, def, hp, 0, 0, maxLevel, false, 2500),
+            calculateAllRanks(atk, def, hp, 0, 0, maxLevel, false, 'ML')
         ])
     }
 
-    const familyRankList = rankPromiseList;
     const tempRankByMon = {};
 
     Object.keys(familyObj).forEach((monKey, i) => {

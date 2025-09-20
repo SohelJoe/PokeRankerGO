@@ -1,28 +1,21 @@
-import { useContext } from 'react'
-
-
+// Components
+import ImageBox from '../Components/ImageBox';
+import MonIdType from '../Components/MonIdType';
+// React Icons
 import { RxCross2 } from "react-icons/rx";
 import { FaRegHeart } from "react-icons/fa";
 import { RiSwordLine } from "react-icons/ri";
 import { FaShieldAlt } from "react-icons/fa";
 
-// Contexts
-import { MonDexContext } from '../Contexts/MonDexContext';
-// Components
-import ImageBox from '../Components/ImageBox';
-import MonIdType from '../Components/MonIdType';
 
+const MonRemoveModal = ({ state = false, close, monData, removeMonData }) => {
 
-const MonRemoveModal = ({ state = false, close, monData }) => {
-
-    const [monKey, monName, id, form, type1, type2, stats, index] = monData || ['', '', '', '', '', '', {}, ''];
+    const [, monName, id, form, type1, type2, stats,] = monData || ['', '', '', '', '', '', {}, ''];
     const { attack, defense, hp, lv, cp, rank } = stats;
 
 
-    const { removeMonData } = useContext(MonDexContext)
-
     const onRemove = () => {
-        removeMonData(monKey, index);
+        removeMonData();
         close();
     }
 

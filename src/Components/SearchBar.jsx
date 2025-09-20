@@ -1,4 +1,4 @@
-import { useState, useRef, useContext } from 'react'
+import { useState, useRef } from 'react'
 import { useNavigate } from "react-router";
 
 import pokeListDB from '../utils/pokeListDB.json';
