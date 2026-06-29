@@ -149,7 +149,7 @@ const Ranking = () => {
             {family.length > 0 && <div className="mt-4 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 mb-4">
                 <h2 className='text-lg font-semibold leading-5 mr-3 text-sky-700 dark:text-sky-600'>{monName}'s <br className='hidden sm:block' /> Family</h2>
                 <div className="flex gap-4 items-center flex-wrap">
-                    {family.map((key) => <Link to={`/ranking/${key}`} key={key} className={`relative z-0 min-w-max text-center cursor-pointer text-gray-600/80 hover:text-gray-600 dark:text-gray-200/70 dark:hover:text-gray-200 ${monFamily[key][2] && monFamily[key][2].includes('Mega') && 'sm:ml-4'}`}>
+                    {family.map((key) => <Link to={`/PokeRankerGO/ranking/${key}`} key={key} className={`relative z-0 min-w-max text-center cursor-pointer text-gray-600/80 hover:text-gray-600 dark:text-gray-200/70 dark:hover:text-gray-200 ${monFamily[key][2] && monFamily[key][2].includes('Mega') && 'sm:ml-4'}`}>
                         <ImageBox id={monFamily[key][1]} form={monFamily[key][2]} name={monFamily[key][0]} megaClassName="h-14 w-14 opacity-30 left-[50%] transform-[translateX(-50%)]" imgClassName="h-14 w-full max-w-14 mx-auto" w="64" />
                         <p className='font-semibold text-sm leading-none'>{monFamily[key][0]}</p>
                     </Link>)}
