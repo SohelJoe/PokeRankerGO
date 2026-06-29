@@ -24,15 +24,23 @@ const BodyWrapper = ({ children }) => {
                     <li>
                         <div className="flex items-center space-x-4">
                             <IoIosArrowForward className="block size-4" />
-                            <Link to={pathnames[0]} className="leading-none pb-1 font-semibold capitalize hover:text-gray-800 dark:hover:text-gray-300">
-                                {pathnames[0]}
-                            </Link>
+                            <span className="leading-none pb-1 font-semibold capitalize">
+                                PokeRankerGO
+                            </span>
                         </div>
                     </li>
-                    {pathnames[1] && <li>
+                    <li>
                         <div className="flex items-center space-x-4">
                             <IoIosArrowForward className="block size-4" />
-                            <span className="leading-none pb-1 font-semibold capitalize">{getMonName(pathnames[1])}</span>
+                            {pathnames.length > 2 ? <Link to={pathnames.slice(0, 2).join('/')} className="leading-none pb-1 font-semibold capitalize hover:text-gray-800 dark:hover:text-gray-300">
+                                {pathnames[1]}
+                            </Link> : <span className="leading-none pb-1 font-semibold capitalize">{pathnames[1]}</span>}
+                        </div>
+                    </li>
+                    {pathnames[2] && <li>
+                        <div className="flex items-center space-x-4">
+                            <IoIosArrowForward className="block size-4" />
+                            <span className="leading-none pb-1 font-semibold capitalize">{getMonName(pathnames[2])}</span>
                         </div>
                     </li>}
                 </ol>

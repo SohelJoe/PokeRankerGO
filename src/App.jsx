@@ -21,11 +21,12 @@ function App() {
             <BodyWrapper>
 
                 <Routes>
-                    <Route index element={<Navigate replace to="ranking" />} />
-                    <Route exact path="ranking" element={<><SearchBar /><Outlet /></>}>
+                    <Route index element={<Navigate replace to="/PokeRankerGO/ranking" />} />
+                    <Route path="/PokeRankerGO" element={<Navigate replace to="/PokeRankerGO/ranking" />} />
+                    <Route exact path="/PokeRankerGO/ranking" element={<><SearchBar /><Outlet /></>}>
                         <Route path=":monKey" element={<Ranking />} />
                     </Route>
-                    <Route exact path="pokedex" >
+                    <Route exact path="/PokeRankerGO/pokedex" >
                         <Route index element={<Pokedex />} />
                         <Route path=":monKey" element={<UpdateMon />} />
                     </Route>

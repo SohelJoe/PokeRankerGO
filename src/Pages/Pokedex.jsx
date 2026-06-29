@@ -14,6 +14,7 @@ import { FaRegHeart } from "react-icons/fa";
 import { RiSwordLine } from "react-icons/ri";
 import { FaShieldAlt } from "react-icons/fa";
 import { RiDeleteBin2Line } from "react-icons/ri";
+import { IoSearch } from "react-icons/io5";
 
 import GreatLeague from "../assets/Battle_League_Great.png";
 import UltraLeague from "../assets/Battle_League_Ultra.png";
@@ -53,6 +54,12 @@ const Pokedex = () => {
 
 
     return monDex ? <>
+        <div class="mb-5">
+            <div class="flex items-center rounded-full bg-white/5 pl-3 outline-1 -outline-offset-1 outline-gray-600 has-[input:focus-within]:outline-2 has-[input:focus-within]:-outline-offset-2 has-[input:focus-within]:outline-sky-400/80 dark:has-[input:focus-within]:outline-sky-700 gap-2">
+                <IoSearch class="shrink-0 text-xl text-gray-400 select-none" />
+                <input id="price" type="text" name="price" placeholder="Search" class="block min-w-0 grow py-1.5 pr-3 pl-1 text-lg text-white placeholder:text-gray-500 focus:outline-none" />
+            </div>
+        </div>
         <ul role="list" className="grid xs:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 3xl:grid-cols-5 gap-4 2xs:gap-6 md:gap-4">
             {Object.keys(monDex).map(monKey => {
                 const { name, id, form, type1, type2 } = getMonByKey(monKey);
@@ -112,7 +119,7 @@ const Pokedex = () => {
                         <button onClick={() => setModalOpen(monKey, name, id, form, type1, type2, mon, i)} className='flex gap-1 justify-center items-center w-full pt-1 pb-1.5 cursor-pointer uppercase font-semibold text-sm leading-none text-red-800 dark:text-red-600/80 bg-red-200/40 dark:bg-red-900/20 outline-1 outline-red-200 dark:outline-red-900/80'>
                             <RiDeleteBin2Line className='h-3.5 mt-0.25' /> Remove
                         </button>
-                        <Link type='button' to={`/pokedex/${monKey}?index=${i}`} className='flex gap-1 justify-center items-center w-full pt-1 pb-1.5 cursor-pointer uppercase font-semibold text-sm leading-none text-amber-600 dark:text-amber-500/90 bg-amber-200/40 dark:bg-amber-800/20 outline-1 outline-amber-300 dark:outline-amber-800/80'>
+                        <Link type='button' to={`/PokeRankerGO/pokedex/${monKey}?index=${i}`} className='flex gap-1 justify-center items-center w-full pt-1 pb-1.5 cursor-pointer uppercase font-semibold text-sm leading-none text-amber-600 dark:text-amber-500/90 bg-amber-200/40 dark:bg-amber-800/20 outline-1 outline-amber-300 dark:outline-amber-800/80'>
                             <GrUpdate className='h-2.5 mt-0.25' /> Update
                         </Link>
                     </div>

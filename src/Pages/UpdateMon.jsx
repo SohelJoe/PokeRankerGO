@@ -145,7 +145,7 @@ const UpdateMon = () => {
             <MonRankingBox family={[monKey]} monFamily={{ [monKey]: [name, id, form, type1, type2, base.atk, base.def, base.hp] }} rankings={ranking} level={monDexData.lv} isShadow={monDexData.isShadow} />
 
             <div className="flex pt-2 mt-3 gap-2 font-semibold">
-                <Link type='button' to="/pokedex" className="cursor-pointer text-center uppercase focus:outline-none px-4 py-1.75 rounded-md flex-1 bg-red-400/60 dark:bg-red-800/60 dark:hover:bg-red-800/80 hover:bg-red-400/80 hover:outline hover:outline-red-500 dark:hover:outline-red-700 text-red-800 dark:text-red-100/90 dark:hover:text-red-100">Cancel</Link>
+                <Link type='button' to="/PokeRankerGO/pokedex" className="cursor-pointer text-center uppercase focus:outline-none px-4 py-1.75 rounded-md flex-1 bg-red-400/60 dark:bg-red-800/60 dark:hover:bg-red-800/80 hover:bg-red-400/80 hover:outline hover:outline-red-500 dark:hover:outline-red-700 text-red-800 dark:text-red-100/90 dark:hover:text-red-100">Cancel</Link>
                 <button type='submit' className="cursor-pointer uppercase focus:outline-none px-4 py-1.75 rounded-md flex-1 bg-green-600/75 hover:bg-green-600/90 hover:outline hover:outline-green-700 dark:hover:outline-green-500/90 text-white" onClick={handleMonUpdate}>Update</button>
             </div>
         </div>
