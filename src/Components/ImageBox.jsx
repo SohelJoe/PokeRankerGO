@@ -11,7 +11,7 @@ const ImageBox = ({ id, form = null, name, className, megaClassName, shadowClass
     const getFormToImage = () => {
         if (form == 'Ultra') {
             return '_f4';
-        } else if (form == 'Fusion X') {
+        } else if (['Fusion X', 'origin', 'Alola'].includes(form)) {
             return '_f2';
         } else if (form == 'Fusion Y') {
             return '_f3';

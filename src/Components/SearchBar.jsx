@@ -25,7 +25,7 @@ const SearchBar = ({ className = '' }) => {
 
     const onItemClick = (monKey) => {
         setSearchValue('');
-        navigate(`/PokeRankerGO/ranking/${monKey}`);
+        navigate(`/PokeRankerGO/ranking/${monKey}?attack=10&defense=10&hp=10&lv=15`);
     }
 
     return (<div className={`${className} absolute left-0 right-0 z-99 w-full block px-4 sm:px-6 lg:px-8`}>

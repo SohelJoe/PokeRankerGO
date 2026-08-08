@@ -28,7 +28,7 @@ function App() {
                     </Route>
                     <Route exact path="/PokeRankerGO/pokedex" >
                         <Route index element={<Pokedex />} />
-                        <Route path=":monKey" element={<UpdateMon />} />
+                        <Route path="update" element={<UpdateMon />} />
                     </Route>
                     <Route path="*" element={<Error404 />} />
                 </Routes>

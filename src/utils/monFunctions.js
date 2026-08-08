@@ -15,9 +15,51 @@ export const getMonByKey = (key) => {
             atk: parseInt(mon[5]),
             def: parseInt(mon[6]),
             hp: parseInt(mon[7])
-        }
+        },
+        family: mon.slice(8)
     });
 }
+
+export const getFamilyByKey = (key) => {
+    const mon = pokeListDB[key];
+
+    const tempMonFamily = {
+        [key]: {
+            name: mon[0],
+            id: mon[1],
+            form: mon[2],
+            type1: mon[3],
+            type2: mon[4],
+            base: {
+                atk: parseInt(mon[5]),
+                def: parseInt(mon[6]),
+                hp: parseInt(mon[7])
+            },
+            family: mon.slice(8)
+        }
+    }
+
+    mon.slice(8).forEach((id) => {
+        const familyMon = pokeListDB[id];
+
+        tempMonFamily[id] = {
+            name: familyMon[0],
+            id: familyMon[1],
+            form: familyMon[2],
+            type1: familyMon[3],
+            type2: familyMon[4],
+            base: {
+                atk: parseInt(familyMon[5]),
+                def: parseInt(familyMon[6]),
+                hp: parseInt(familyMon[7])
+            },
+            family: familyMon.slice(8)
+        }
+    })
+
+    return tempMonFamily;
+}
+
 
 export const getMonData = (monKey, isBestBuddy) => {
     const monData = pokeListDB[monKey];

@@ -2313,8 +2313,8 @@
         "300",
         "182",
         "214",
-        "Mega_Mewtwo_X_SPECULATIVE",
-        "Mega_Mewtwo_Y_SPECULATIVE"
+        "Mega_Mewtwo_X",
+        "Mega_Mewtwo_Y"
     ],
     "Mewtwo_Armored": [
         "Mewtwo Armored",
@@ -2326,29 +2326,29 @@
         "278",
         "214"
     ],
-    "Mega_Mewtwo_X_SPECULATIVE": [
-        "Mega Mewtwo X SPECULATIVE",
+    "Mega_Mewtwo_X": [
+        "Mega Mewtwo X",
         "150",
         "Mega X",
         "psychic",
         "fighting",
-        "375",
-        "202",
-        "214",
+        "399",
+        "215",
+        "228",
         "Mewtwo",
-        "Mega_Mewtwo_Y_SPECULATIVE"
+        "Mega_Mewtwo_Y"
     ],
-    "Mega_Mewtwo_Y_SPECULATIVE": [
-        "Mega Mewtwo Y SPECULATIVE",
+    "Mega_Mewtwo_Y": [
+        "Mega Mewtwo Y",
         "150",
         "Mega Y",
         "psychic",
         null,
-        "388",
-        "209",
-        "214",
+        "413",
+        "223",
+        "228",
         "Mewtwo",
-        "Mega_Mewtwo_X_SPECULATIVE"
+        "Mega_Mewtwo_X"
     ],
     "Mew": [
         "Mew",
@@ -6809,7 +6809,7 @@
     "Dialga_Origin": [
         "Dialga Origin",
         "483",
-        null,
+        "origin",
         "steel",
         "dragon",
         "270",
@@ -6829,7 +6829,7 @@
     "Palkia_Origin": [
         "Palkia Origin",
         "484",
-        null,
+        "origin",
         "water",
         "dragon",
         "286",
@@ -6869,7 +6869,7 @@
     "Giratina_Origin": [
         "Giratina Origin",
         "487",
-        null,
+        "origin",
         "ghost",
         "dragon",
         "225",

@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react'
-import { Link, useParams, useSearchParams, useNavigate } from "react-router";
+import { useState, useEffect, useMemo } from 'react'
+import { Link, useSearchParams, useNavigate } from "react-router";
 
 // Components
 import ImageBox from '../Components/ImageBox';
@@ -7,25 +7,24 @@ import MonIdType from '../Components/MonIdType';
 import MonIvSelector from '../Components/MonIvSelector';
 import MonRankingBox from '../Components/MonRankingBox';
 // Functions
-import { getMonFromDex, updateMonData } from '../utils/pokeDexFunctions.js';
-import { calculateCP, calculateRankByLeauge, getMonByKey } from '../utils/monFunctions';
+import { getMonFromDex, updateMonData, removeMonFromDex } from '../utils/pokeDexFunctions.js';
+import { calculateCP, calculateRankByLeauge, getFamilyByKey } from '../utils/monFunctions';
 // React Icons
 import { MdOutlineCancel } from "react-icons/md";
 import { MdOutlineCheckCircle } from "react-icons/md";
 
 
 const UpdateMon = () => {
-    const { monKey } = useParams();
     const navigate = useNavigate();
     const [searchParams, setSearchParams] = useSearchParams();
+    const monKey = searchParams.get('mon');
     const monDexIndex = parseInt(searchParams.get('index'));
 
     const [monDexData, setMonDexData] = useState(null);
+    const [selectedMonKey, setSelectedMonKey] = useState(monKey);
 
-
-    const { name, id, form, type1, type2, base } = getMonByKey(monKey);
-    // console.log([monKey, name, id, form, type1, type2, base]);
-
+    const family = useMemo(() => getFamilyByKey(monKey), [monKey]);
+    const { name, id, form, type1, type2, base } = family[selectedMonKey];
 
     const updateStats = (newStats) => {
         setMonDexData(e => ({
@@ -59,13 +58,13 @@ const UpdateMon = () => {
     }
 
     const selectedMonCP = monDexData && calculateCP(base.atk + monDexData.attack, base.def + monDexData.defense, base.hp + monDexData.hp, (monDexData.lv - 1) * 2);
-    const ranking = monDexData && { [monKey]: calculateRankByLeauge(base.atk, base.def, base.hp, monDexData.isBestBuddy ? 51 : 50, (monDexData.attack + '.' + monDexData.defense + '.' + monDexData.hp)) }
+    const ranking = monDexData && { [selectedMonKey]: calculateRankByLeauge(base.atk, base.def, base.hp, monDexData.isBestBuddy ? 51 : 50, (monDexData.attack + '.' + monDexData.defense + '.' + monDexData.hp)) }
 
     const handleMonUpdate = () => {
-        // (key, index, stats, isShadow, isBestBuddy, rank)
+
         updateMonData(
-            monKey,
-            monDexIndex,
+            selectedMonKey,
+            monKey === selectedMonKey ? monDexIndex : -1,
             {
                 attack: monDexData.attack,
                 defense: monDexData.defense,
@@ -76,18 +75,22 @@ const UpdateMon = () => {
             monDexData.isShadow,
             monDexData.isBestBuddy,
             {
-                GreatLeague: ranking[monKey].GreatLeague.rank,
-                UltraLeague: ranking[monKey].UltraLeague.rank,
-                MasterLeague: ranking[monKey].MasterLeague.rank
+                GreatLeague: ranking[selectedMonKey].GreatLeague.rank,
+                UltraLeague: ranking[selectedMonKey].UltraLeague.rank,
+                MasterLeague: ranking[selectedMonKey].MasterLeague.rank
             }
         );
 
-        navigate("/pokedex", { replace: true })
+        if (monKey !== selectedMonKey) {
+            removeMonFromDex(monKey, monDexIndex);
+        }
+
+        navigate("/PokeRankerGO/pokedex", { replace: true })
     }
 
     useEffect(() => {
         // console.log('Effect ran. ' + 'Mon Key: ' + monKey + ', Dex Index: ' + monDexIndex);
-        const { attack, defense, hp, isBestBuddy, isShadow, lv, rank } = getMonFromDex(monKey, parseInt(searchParams.get('index')));
+        const { attack, defense, hp, isBestBuddy, isShadow, lv, rank } = getMonFromDex(monKey, monDexIndex);
 
         setMonDexData({ attack, defense, hp, isBestBuddy, isShadow, lv });
 
@@ -142,7 +145,17 @@ const UpdateMon = () => {
                 <input className='w-full mt-3 sm:mt-2 lg:mt-1' type="range" min="1" max={monDexData.isBestBuddy ? 51 : 50} step={0.5} value={monDexData.lv} name="level" onChange={updateLevelBar} />
             </div>
 
-            <MonRankingBox family={[monKey]} monFamily={{ [monKey]: [name, id, form, type1, type2, base.atk, base.def, base.hp] }} rankings={ranking} level={monDexData.lv} isShadow={monDexData.isShadow} />
+            {Object.keys(family).length > 1 && <div className="mt-4 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 mb-4">
+                <h2 className='text-lg font-semibold leading-5 mr-3 text-sky-700 dark:text-sky-600'>{name}'s <br className='hidden sm:block' /> Family</h2>
+                <div className="flex gap-4 items-center flex-wrap">
+                    {Object.keys(family).filter(key => key !== selectedMonKey).map((key) => <div key={key} onClick={() => key !== selectedMonKey && setSelectedMonKey(key)} className={`relative z-0 min-w-max text-center cursor-pointer text-gray-600/80 hover:text-gray-600 dark:text-gray-200/70 dark:hover:text-gray-200 ${family[key] && family[key].name.includes('Mega') && 'sm:ml-4'}`}>
+                        <ImageBox id={family[key].id} form={family[key].form} name={family[key].name} megaClassName="h-14 w-14 opacity-30 left-[50%] transform-[translateX(-50%)]" imgClassName="h-14 w-full max-w-14 mx-auto" w="64" />
+                        <p className='font-semibold text-sm leading-none'>{family[key].name}</p>
+                    </div>)}
+                </div>
+            </div>}
+
+            <MonRankingBox family={[selectedMonKey]} monFamily={{ [selectedMonKey]: [name, id, form, type1, type2, base.atk, base.def, base.hp] }} rankings={ranking} level={monDexData.lv} isShadow={monDexData.isShadow} />
 
             <div className="flex pt-2 mt-3 gap-2 font-semibold">
                 <Link type='button' to="/PokeRankerGO/pokedex" className="cursor-pointer text-center uppercase focus:outline-none px-4 py-1.75 rounded-md flex-1 bg-red-400/60 dark:bg-red-800/60 dark:hover:bg-red-800/80 hover:bg-red-400/80 hover:outline hover:outline-red-500 dark:hover:outline-red-700 text-red-800 dark:text-red-100/90 dark:hover:text-red-100">Cancel</Link>

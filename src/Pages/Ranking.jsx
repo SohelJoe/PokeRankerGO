@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect, useMemo } from 'react'
-import { useParams, Link } from "react-router";
+import { useParams, Link, useSearchParams } from "react-router";
 
 import { FaPlus } from "react-icons/fa6";
 import { IoIosArrowBack } from "react-icons/io";
@@ -21,6 +21,7 @@ import { getMonData, calculateCP } from '../utils/monFunctions';
 const Ranking = () => {
     const rankingWindow = useRef()
     const { monKey } = useParams();
+    const [searchParams, setSearchParams] = useSearchParams();
 
     const [isBestBuddy, setIsBestBuddy] = useState(false);
     const [isShadowMon, setIsShadowMon] = useState(false);
@@ -29,11 +30,17 @@ const Ranking = () => {
     const [openedTab, setOpenedTab] = useState('1500');
     const [modalState, setModalState] = useState(false);
     const [page, setPage] = useState({ 1500: 1, 2500: 1, ML: 1 });
-    const [stats, setStats] = useState({ attack: 10, defense: 10, hp: 10, lv: 15 });
+
+    const stats = Object.fromEntries(searchParams);
 
 
     const { monFamily, pvpRankings, selectedMon } = useMemo(() => getMonData(monKey, isBestBuddy), [monKey, isBestBuddy]);
     const [key, monName, id, form, type1, type2, bAtt, bDef, bHp, ...family] = selectedMon;
+
+    const handleLevelChange = (e) => {
+        const newLevel = parseFloat(e.target ? e.target.value : e);
+        setSearchParams({ ...Object.fromEntries(searchParams), lv: newLevel }, { replace: true })
+    }
 
     const toggleBestBuddy = () => {
         setIsBestBuddy((e) => !e)
@@ -74,8 +81,9 @@ const Ranking = () => {
         }, 300);
     }
 
+
     const familyRankings = selectedMon && getRankingForFamily();
-    const selectedMonCP = calculateCP(bAtt + stats.attack, bDef + stats.defense, bHp + stats.hp, (stats.lv - 1) * 2);
+    const selectedMonCP = calculateCP(bAtt + parseInt(stats.attack), bDef + parseInt(stats.defense), bHp + parseInt(stats.hp), (parseFloat(stats.lv) - 1) * 2);
 
 
     useEffect(() => {
@@ -107,7 +115,7 @@ const Ranking = () => {
                         </h2>
                     </div>
 
-                    <MonIvSelector stats={stats} setStats={setStats} />
+                    <MonIvSelector stats={stats} />
                 </div>
             </div>
 
@@ -134,7 +142,7 @@ const Ranking = () => {
                             {isShadowMon ? <MdOutlineCheckCircle className='h-6 w-6 mt-0.25' /> : <MdOutlineCancel className='h-6 w-6 mt-0.25' />}
                             Shadow
                         </button>}
-                        <button className={`relative flex items-center gap-0.75 text-md z-0 pl-0.25 pr-3 pt-0 pb-0.25 border-2 border-sky-700 dark:border-sky-600/80 dark:hover:border-sky-600/90 rounded-full h-max cursor-pointer ${isBestBuddy ? 'text-white dark:text-white bg-sky-800/80 dark:bg-sky-600/70 hover:bg-sky-800 dark:hover:bg-sky-600/80' : 'text-sky-800 dark:text-sky-500/80 dark:hover:text-sky-500/90 bg-sky-300/20 dark:bg-sky-100/10 hover:bg-sky-300/30 dark:hover:bg-sky-200/10'} text-center uppercase font-semibold hover:drop-shadow-lg`} onClick={() => { toggleBestBuddy(); (stats.lv > 50 && setStats((e) => ({ ...e, lv: 50 }))) }}>
+                        <button className={`relative flex items-center gap-0.75 text-md z-0 pl-0.25 pr-3 pt-0 pb-0.25 border-2 border-sky-700 dark:border-sky-600/80 dark:hover:border-sky-600/90 rounded-full h-max cursor-pointer ${isBestBuddy ? 'text-white dark:text-white bg-sky-800/80 dark:bg-sky-600/70 hover:bg-sky-800 dark:hover:bg-sky-600/80' : 'text-sky-800 dark:text-sky-500/80 dark:hover:text-sky-500/90 bg-sky-300/20 dark:bg-sky-100/10 hover:bg-sky-300/30 dark:hover:bg-sky-200/10'} text-center uppercase font-semibold hover:drop-shadow-lg`} onClick={() => { toggleBestBuddy(); (stats.lv > 50 && handleLevelChange(50)) }}>
                             {isBestBuddy ? <MdOutlineCheckCircle className='h-6 w-6 mt-0.25' /> : <MdOutlineCancel className='h-6 w-6 mt-0.25' />}
                             Best Buddy
                         </button>
@@ -143,13 +151,13 @@ const Ranking = () => {
                         </button>
                     </div>
                 </div>
-                <input className='w-full mt-3 sm:mt-2 lg:mt-1' type="range" min="1" max={isBestBuddy ? 51 : 50} step={0.5} value={stats.lv} name="level" onChange={({ target }) => setStats((e) => ({ ...e, lv: target.value }))} />
+                <input className='w-full mt-3 sm:mt-2 lg:mt-1' type="range" min="1" max={isBestBuddy ? 51 : 50} step={0.5} value={stats.lv} name="level" onChange={handleLevelChange} />
             </div>
 
             {family.length > 0 && <div className="mt-4 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 mb-4">
                 <h2 className='text-lg font-semibold leading-5 mr-3 text-sky-700 dark:text-sky-600'>{monName}'s <br className='hidden sm:block' /> Family</h2>
                 <div className="flex gap-4 items-center flex-wrap">
-                    {family.map((key) => <Link to={`/PokeRankerGO/ranking/${key}`} key={key} className={`relative z-0 min-w-max text-center cursor-pointer text-gray-600/80 hover:text-gray-600 dark:text-gray-200/70 dark:hover:text-gray-200 ${monFamily[key][2] && monFamily[key][2].includes('Mega') && 'sm:ml-4'}`}>
+                    {family.map((key) => <Link to={`/PokeRankerGO/ranking/${key}?${searchParams.toString()}`} key={key} className={`relative z-0 min-w-max text-center cursor-pointer text-gray-600/80 hover:text-gray-600 dark:text-gray-200/70 dark:hover:text-gray-200 ${monFamily[key][2] && monFamily[key][2].includes('Mega') && 'sm:ml-4'}`}>
                         <ImageBox id={monFamily[key][1]} form={monFamily[key][2]} name={monFamily[key][0]} megaClassName="h-14 w-14 opacity-30 left-[50%] transform-[translateX(-50%)]" imgClassName="h-14 w-full max-w-14 mx-auto" w="64" />
                         <p className='font-semibold text-sm leading-none'>{monFamily[key][0]}</p>
                     </Link>)}

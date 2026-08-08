@@ -40,7 +40,7 @@ const BodyWrapper = ({ children }) => {
                     {pathnames[2] && <li>
                         <div className="flex items-center space-x-4">
                             <IoIosArrowForward className="block size-4" />
-                            <span className="leading-none pb-1 font-semibold capitalize">{getMonName(pathnames[2])}</span>
+                            <span className="leading-none pb-1 font-semibold capitalize">{pathnames[2] == 'update' ? 'Update Pokémon' : getMonName(pathnames[2])}</span>
                         </div>
                     </li>}
                 </ol>
