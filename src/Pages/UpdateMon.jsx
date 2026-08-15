@@ -17,13 +17,13 @@ import { MdOutlineCheckCircle } from "react-icons/md";
 const UpdateMon = () => {
     const navigate = useNavigate();
     const [searchParams, setSearchParams] = useSearchParams();
-    const monKey = searchParams.get('mon');
-    const monDexIndex = parseInt(searchParams.get('index'));
+    const stats = Object.fromEntries(searchParams);
+    const monDexIndex = parseInt(stats.index);
 
     const [monDexData, setMonDexData] = useState(null);
-    const [selectedMonKey, setSelectedMonKey] = useState(monKey);
+    const [selectedMonKey, setSelectedMonKey] = useState(stats.mon);
 
-    const family = useMemo(() => getFamilyByKey(monKey), [monKey]);
+    const family = useMemo(() => getFamilyByKey(stats.mon), [stats.mon]);
     const { name, id, form, type1, type2, base } = family[selectedMonKey];
 
     const updateStats = (newStats) => {
@@ -57,19 +57,19 @@ const UpdateMon = () => {
         }))
     }
 
-    const selectedMonCP = monDexData && calculateCP(base.atk + monDexData.attack, base.def + monDexData.defense, base.hp + monDexData.hp, (monDexData.lv - 1) * 2);
-    const ranking = monDexData && { [selectedMonKey]: calculateRankByLeauge(base.atk, base.def, base.hp, monDexData.isBestBuddy ? 51 : 50, (monDexData.attack + '.' + monDexData.defense + '.' + monDexData.hp)) }
+    const selectedMonCP = monDexData && calculateCP(base.atk + parseInt(stats.attack), base.def + parseInt(stats.defense), base.hp + parseInt(stats.hp), (parseFloat(stats.lv) - 1) * 2);
+    const ranking = monDexData && { [selectedMonKey]: calculateRankByLeauge(base.atk, base.def, base.hp, monDexData.isBestBuddy ? 51 : 50, (parseInt(stats.attack) + '.' + parseInt(stats.defense) + '.' + parseInt(stats.hp))) }
 
     const handleMonUpdate = () => {
 
         updateMonData(
             selectedMonKey,
-            monKey === selectedMonKey ? monDexIndex : -1,
+            stats.mon === selectedMonKey ? monDexIndex : -1,
             {
-                attack: monDexData.attack,
-                defense: monDexData.defense,
-                hp: monDexData.hp,
-                lv: monDexData.lv,
+                attack: parseInt(stats.attack),
+                defense: parseInt(stats.defense),
+                hp: parseInt(stats.hp),
+                lv: parseFloat(stats.lv),
                 cp: selectedMonCP
             },
             monDexData.isShadow,
@@ -81,20 +81,20 @@ const UpdateMon = () => {
             }
         );
 
-        if (monKey !== selectedMonKey) {
-            removeMonFromDex(monKey, monDexIndex);
+        if (stats.mon !== selectedMonKey) {
+            removeMonFromDex(stats.mon, monDexIndex);
         }
 
         navigate("/PokeRankerGO/pokedex", { replace: true })
     }
 
     useEffect(() => {
-        // console.log('Effect ran. ' + 'Mon Key: ' + monKey + ', Dex Index: ' + monDexIndex);
-        const { attack, defense, hp, isBestBuddy, isShadow, lv, rank } = getMonFromDex(monKey, monDexIndex);
+        // console.log('Effect ran. ' + 'Mon Key: ' + stats.mon + ', Dex Index: ' + monDexIndex);
+        const { isBestBuddy, isShadow } = getMonFromDex(stats.mon, monDexIndex);
 
-        setMonDexData({ attack, defense, hp, isBestBuddy, isShadow, lv });
+        setMonDexData({ isBestBuddy, isShadow });
 
-    }, [monKey, monDexIndex])
+    }, [stats.mon, monDexIndex])
 
 
     return monDexData && <div className='max-w-4xl relative mx-auto'>
@@ -109,7 +109,7 @@ const UpdateMon = () => {
                         </h2>
                     </div>
 
-                    <MonIvSelector stats={{ attack: monDexData.attack, defense: monDexData.defense, hp: monDexData.hp }} setStats={updateStats} />
+                    <MonIvSelector />
                 </div>
             </div>
 
@@ -128,7 +128,7 @@ const UpdateMon = () => {
             <div className="mt-3 relative before:block before:w-full before:h-0.5 before:bg-gradient-to-r before:from-transparent before:via-gray-800/50 dark:before:via-gray-200/50 before:to-transparent before:z-[1] before:left-0.25 before:bottom-0 before:rounded-l-full">
                 <div className='flex flex-col-reverse gap-2.5 2xs:flex-row 2xs:gap-0 items-center mt-3'>
                     <div className='flex gap-2 justify-around 2xs:justify-start sm:gap-4 w-full ml-1 text-lg font-semibold text-gray-500 dark:text-gray-100/60'>
-                        <h4 className='w-20 sm:w-22'>Level: <span className='text-gray-800 dark:text-gray-200'>{monDexData.lv}</span></h4>
+                        <h4 className='w-20 sm:w-22'>Level: <span className='text-gray-800 dark:text-gray-200'>{stats.lv}</span></h4>
                         <h4>CP: <span className='text-gray-800 dark:text-gray-200'>{selectedMonCP}</span></h4>
                     </div>
                     <div className='flex min-w-max items-center gap-1.5'>
@@ -142,7 +142,7 @@ const UpdateMon = () => {
                         </button>
                     </div>
                 </div>
-                <input className='w-full mt-3 sm:mt-2 lg:mt-1' type="range" min="1" max={monDexData.isBestBuddy ? 51 : 50} step={0.5} value={monDexData.lv} name="level" onChange={updateLevelBar} />
+                <input className='w-full mt-3 sm:mt-2 lg:mt-1' type="range" min="1" max={monDexData.isBestBuddy ? 51 : 50} step={0.5} value={stats.lv} name="level" onChange={updateLevelBar} />
             </div>
 
             {Object.keys(family).length > 1 && <div className="mt-4 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 mb-4">

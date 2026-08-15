@@ -59,20 +59,20 @@ const MonIvSelector = () => {
         <div className='sm:hidden flex gap-2 2xs:gap-3 sm:gap-4 w-full mb-4'>
             <div className="w-full max-w-4/12">
                 <h6 className='2xs:text-lg 2xs:mb-1 xs:mb-1.5'>Attack</h6>
-                <select className='border-1 border-gray-700 rounded-sm px-1 py-0.5 w-9/10' value={stats.attack} onChange={({ target }) => onIvClick('attack', parseInt(target.value))}>
-                    {[...Array(16).keys()].map((i) => <option key={i} value={i}>{i}</option>)}
+                <select className='border-1 border-gray-700 rounded-sm px-1 py-0.5 w-9/10' value={stats.attack - 1} onChange={({ target }) => onIvClick('attack', parseInt(target.value))}>
+                    {[...Array(16).keys()].map((i) => <option key={i} value={i - 1}>{i}</option>)}
                 </select>
             </div>
             <div className="w-full max-w-4/12">
                 <h6 className='2xs:text-lg 2xs:mb-1 xs:mb-1.5'>Defense</h6>
-                <select className='border-1 border-gray-700 rounded-sm px-1 py-0.5 w-9/10' value={stats.defense} onChange={({ target }) => onIvClick('defense', parseInt(target.value))}>
-                    {[...Array(16).keys()].map((i) => <option key={i} value={i}>{i}</option>)}
+                <select className='border-1 border-gray-700 rounded-sm px-1 py-0.5 w-9/10' value={stats.defense - 1} onChange={({ target }) => onIvClick('defense', parseInt(target.value))}>
+                    {[...Array(16).keys()].map((i) => <option key={i} value={i - 1}>{i}</option>)}
                 </select>
             </div>
             <div className="w-full max-w-4/12">
                 <h6 className='2xs:text-lg 2xs:mb-1 xs:mb-1.5'>Stamina</h6>
-                <select className='border-1 border-gray-700 rounded-sm px-1 py-0.5 w-9/10' value={stats.hp} onChange={({ target }) => onIvClick('hp', parseInt(target.value))}>
-                    {[...Array(16).keys()].map((i) => <option key={i} value={i}>{i}</option>)}
+                <select className='border-1 border-gray-700 rounded-sm px-1 py-0.5 w-9/10' value={stats.hp - 1} onChange={({ target }) => onIvClick('hp', parseInt(target.value))}>
+                    {[...Array(16).keys()].map((i) => <option key={i} value={i - 1}>{i}</option>)}
                 </select>
             </div>
         </div>
