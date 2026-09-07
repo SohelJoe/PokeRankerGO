@@ -410,8 +410,10 @@
         "112",
         "96",
         "111",
+        "Pichu",
         "Raichu",
-        "Pichu"
+        "Mega_Raichu_X",
+        "Mega_Raichu_Y"
     ],
     "Raichu": [
         "Raichu",
@@ -422,8 +424,38 @@
         "193",
         "151",
         "155",
+        "Pichu",
         "Pikachu",
-        "Pichu"
+        "Mega_Raichu_X",
+        "Mega_Raichu_Y"
+    ],
+    "Mega_Raichu_X": [
+        "Mega Raichu X",
+        "26",
+        "Mega X",
+        "electric",
+        null,
+        "277",
+        "203",
+        "155",
+        "Pichu",
+        "Pikachu",
+        "Raichu",
+        "Mega_Raichu_Y"
+    ],
+    "Mega_Raichu_Y": [
+        "Mega Raichu Y",
+        "26",
+        "Mega Y",
+        "electric",
+        null,
+        "339",
+        "157",
+        "155",
+        "Pichu",
+        "Pikachu",
+        "Raichu",
+        "Mega_Raichu_X"
     ],
     "Raichu_Alola": [
         "Raichu Alola",
@@ -560,8 +592,9 @@
         "107",
         "108",
         "172",
+        "Cleffa",
         "Clefable",
-        "Cleffa"
+        "Mega_Clefable"
     ],
     "Clefable": [
         "Clefable",
@@ -572,8 +605,21 @@
         "178",
         "162",
         "216",
+        "Cleffa",
         "Clefairy",
-        "Cleffa"
+        "Mega_Clefable"
+    ],
+    "Mega_Clefable": [
+        "Mega Clefable",
+        "36",
+        "Mega",
+        "fairy",
+        "flying",
+        "253",
+        "205",
+        "216",
+        "Cleffa",
+        "Clefairy"
     ],
     "Vulpix": [
         "Vulpix",
@@ -1076,7 +1122,8 @@
         "61",
         "137",
         "Weepinbell",
-        "Victreebel"
+        "Victreebel",
+        "Mega_Victreebel"
     ],
     "Weepinbell": [
         "Weepinbell",
@@ -1088,7 +1135,8 @@
         "92",
         "163",
         "Bellsprout",
-        "Victreebel"
+        "Victreebel",
+        "Mega_Victreebel"
     ],
     "Victreebel": [
         "Victreebel",
@@ -1098,6 +1146,19 @@
         "poison",
         "207",
         "135",
+        "190",
+        "Bellsprout",
+        "Weepinbell",
+        "Mega_Victreebel"
+    ],
+    "Mega_Victreebel": [
+        "Mega Victreebel",
+        "71",
+        "Mega",
+        "grass",
+        "poison",
+        "265",
+        "181",
         "190",
         "Bellsprout",
         "Weepinbell"
@@ -1866,7 +1927,8 @@
         "137",
         "112",
         "102",
-        "Starmie"
+        "Starmie",
+        "Mega_Starmie"
     ],
     "Starmie": [
         "Starmie",
@@ -1877,7 +1939,20 @@
         "210",
         "184",
         "155",
-        "Staryu"
+        "Staryu",
+        "Mega_Starmie"
+    ],
+    "Mega_Starmie": [
+        "Mega Starmie",
+        "121",
+        "Mega",
+        "water",
+        "psychic",
+        "276",
+        "229",
+        "155",
+        "Staryu",
+        "Starmie"
     ],
     "Mr_Mime": [
         "Mr Mime",
@@ -2278,7 +2353,8 @@
         "91",
         "121",
         "Dragonair",
-        "Dragonite"
+        "Dragonite",
+        "Mega_Dragonite"
     ],
     "Dragonair": [
         "Dragonair",
@@ -2290,7 +2366,8 @@
         "135",
         "156",
         "Dratini",
-        "Dragonite"
+        "Dragonite",
+        "Mega_Dragonite"
     ],
     "Dragonite": [
         "Dragonite",
@@ -2302,7 +2379,21 @@
         "198",
         "209",
         "Dratini",
-        "Dragonair"
+        "Dragonair",
+        "Mega_Dragonite"
+    ],
+    "Mega_Dragonite": [
+        "Mega Dragonite",
+        "149",
+        "Mega",
+        "dragon",
+        "flying",
+        "299",
+        "255",
+        "209",
+        "Dratini",
+        "Dragonair",
+        "Dragonite"
     ],
     "Mewtwo": [
         "Mewtwo",
@@ -2370,7 +2461,8 @@
         "122",
         "128",
         "Bayleef",
-        "Meganium"
+        "Meganium",
+        "Mega_Meganium"
     ],
     "Bayleef": [
         "Bayleef",
@@ -2382,7 +2474,8 @@
         "155",
         "155",
         "Chikorita",
-        "Meganium"
+        "Meganium",
+        "Mega_Meganium"
     ],
     "Meganium": [
         "Meganium",
@@ -2394,7 +2487,21 @@
         "202",
         "190",
         "Chikorita",
-        "Bayleef"
+        "Bayleef",
+        "Mega_Meganium"
+    ],
+    "Mega_Meganium": [
+        "Mega Meganium",
+        "154",
+        "Mega",
+        "grass",
+        "fairy",
+        "276",
+        "232",
+        "190",
+        "Chikorita",
+        "Bayleef",
+        "Meganium"
     ],
     "Cyndaquil": [
         "Cyndaquil",
@@ -2452,7 +2559,8 @@
         "109",
         "137",
         "Croconaw",
-        "Feraligatr"
+        "Feraligatr",
+        "Mega_Feraligatr"
     ],
     "Croconaw": [
         "Croconaw",
@@ -2464,7 +2572,8 @@
         "142",
         "163",
         "Totodile",
-        "Feraligatr"
+        "Feraligatr",
+        "Mega_Feraligatr"
     ],
     "Feraligatr": [
         "Feraligatr",
@@ -2476,7 +2585,21 @@
         "188",
         "198",
         "Totodile",
-        "Croconaw"
+        "Croconaw",
+        "Mega_Feraligatr"
+    ],
+    "Mega_Feraligatr": [
+        "Mega Feraligatr",
+        "160",
+        "Mega",
+        "water",
+        "dragon",
+        "304",
+        "227",
+        "198",
+        "Totodile",
+        "Croconaw",
+        "Feraligatr"
     ],
     "Sentret": [
         "Sentret",
@@ -3353,7 +3476,19 @@
         "flying",
         "148",
         "226",
-        "163"
+        "163",
+        "Mega_Skarmory"
+    ],
+    "Mega_Skarmory": [
+        "Mega Skarmory",
+        "227",
+        "Mega",
+        "steel",
+        "flying",
+        "273",
+        "228",
+        "163",
+        "Skarmory"
     ],
     "Houndour": [
         "Houndour",
@@ -5080,7 +5215,20 @@
         "175",
         "170",
         "181",
-        "Chingling"
+        "Chingling",
+        "Mega_Chimecho"
+    ],
+    "Mega_Chimecho": [
+        "Mega Chimecho",
+        "358",
+        "Mega",
+        "psychic",
+        null,
+        "244",
+        "228",
+        "181",
+        "Chingling",
+        "Chimecho"
     ],
     "Absol": [
         "Absol",
@@ -5091,7 +5239,8 @@
         "246",
         "120",
         "163",
-        "Mega_Absol"
+        "Mega_Absol",
+        "Mega_Absol_Z"
     ],
     "Mega_Absol": [
         "Mega Absol",
@@ -5102,7 +5251,20 @@
         "314",
         "130",
         "163",
-        "Absol"
+        "Absol",
+        "Mega_Absol_Z"
+    ],
+    "Mega_Absol_Z": [
+        "Mega Absol Z",
+        "359",
+        "Mega_Z",
+        "dark",
+        null,
+        "332",
+        "138",
+        "163",
+        "Absol",
+        "Mega_Absol"
     ],
     "Wynaut": [
         "Wynaut",
@@ -5126,6 +5288,7 @@
         "137",
         "Froslass",
         "Glalie",
+        "Mega_Froslass",
         "Mega_Glalie"
     ],
     "Glalie": [
@@ -5138,8 +5301,7 @@
         "162",
         "190",
         "Snorunt",
-        "Mega_Glalie",
-        "Froslass"
+        "Mega_Glalie"
     ],
     "Mega_Glalie": [
         "Mega Glalie",
@@ -5657,7 +5819,8 @@
         "58",
         "120",
         "Staravia",
-        "Staraptor"
+        "Staraptor",
+        "Mega_Staraptor"
     ],
     "Staravia": [
         "Staravia",
@@ -5669,7 +5832,8 @@
         "94",
         "146",
         "Starly",
-        "Staraptor"
+        "Staraptor",
+        "Mega_Staraptor"
     ],
     "Staraptor": [
         "Staraptor",
@@ -5681,7 +5845,21 @@
         "140",
         "198",
         "Starly",
-        "Staravia"
+        "Staravia",
+        "Mega_Staraptor"
+    ],
+    "Mega_Staraptor": [
+        "Mega Staraptor",
+        "398",
+        "Mega",
+        "fighting",
+        "flying",
+        "278",
+        "207",
+        "198",
+        "Starly",
+        "Staravia",
+        "Staraptor"
     ],
     "Bidoof": [
         "Bidoof",
@@ -6121,7 +6299,8 @@
         "114",
         "94",
         "128",
-        "Chimecho"
+        "Chimecho",
+        "Mega_Chimecho"
     ],
     "Stunky": [
         "Stunky",
@@ -6232,7 +6411,8 @@
         "151",
         "Gabite",
         "Garchomp",
-        "Mega_Garchomp"
+        "Mega_Garchomp",
+        "Mega_Garchomp_Z"
     ],
     "Gabite": [
         "Gabite",
@@ -6245,7 +6425,8 @@
         "169",
         "Gible",
         "Garchomp",
-        "Mega_Garchomp"
+        "Mega_Garchomp",
+        "Mega_Garchomp_Z"
     ],
     "Garchomp": [
         "Garchomp",
@@ -6258,7 +6439,8 @@
         "239",
         "Gible",
         "Gabite",
-        "Mega_Garchomp"
+        "Mega_Garchomp",
+        "Mega_Garchomp_Z"
     ],
     "Mega_Garchomp": [
         "Mega Garchomp",
@@ -6271,7 +6453,22 @@
         "239",
         "Gible",
         "Gabite",
-        "Garchomp"
+        "Garchomp",
+        "Mega_Garchomp_Z"
+    ],
+    "Mega_Garchomp_Z": [
+        "Mega Garchomp Z",
+        "445",
+        "Mega_Z",
+        "dragon",
+        null,
+        "321",
+        "196",
+        "239",
+        "Gible",
+        "Gabite",
+        "Garchomp",
+        "Mega_Garchomp"
     ],
     "Munchlax": [
         "Munchlax",
@@ -6294,7 +6491,8 @@
         "78",
         "120",
         "Lucario",
-        "Mega_Lucario"
+        "Mega_Lucario",
+        "Mega_Lucario_Z"
     ],
     "Lucario": [
         "Lucario",
@@ -6306,7 +6504,8 @@
         "144",
         "172",
         "Riolu",
-        "Mega_Lucario"
+        "Mega_Lucario",
+        "Mega_Lucario_Z"
     ],
     "Mega_Lucario": [
         "Mega Lucario",
@@ -6318,7 +6517,21 @@
         "175",
         "172",
         "Riolu",
-        "Lucario"
+        "Lucario",
+        "Mega_Lucario_Z"
+    ],
+    "Mega_Lucario_Z": [
+        "Mega Lucario Z",
+        "448",
+        "Mega_Z",
+        "fighting",
+        "steel",
+        "359",
+        "161",
+        "172",
+        "Riolu",
+        "Lucario",
+        "Mega_Lucario"
     ],
     "Hippopotas": [
         "Hippopotas",
@@ -6703,8 +6916,19 @@
         "150",
         "172",
         "Snorunt",
-        "Mega_Glalie",
-        "Glalie"
+        "Mega_Froslass"
+    ],
+    "Mega_Froslass": [
+        "Mega Froslass",
+        "478",
+        "Mega",
+        "ice",
+        "ghost",
+        "289",
+        "194",
+        "190",
+        "Snorunt",
+        "Froslass"
     ],
     "Rotom": [
         "Rotom",
@@ -6844,7 +7068,19 @@
         "steel",
         "251",
         "213",
-        "209"
+        "209",
+        "Mega_Heatran"
+    ],
+    "Mega_Heatran": [
+        "Mega Heatran",
+        "485",
+        "Mega",
+        "fire",
+        "steel",
+        "331",
+        "252",
+        "209",
+        "Heatran"
     ],
     "Regigigas": [
         "Regigigas",
@@ -6914,7 +7150,19 @@
         null,
         "285",
         "198",
-        "172"
+        "172",
+        "Mega_Darkrai"
+    ],
+    "Mega_Darkrai": [
+        "Mega Darkrai",
+        "491",
+        "Mega",
+        "dark",
+        null,
+        "325",
+        "265",
+        "172",
+        "Darkrai"
     ],
     "Shaymin_Land": [
         "Shaymin Land",
@@ -7002,7 +7250,8 @@
         "85",
         "163",
         "Pignite",
-        "Emboar"
+        "Emboar",
+        "Mega_Emboar"
     ],
     "Pignite": [
         "Pignite",
@@ -7014,7 +7263,8 @@
         "106",
         "207",
         "Tepig",
-        "Emboar"
+        "Emboar",
+        "Mega_Emboar"
     ],
     "Emboar": [
         "Emboar",
@@ -7026,7 +7276,21 @@
         "127",
         "242",
         "Tepig",
-        "Pignite"
+        "Pignite",
+        "Mega_Emboar"
+    ],
+    "Mega_Emboar": [
+        "Mega Emboar",
+        "500",
+        "Mega",
+        "fire",
+        "fighting",
+        "287",
+        "194",
+        "242",
+        "Tepig",
+        "Pignite",
+        "Emboar"
     ],
     "Oshawott": [
         "Oshawott",
@@ -7367,7 +7631,8 @@
         "154",
         "85",
         "155",
-        "Excadrill"
+        "Excadrill",
+        "Mega_Excadrill"
     ],
     "Excadrill": [
         "Excadrill",
@@ -7378,7 +7643,20 @@
         "255",
         "129",
         "242",
-        "Drilbur"
+        "Drilbur",
+        "Mega_Excadrill"
+    ],
+    "Mega_Excadrill": [
+        "Mega Excadrill",
+        "530",
+        "Mega",
+        "ground",
+        "steel",
+        "322",
+        "184",
+        "242",
+        "Drilbur",
+        "Excadrill"
     ],
     "Audino": [
         "Audino",
@@ -7540,7 +7818,8 @@
         "99",
         "102",
         "Whirlipede",
-        "Scolipede"
+        "Scolipede",
+        "Mega_Scolipede"
     ],
     "Whirlipede": [
         "Whirlipede",
@@ -7552,7 +7831,8 @@
         "173",
         "120",
         "Venipede",
-        "Scolipede"
+        "Scolipede",
+        "Mega_Scolipede"
     ],
     "Scolipede": [
         "Scolipede",
@@ -7564,7 +7844,21 @@
         "175",
         "155",
         "Venipede",
-        "Whirlipede"
+        "Whirlipede",
+        "Mega_Scolipede"
+    ],
+    "Mega_Scolipede": [
+        "Mega Scolipede",
+        "545",
+        "Mega",
+        "bug",
+        "poison",
+        "203",
+        "175",
+        "155",
+        "Venipede",
+        "Whirlipede",
+        "Scolipede"
     ],
     "Cottonee": [
         "Cottonee",
@@ -7787,7 +8081,8 @@
         "132",
         "132",
         "137",
-        "Scrafty"
+        "Scrafty",
+        "Mega_Scrafty"
     ],
     "Scrafty": [
         "Scrafty",
@@ -7798,7 +8093,20 @@
         "163",
         "222",
         "163",
-        "Scraggy"
+        "Scraggy",
+        "Mega_Scrafty"
+    ],
+    "Mega_Scrafty": [
+        "Mega Scrafty",
+        "560",
+        "Mega",
+        "dark",
+        "fighting",
+        "238",
+        "266",
+        "163",
+        "Scraggy",
+        "Scrafty"
     ],
     "Sigilyph": [
         "Sigilyph",
@@ -8303,7 +8611,8 @@
         "78",
         "111",
         "Eelektrik",
-        "Eelektross"
+        "Eelektross",
+        "Mega_Eelektross"
     ],
     "Eelektrik": [
         "Eelektrik",
@@ -8315,7 +8624,8 @@
         "130",
         "163",
         "Tynamo",
-        "Eelektross"
+        "Eelektross",
+        "Mega_Eelektross"
     ],
     "Eelektross": [
         "Eelektross",
@@ -8327,7 +8637,21 @@
         "152",
         "198",
         "Tynamo",
-        "Eelektrik"
+        "Eelektrik",
+        "Mega_Eelektross"
+    ],
+    "Mega_Eelektross": [
+        "Mega Eelektross",
+        "604",
+        "Mega",
+        "electric",
+        null,
+        "291",
+        "175",
+        "198",
+        "Tynamo",
+        "Eelektrik",
+        "Eelektross"
     ],
     "Elgyem": [
         "Elgyem",
@@ -8361,7 +8685,8 @@
         "98",
         "137",
         "Lampent",
-        "Chandelure"
+        "Chandelure",
+        "Mega_Chandelure"
     ],
     "Lampent": [
         "Lampent",
@@ -8373,7 +8698,8 @@
         "115",
         "155",
         "Litwick",
-        "Chandelure"
+        "Chandelure",
+        "Mega_Chandelure"
     ],
     "Chandelure": [
         "Chandelure",
@@ -8385,7 +8711,21 @@
         "182",
         "155",
         "Litwick",
-        "Lampent"
+        "Lampent",
+        "Mega_Chandelure"
+    ],
+    "Mega_Chandelure": [
+        "Mega Chandelure",
+        "609",
+        "Mega",
+        "ghost",
+        "fire",
+        "335",
+        "227",
+        "155",
+        "Litwick",
+        "Lampent",
+        "Chandelure"
     ],
     "Axew": [
         "Axew",
@@ -8538,7 +8878,8 @@
         "127",
         "92",
         "153",
-        "Golurk"
+        "Golurk",
+        "Mega_Golurk"
     ],
     "Golurk": [
         "Golurk",
@@ -8549,7 +8890,20 @@
         "222",
         "154",
         "205",
-        "Golett"
+        "Golett",
+        "Mega_Golurk"
+    ],
+    "Mega_Golurk": [
+        "Mega Golurk",
+        "623",
+        "Mega",
+        "ground",
+        "ghost",
+        "284",
+        "202",
+        "205",
+        "Golett",
+        "Golurk"
     ],
     "Pawniard": [
         "Pawniard",
@@ -8907,7 +9261,8 @@
         "106",
         "148",
         "Quilladin",
-        "Chesnaught"
+        "Chesnaught",
+        "Mega_Chesnaught"
     ],
     "Quilladin": [
         "Quilladin",
@@ -8919,7 +9274,8 @@
         "156",
         "156",
         "Chespin",
-        "Chesnaught"
+        "Chesnaught",
+        "Mega_Chesnaught"
     ],
     "Chesnaught": [
         "Chesnaught",
@@ -8931,7 +9287,21 @@
         "204",
         "204",
         "Chespin",
-        "Quilladin"
+        "Quilladin",
+        "Mega_Chesnaught"
+    ],
+    "Mega_Chesnaught": [
+        "Mega Chesnaught",
+        "652",
+        "Mega",
+        "grass",
+        "fighting",
+        "242",
+        "282",
+        "204",
+        "Chespin",
+        "Quilladin",
+        "Chesnaught"
     ],
     "Fennekin": [
         "Fennekin",
@@ -8943,7 +9313,8 @@
         "102",
         "120",
         "Braixen",
-        "Delphox"
+        "Delphox",
+        "Mega_Delphox"
     ],
     "Braixen": [
         "Braixen",
@@ -8955,7 +9326,8 @@
         "130",
         "153",
         "Fennekin",
-        "Delphox"
+        "Delphox",
+        "Mega_Delphox"
     ],
     "Delphox": [
         "Delphox",
@@ -8967,7 +9339,21 @@
         "189",
         "181",
         "Fennekin",
-        "Braixen"
+        "Braixen",
+        "Mega_Delphox"
+    ],
+    "Mega_Delphox": [
+        "Mega Delphox",
+        "655",
+        "Mega",
+        "fire",
+        "psychic",
+        "331",
+        "235",
+        "181",
+        "Fennekin",
+        "Braixen",
+        "Delphox"
     ],
     "Froakie": [
         "Froakie",
@@ -8979,7 +9365,8 @@
         "84",
         "121",
         "Frogadier",
-        "Greninja"
+        "Greninja",
+        "Mega_Greninja"
     ],
     "Frogadier": [
         "Frogadier",
@@ -8991,7 +9378,8 @@
         "114",
         "144",
         "Froakie",
-        "Greninja"
+        "Greninja",
+        "Mega_Greninja"
     ],
     "Greninja": [
         "Greninja",
@@ -9003,7 +9391,21 @@
         "152",
         "176",
         "Froakie",
-        "Frogadier"
+        "Frogadier",
+        "Mega_Greninja"
+    ],
+    "Mega_Greninja": [
+        "Mega Greninja",
+        "658",
+        "Mega",
+        "water",
+        "dark",
+        "299",
+        "180",
+        "176",
+        "Froakie",
+        "Frogadier",
+        "Greninja"
     ],
     "Bunnelby": [
         "Bunnelby",
@@ -9108,7 +9510,8 @@
         "139",
         "112",
         "158",
-        "Pyroar"
+        "Pyroar",
+        "Mega_Pyroar"
     ],
     "Pyroar": [
         "Pyroar",
@@ -9119,7 +9522,20 @@
         "221",
         "149",
         "200",
-        "Litleo"
+        "Litleo",
+        "Mega_Pyroar"
+    ],
+    "Mega_Pyroar": [
+        "Mega Pyroar",
+        "668",
+        "Mega",
+        "fire",
+        "normal",
+        "273",
+        "198",
+        "200",
+        "Litleo",
+        "Pyroar"
     ],
     "Flabebe": [
         "Flabebe",
@@ -9131,7 +9547,8 @@
         "120",
         "127",
         "Floette",
-        "Florges"
+        "Florges",
+        "Mega_Floette_Eternal"
     ],
     "Floette": [
         "Floette",
@@ -9143,7 +9560,20 @@
         "151",
         "144",
         "Flabebe",
-        "Florges"
+        "Florges",
+        "Mega_Floette_Eternal"
+    ],
+    "Mega_Floette_Eternal": [
+        "Mega Floette Eternal SPECULATIVE",
+        "670",
+        "Mega_Eternal",
+        "fairy",
+        null,
+        "309",
+        "264",
+        "179",
+        "Flabebe",
+        "Floette"
     ],
     "Florges": [
         "Florges",
@@ -9220,7 +9650,8 @@
         "120",
         "114",
         "158",
-        "Meowstic"
+        "Meowstic",
+        "Mega_Meowstic"
     ],
     "Meowstic": [
         "Meowstic",
@@ -9231,7 +9662,20 @@
         "166",
         "167",
         "179",
-        "Espurr"
+        "Espurr",
+        "Mega_Meowstic"
+    ],
+    "Mega_Meowstic": [
+        "Mega Meowstic",
+        "678",
+        "Mega",
+        "psychic",
+        null,
+        "288",
+        "201",
+        "179",
+        "Espurr",
+        "Meowstic"
     ],
     "Honedge": [
         "Honedge",
@@ -9338,7 +9782,8 @@
         "98",
         "95",
         "142",
-        "Malamar"
+        "Malamar",
+        "Mega_Malamar"
     ],
     "Malamar": [
         "Malamar",
@@ -9349,7 +9794,20 @@
         "177",
         "165",
         "200",
-        "Inkay"
+        "Inkay",
+        "Mega_Malamar"
+    ],
+    "Mega_Malamar": [
+        "Mega Malamar",
+        "687",
+        "Mega",
+        "dark",
+        "psychic",
+        "208",
+        "222",
+        "200",
+        "Inkay",
+        "Malamar"
     ],
     "Binacle": [
         "Binacle",
@@ -9360,7 +9818,8 @@
         "96",
         "120",
         "123",
-        "Barbaracle"
+        "Barbaracle",
+        "Mega_Barbaracle"
     ],
     "Barbaracle": [
         "Barbaracle",
@@ -9371,7 +9830,20 @@
         "194",
         "205",
         "176",
-        "Binacle"
+        "Binacle",
+        "Mega_Barbaracle"
+    ],
+    "Mega_Barbaracle": [
+        "Mega Barbaracle",
+        "689",
+        "Mega",
+        "rock",
+        "fighting",
+        "268",
+        "248",
+        "176",
+        "Binacle",
+        "Barbaracle"
     ],
     "Skrelp": [
         "Skrelp",
@@ -9382,7 +9854,8 @@
         "109",
         "109",
         "137",
-        "Dragalge"
+        "Dragalge",
+        "Mega_Dragalge"
     ],
     "Dragalge": [
         "Dragalge",
@@ -9393,7 +9866,20 @@
         "177",
         "207",
         "163",
-        "Skrelp"
+        "Skrelp",
+        "Mega_Dragalge"
+    ],
+    "Mega_Dragalge": [
+        "Mega Dragalge",
+        "691",
+        "Mega",
+        "poison",
+        "dragon",
+        "236",
+        "265",
+        "163",
+        "Skrelp",
+        "Dragalge"
     ],
     "Clauncher": [
         "Clauncher",
@@ -9509,7 +9995,19 @@
         "flying",
         "195",
         "153",
-        "186"
+        "186",
+        "Mega_Hawlucha"
+    ],
+    "Mega_Hawlucha": [
+        "Mega Hawlucha",
+        "701",
+        "Mega",
+        "fighting",
+        "flying",
+        "280",
+        "212",
+        "186",
+        "Hawlucha"
     ],
     "Dedenne": [
         "Dedenne",
@@ -9799,7 +10297,8 @@
         "173",
         "144",
         "Zygarde_Fifty_Percent",
-        "Zygarde_Complete"
+        "Zygarde_Complete",
+        "Mega_Zygarde_Complete"
     ],
     "Zygarde_Fifty_Percent": [
         "Zygarde (50% Form)",
@@ -9811,7 +10310,8 @@
         "232",
         "239",
         "Zygarde_Ten_Percent",
-        "Zygarde_Complete"
+        "Zygarde_Complete",
+        "Mega_Zygarde_Complete"
     ],
     "Zygarde_Complete": [
         "Zygarde Complete Form",
@@ -9823,7 +10323,21 @@
         "207",
         "389",
         "Zygarde_Ten_Percent",
-        "Zygarde_Fifty_Percent"
+        "Zygarde_Fifty_Percent",
+        "Mega_Zygarde_Complete"
+    ],
+    "Mega_Zygarde_Complete": [
+        "Mega Zygarde SPECULATIVE",
+        "718",
+        "Mega",
+        "dragon",
+        "ground",
+        "404",
+        "181",
+        "415",
+        "Zygarde_Ten_Percent",
+        "Zygarde_Fifty_Percent",
+        "Zygarde_Complete"
     ],
     "Diancie": [
         "Diancie",
@@ -10104,7 +10618,8 @@
         "150",
         "104",
         "132",
-        "Crabominable"
+        "Crabominable",
+        "Mega_Crabominable"
     ],
     "Crabominable": [
         "Crabominable",
@@ -10115,7 +10630,20 @@
         "231",
         "138",
         "219",
-        "Crabrawler"
+        "Crabrawler",
+        "Mega_Crabominable"
+    ],
+    "Mega_Crabominable": [
+        "Mega Crabominable",
+        "740",
+        "Mega",
+        "fighting",
+        "ice",
+        "266",
+        "213",
+        "219",
+        "Crabrawler",
+        "Crabominable"
     ],
     "Oricorio": [
         "Oricorio",
@@ -10452,7 +10980,8 @@
         "67",
         "74",
         "93",
-        "Golisopod"
+        "Golisopod",
+        "Mega_Golisopod"
     ],
     "Golisopod": [
         "Golisopod",
@@ -10463,7 +10992,20 @@
         "218",
         "226",
         "181",
-        "Wimpod"
+        "Wimpod",
+        "Mega_Golisopod"
+    ],
+    "Mega_Golisopod": [
+        "Mega Golisopod",
+        "768",
+        "Mega",
+        "bug",
+        "water",
+        "260",
+        "287",
+        "181",
+        "Wimpod",
+        "Golisopod"
     ],
     "Sandygast": [
         "Sandygast",
@@ -10597,7 +11139,19 @@
         "dragon",
         "231",
         "164",
-        "186"
+        "186",
+        "Mega_Drampa"
+    ],
+    "Mega_Drampa": [
+        "Mega Drampa",
+        "780",
+        "Mega",
+        "normal",
+        "dragon",
+        "278",
+        "210",
+        "186",
+        "Drampa"
     ],
     "Dhelmise": [
         "Dhelmise",
@@ -10867,7 +11421,19 @@
         "fairy",
         "246",
         "225",
-        "190"
+        "190",
+        "Mega_Magearna"
+    ],
+    "Mega_Magearna": [
+        "Mega Magearna",
+        "801",
+        "Mega",
+        "steel",
+        "fairy",
+        "342",
+        "239",
+        "190",
+        "Magearna"
     ],
     "Marshadow": [
         "Marshadow",
@@ -10929,7 +11495,19 @@
         null,
         "252",
         "177",
-        "204"
+        "204",
+        "Mega_Zeraora"
+    ],
+    "Mega_Zeraora": [
+        "Mega Zeraora",
+        "807",
+        "Mega",
+        "electric",
+        null,
+        "361",
+        "180",
+        "204",
+        "Zeraora"
     ],
     "Meltan": [
         "Meltan",
@@ -11654,7 +12232,19 @@
         null,
         "193",
         "170",
-        "163"
+        "163",
+        "Mega_Falinks"
+    ],
+    "Mega_Falinks": [
+        "Mega Falinks",
+        "870",
+        "Mega",
+        "fighting",
+        null,
+        "267",
+        "229",
+        "163",
+        "Falinks"
     ],
     "Pincurchin": [
         "Pincurchin",
@@ -12636,7 +13226,8 @@
         "118",
         "76",
         "137",
-        "Scovillain"
+        "Scovillain",
+        "Mega_Scovillain"
     ],
     "Scovillain": [
         "Scovillain",
@@ -12647,7 +13238,20 @@
         "216",
         "130",
         "163",
-        "Capsakid"
+        "Capsakid",
+        "Mega_Scovillain"
+    ],
+    "Mega_Scovillain": [
+        "Mega Scovillain",
+        "952",
+        "Mega",
+        "grass",
+        "fire",
+        "276",
+        "170",
+        "163",
+        "Capsakid",
+        "Scovillain"
     ],
     "Rellor": [
         "Rellor",
@@ -12848,7 +13452,8 @@
         "187",
         "104",
         "134",
-        "Glimmora"
+        "Glimmora",
+        "Mega_Glimmora"
     ],
     "Glimmora": [
         "Glimmora",
@@ -12859,7 +13464,20 @@
         "246",
         "177",
         "195",
-        "Glimmet"
+        "Glimmet",
+        "Mega_Glimmora"
+    ],
+    "Mega_Glimmora": [
+        "Mega Glimmora",
+        "970",
+        "Mega",
+        "rock",
+        "poison",
+        "300",
+        "214",
+        "195",
+        "Glimmet",
+        "Glimmora"
     ],
     "Greavard": [
         "Greavard",
@@ -12943,7 +13561,19 @@
         "water",
         "226",
         "166",
-        "169"
+        "169",
+        "Mega_Tatsugiri"
+    ],
+    "Mega_Tatsugiri": [
+        "Mega Tatsugiri",
+        "978",
+        "Mega_Curly",
+        "dragon",
+        "water",
+        "262",
+        "232",
+        "169",
+        "Tatsugiri"
     ],
     "Annihilape": [
         "Annihilape",
@@ -13132,7 +13762,8 @@
         "86",
         "163",
         "Arctibax",
-        "Baxcalibur"
+        "Baxcalibur",
+        "Mega_Baxcalibur"
     ],
     "Arctibax": [
         "Arctibax",
@@ -13144,7 +13775,8 @@
         "128",
         "207",
         "Frigibax",
-        "Baxcalibur"
+        "Baxcalibur",
+        "Mega_Baxcalibur"
     ],
     "Baxcalibur": [
         "Baxcalibur",
@@ -13156,7 +13788,21 @@
         "168",
         "229",
         "Frigibax",
-        "Arctibax"
+        "Arctibax",
+        "Mega_Baxcalibur"
+    ],
+    "Mega_Baxcalibur": [
+        "Mega Baxcalibur",
+        "998",
+        "Mega",
+        "dragon",
+        "ice",
+        "341",
+        "227",
+        "229",
+        "Frigibax",
+        "Arctibax",
+        "Baxcalibur"
     ],
     "Gimmighoul_Chest": [
         "Gimmighoul Chest",

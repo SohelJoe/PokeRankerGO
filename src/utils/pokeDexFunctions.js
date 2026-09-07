@@ -23,15 +23,15 @@ export const getMonFromDex = (key, index) => {
     return mon;
 }
 
-export const updateMonData = (key, index, stats, isShadow, isBestBuddy, rank) => {
+export const updateMonData = (key, index, stats, isShadow, isBestBuddy, isMaxMega, rank) => {
     const pokeDex = JSON.parse(localStorage.getItem(LSName)) || {};
 
     const monDexList = pokeDex[key] || [];
 
     if (index >= 0 && index < monDexList.length) {
-        monDexList[index] = { ...stats, isShadow, isBestBuddy, rank };
+        monDexList[index] = { ...stats, isShadow, isBestBuddy, isMaxMega, rank };
     } else {
-        monDexList.push({ ...stats, isShadow, isBestBuddy, rank });
+        monDexList.push({ ...stats, isShadow, isBestBuddy, isMaxMega, rank });
     }
 
     pokeDex[key] = monDexList;
@@ -51,12 +51,12 @@ export const removeMonFromDex = (key, index) => {
     return pokeDex;
 }
 
-export const saveMonToDex = (key, index, stats, isShadow, isBestBuddy, rank) => {
+export const saveMonToDex = (key, index, stats, isShadow, isBestBuddy, isMaxMega, rank) => {
     const pokeDex = JSON.parse(localStorage.getItem(LSName)) || {};
 
     const monDexList = pokeDex[key] || [];
 
-    monDexList.splice(index, index > -1 ? 1 : 0, { ...stats, isShadow, isBestBuddy, rank })
+    monDexList.splice(index, index > -1 ? 1 : 0, { ...stats, isShadow, isBestBuddy, isMaxMega, rank })
     pokeDex[key] = monDexList;
 
     localStorage.setItem(LSName, JSON.stringify(pokeDex));

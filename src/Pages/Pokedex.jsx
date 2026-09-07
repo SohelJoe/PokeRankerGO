@@ -119,7 +119,7 @@ const Pokedex = () => {
                         <button onClick={() => setModalOpen(monKey, name, id, form, type1, type2, mon, i)} className='flex gap-1 justify-center items-center w-full pt-1 pb-1.5 cursor-pointer uppercase font-semibold text-sm leading-none text-red-800 dark:text-red-600/80 bg-red-200/40 dark:bg-red-900/20 outline-1 outline-red-200 dark:outline-red-900/80'>
                             <RiDeleteBin2Line className='h-3.5 mt-0.25' /> Remove
                         </button>
-                        <Link type='button' to={`/PokeRankerGO/pokedex/update?attack=${mon.attack}&defense=${mon.defense}&hp=${mon.hp}&lv=${mon.lv}&mon=${monKey}&index=${i}`} className='flex gap-1 justify-center items-center w-full pt-1 pb-1.5 cursor-pointer uppercase font-semibold text-sm leading-none text-amber-600 dark:text-amber-500/90 bg-amber-200/40 dark:bg-amber-800/20 outline-1 outline-amber-300 dark:outline-amber-800/80'>
+                        <Link type='button' to={`/pokedex/update?attack=${mon.attack}&defense=${mon.defense}&hp=${mon.hp}&lv=${mon.lv}&mon=${monKey}&index=${i}`} className='flex gap-1 justify-center items-center w-full pt-1 pb-1.5 cursor-pointer uppercase font-semibold text-sm leading-none text-amber-600 dark:text-amber-500/90 bg-amber-200/40 dark:bg-amber-800/20 outline-1 outline-amber-300 dark:outline-amber-800/80'>
                             <GrUpdate className='h-2.5 mt-0.25' /> Update
                         </Link>
                     </div>

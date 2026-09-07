@@ -13,7 +13,7 @@ import MonIdType from '../Components/MonIdType';
 import { getAllMonFromDex, saveMonToDex } from '../utils/pokeDexFunctions.js';
 
 
-const MonSaveModal = ({ state = false, close, mon, stats, CP, ranking, isBestBuddy = false, isShadow = false }) => {
+const MonSaveModal = ({ state = false, close, mon, stats, CP, ranking, isBestBuddy = false, isShadow = false, isMaxMega = false }) => {
 
     const [monKey, monName, id, form, type1, type2] = mon;
     const { attack, defense, hp, lv } = stats;
@@ -48,6 +48,7 @@ const MonSaveModal = ({ state = false, close, mon, stats, CP, ranking, isBestBud
             { ...stats, cp: CP },
             isShadow,
             isBestBuddy,
+            form.includes('mega') ? isMaxMega : false,
             {
                 GreatLeague: ranking.GreatLeague.rank,
                 UltraLeague: ranking.UltraLeague.rank,
@@ -118,7 +119,7 @@ const MonSaveModal = ({ state = false, close, mon, stats, CP, ranking, isBestBud
 
                 <form onSubmit={onFormSubmit} className="mt-3 w-full">
                     <label className={`flex items-center gap-2 h-11.5 py-2 px-3 not-last:mb-2 select-none w-full text-lg font-semibold text-sky-700 dark:text-sky-400 rounded-lg border border-sky-400 bg-sky-200/40 dark:bg-sky-900/60 has-checked:border-green-700 dark:has-checked:border-green-500/90 has-checked:bg-green-200/60 dark:has-checked:bg-green-800/60 has-checked:text-green-700 dark:has-checked:text-green-500/90 has-checked:ring-1 has-checked:ring-green-700 dark:has-checked:ring-green-500/90 has-checked:accent-green-700 dark:has-checked:accent-green-500 ${savedMon.length > 2 ? 'opacity-50 cursor-not-allowed' : '*:cursor-pointer cursor-pointer hover:bg-sky-300/35 dark:hover:bg-sky-800/60'}`}>
-                        <input type="radio" name="monList" id="addNew" value="-1" disabled={savedMon.length > 2} />
+                        <input type="radio" name="monList" id="addNew" value="-1" disabled={savedMon.length > 2} checked={savedMon.length === 0} />
                         <span className='leading-none'>Add to Pokédex</span>
                     </label>
 

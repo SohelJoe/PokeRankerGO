@@ -36,10 +36,10 @@ const Navbar = () => {
                         <button type="link" className="text-lg font-semibold ml-4">PokéRankerGO</button>
                     </Link>
                     <div className="hidden sm:flex ml-15 items-baseline space-x-4">
-                        <NavLink to="/PokeRankerGO/ranking" className={({ isActive }) => isActive ? "rounded-md px-5 pt-1 pb-1.5 font-medium cursor-pointer focus:outline-sky-700/70 hover:bg-gray-300/50 bg-gray-300/50 dark:bg-gray-600/10 outline-2 outline-sky-700/50 dark:outline-sky-500/50 focus:outline-2 dark:hover:bg-gray-400/10" : "rounded-md px-5 pt-1 pb-1.5 font-medium cursor-pointer focus:outline-sky-700/70 hover:bg-gray-300/50 dark:hover:bg-gray-50/10"} >
+                        <NavLink to="/ranking" className={({ isActive }) => isActive ? "rounded-md px-5 pt-1 pb-1.5 font-medium cursor-pointer focus:outline-sky-700/70 hover:bg-gray-300/50 bg-gray-300/50 dark:bg-gray-600/10 outline-2 outline-sky-700/50 dark:outline-sky-500/50 focus:outline-2 dark:hover:bg-gray-400/10" : "rounded-md px-5 pt-1 pb-1.5 font-medium cursor-pointer focus:outline-sky-700/70 hover:bg-gray-300/50 dark:hover:bg-gray-50/10"} >
                             Ranking
                         </NavLink>
-                        <NavLink to="/PokeRankerGO/pokedex" className={({ isActive }) => isActive ? "rounded-md px-5 pt-1 pb-1.5 font-medium cursor-pointer focus:outline-sky-700/70 hover:bg-gray-300/50 bg-gray-300/50 dark:bg-gray-600/10 outline-2 outline-sky-700/50 dark:outline-sky-500/50 focus:outline-2 dark:hover:bg-gray-400/10" : "rounded-md px-5 pt-1 pb-1.5 font-medium cursor-pointer focus:outline-sky-700/70 hover:bg-gray-300/50 dark:hover:bg-gray-50/10"} >
+                        <NavLink to="/pokedex" className={({ isActive }) => isActive ? "rounded-md px-5 pt-1 pb-1.5 font-medium cursor-pointer focus:outline-sky-700/70 hover:bg-gray-300/50 bg-gray-300/50 dark:bg-gray-600/10 outline-2 outline-sky-700/50 dark:outline-sky-500/50 focus:outline-2 dark:hover:bg-gray-400/10" : "rounded-md px-5 pt-1 pb-1.5 font-medium cursor-pointer focus:outline-sky-700/70 hover:bg-gray-300/50 dark:hover:bg-gray-50/10"} >
                             Pokédex
                         </NavLink>
                     </div>
@@ -59,8 +59,8 @@ const Navbar = () => {
 
             {navOpen && <div className={`overflow-hidden sm:hidden ${navOpen == 'opening' ? 'animate-Down' : 'animate-Up'}`} id="mobile-menu">
                 <div className="flex flex-col pb-2 pt-0.5">
-                    <NavLink to="/PokeRankerGO/ranking" className="text-left px-4 py-2 font-medium w-full cursor-pointer hover:bg-gray-300/20 focus:ring-2 focus:ring-white focus:ring-offset-1 focus:ring-offset-gray-800 focus:outline-hidden" >Ranking</NavLink>
-                    <NavLink to="/PokeRankerGO/pokedex" className="text-left px-4 py-2 font-medium w-full cursor-pointer hover:bg-gray-300/20 focus:ring-2 focus:ring-white focus:ring-offset-1 focus:ring-offset-gray-800 focus:outline-hidden">Pokédex</NavLink>
+                    <NavLink to="/ranking" className="text-left px-4 py-2 font-medium w-full cursor-pointer hover:bg-gray-300/20 focus:ring-2 focus:ring-white focus:ring-offset-1 focus:ring-offset-gray-800 focus:outline-hidden" >Ranking</NavLink>
+                    <NavLink to="/pokedex" className="text-left px-4 py-2 font-medium w-full cursor-pointer hover:bg-gray-300/20 focus:ring-2 focus:ring-white focus:ring-offset-1 focus:ring-offset-gray-800 focus:outline-hidden">Pokédex</NavLink>
                 </div>
             </div>}
         </nav>

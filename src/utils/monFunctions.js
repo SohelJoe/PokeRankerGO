@@ -61,7 +61,7 @@ export const getFamilyByKey = (key) => {
 }
 
 
-export const getMonData = (monKey, isBestBuddy) => {
+export const getMonData = (monKey, isBestBuddy, isMaxMega) => {
     const monData = pokeListDB[monKey];
     const [name, id, form, type1, type2, bAtt, bDef, bHp, ...family] = monData;
 
@@ -76,7 +76,7 @@ export const getMonData = (monKey, isBestBuddy) => {
     const bNumDef = Number(bDef);
     const bNumHp = Number(bHp);
 
-    const familyRankingByMon = calculateFamilyRanks(tempMonFamily, isBestBuddy ? 51 : 50)
+    const familyRankingByMon = calculateFamilyRanks(tempMonFamily, 50 + (isBestBuddy ? 1 : 0) + (isMaxMega ? 2 : 0));
 
     return {
         monFamily: tempMonFamily,

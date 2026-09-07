@@ -25,6 +25,7 @@ const Ranking = () => {
 
     const [isBestBuddy, setIsBestBuddy] = useState(false);
     const [isShadowMon, setIsShadowMon] = useState(false);
+    const [isMaxMega, setIsMaxMega] = useState(false);
 
     const [tableRows, setTableRows] = useState(20);
     const [openedTab, setOpenedTab] = useState('1500');
@@ -34,7 +35,7 @@ const Ranking = () => {
     const stats = Object.fromEntries(searchParams);
 
 
-    const { monFamily, pvpRankings, selectedMon } = useMemo(() => getMonData(monKey, isBestBuddy), [monKey, isBestBuddy]);
+    const { monFamily, pvpRankings, selectedMon } = useMemo(() => getMonData(monKey, isBestBuddy, isMaxMega), [monKey, isBestBuddy, isMaxMega]);
     const [key, monName, id, form, type1, type2, bAtt, bDef, bHp, ...family] = selectedMon;
 
     const handleLevelChange = (e) => {
@@ -49,6 +50,12 @@ const Ranking = () => {
     const toggleShadowMon = () => {
         if (selectedMon && !(['Mega', 'Primal'].includes(form))) {
             setIsShadowMon((e) => !e)
+        }
+    }
+
+    const toggleMaxMega = () => {
+        if (selectedMon && form && form.includes('Mega')) {
+            setIsMaxMega((e) => !e)
         }
     }
 
@@ -91,6 +98,14 @@ const Ranking = () => {
         setPage({ 1500: 1, 2500: 1, ML: 1 });
         setTableRows(20);
 
+        if (!monKey.includes('Mega') && isMaxMega) {
+            setIsMaxMega(false);
+
+            if (stats.lv > 50) {
+                handleLevelChange(isBestBuddy ? 51 : 50);
+            }
+        }
+
         setTimeout(() => {
             rankingWindow?.current?.scrollIntoView({
                 behavior: "smooth",
@@ -109,17 +124,37 @@ const Ranking = () => {
                 <ImageBox id={id} form={form} name={monName} className="mr-2" megaClassName="w-full max-w-2/3 left-[50%] -translate-x-[50%] opacity-40" shadowClassName="w-full max-w-3/4 left-[50%] -translate-x-[50%] opacity-70 dark:opacity-60 bottom-[15%]" imgClassName="w-full aspect-square h-max" isBestBuddy={isBestBuddy} isShadow={isShadowMon} w="256" />
                 <div className='font-semibold w-full max-w-7/10'>
                     <span className='text-xs xl:text-sm leading-none text-gray-500/80 dark:text-gray-500'>Selected Pokémon</span>
-                    <div className='flex relative gap-1.25 sm:gap-2 items-baseline pb-1.75 before:absolute before:block before:w-full before:h-0.5 before:bg-linear-to-r before:from-gray-800/60 dark:before:from-gray-200/60 before:from-30% before:to-transparent before:z-[1] before:left-0.25 before:bottom-0 before:rounded-l-full mb-2'>
+                    <div className='flex relative gap-1.25 sm:gap-2 items-baseline pb-1.75 before:absolute before:block before:w-full before:h-0.5 before:bg-linear-to-r before:from-gray-800/60 dark:before:from-gray-200/60 before:from-30% before:to-transparent before:z-[1] before:left-0.25 before:bottom-0 before:rounded-l-full mb-1.5 sm:mb-2'>
                         <h2 className='text-3xl xl:text-4xl leading-none text-sky-700 dark:text-sky-600 font-bold'>
                             {monName}
                         </h2>
                     </div>
 
-                    <MonIvSelector stats={stats} />
+                    <MonIvSelector position="top" />
+
+                    <div className='relative sm:hidden items-center before:absolute'>
+                        <MonIdType id={id} type1={type1} type2={type2} className='flex items-center gap-1 mb-2 w-1/2' idClassName="mr-1 md:mr-2 text-xl md:text-2xl" typeClassName="w-full max-w-1/5" />
+                        <div className="text-center text-gray-400 dark:text-gray-200/50 font-semibold gap-1">
+                            <p className='min-w-fit text-xs 2xs:text-sm mb-0.5'> Species Base Stats </p>
+                            <p className='text-sm flex gap-1 flex-wrap justify-center 2xs:text-base leading-[1.15] mx-auto'>
+                                <span className='whitespace-nowrap'>Attack:
+                                    <span className='text-gray-800 dark:text-gray-200'>{bAtt}{stats.attack > 0 && '+' + stats.attack}</span> |
+                                </span>
+                                <span className='whitespace-nowrap'>Defense:
+                                    <span className='text-gray-800 dark:text-gray-200'>{bDef}{stats.defense > 0 && '+' + stats.defense}</span>
+                                </span>
+                                <span className='whitespace-nowrap'>Stamina:
+                                    <span className='text-gray-800 dark:text-gray-200'>{bHp}{stats.hp > 0 && '+' + stats.hp}</span>
+                                </span>
+                            </p>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div className='relative flex items-center before:absolute'>
+            <MonIvSelector position="bottom" />
+
+            <div className='relative hidden sm:flex items-center before:absolute'>
                 <MonIdType id={id} type1={type1} type2={type2} className='flex w-full max-w-3/10 justify-center align-middle items-center gap-1' idClassName="mr-1 md:mr-2 text-xl md:text-2xl" typeClassName="w-full max-w-1/7" />
                 <div className="text-center max-w-7/10 grow-1 text-gray-400 dark:text-gray-200/50 font-semibold gap-1">
                     <p className='min-w-fit text-xs 2xs:text-sm mb-0.5'> Species Base Stats </p>
@@ -133,31 +168,35 @@ const Ranking = () => {
 
             <div className="mt-3 relative before:block before:w-full before:h-0.5 before:bg-gradient-to-r before:from-transparent before:via-gray-800/50 dark:before:via-gray-200/50 before:to-transparent before:z-[1] before:left-0.25 before:bottom-0 before:rounded-l-full">
                 <div className='flex flex-col-reverse gap-2.5 2xs:flex-row 2xs:gap-0 items-center mt-3'>
-                    <div className='flex gap-2 justify-around 2xs:justify-start sm:gap-4 w-full ml-1 text-lg font-semibold text-gray-500 dark:text-gray-100/60'>
-                        <h4 className='w-20 sm:w-22'>Level: <span className='text-gray-800 dark:text-gray-200'>{stats.lv}</span></h4>
+                    <div className='flex gap-2 justify-around 2xs:justify-start sm:gap-4 w-full sm:ml-1 text-lg font-semibold text-gray-500 dark:text-gray-100/60'>
+                        <h4 className='w-22'>Level: <span className='text-gray-800 dark:text-gray-200'>{stats.lv}</span></h4>
                         <h4>CP: <span className='text-gray-800 dark:text-gray-200'>{selectedMonCP}</span></h4>
                     </div>
-                    <div className='flex min-w-max items-center gap-1.5'>
-                        {(!form || ['Hisuian', 'Galar'].includes(form)) && <button className={`relative flex items-center gap-0.75 text-md z-0 pl-0.25 pr-3 pt-0 pb-0.25 border-2 border-sky-700 dark:border-sky-600/80 dark:hover:border-sky-600/90 rounded-full h-max cursor-pointer ${isShadowMon ? 'text-white dark:text-white bg-sky-800/80 dark:bg-sky-600/70 hover:bg-sky-800 dark:hover:bg-sky-600/80' : 'text-sky-800 dark:text-sky-500/80 dark:hover:text-sky-500/90 bg-sky-300/20 dark:bg-sky-100/10 hover:bg-sky-300/30 dark:hover:bg-sky-200/10'} text-center uppercase font-semibold hover:drop-shadow-lg`} onClick={toggleShadowMon}>
-                            {isShadowMon ? <MdOutlineCheckCircle className='h-6 w-6 mt-0.25' /> : <MdOutlineCancel className='h-6 w-6 mt-0.25' />}
-                            Shadow
+                    <div className='flex min-w-max items-center gap-1 sm:gap-1.5'>
+                        {(!form || ['Hisuian', 'Galar'].includes(form)) && <button className={`relative flex items-center gap-0.5 sm:gap-0.75 text-base sm:text-md z-0 sm:pl-0.25 pr-2 sm:pr-3 pt-0 border-2 border-sky-700 dark:border-sky-600/80 dark:hover:border-sky-600/90 rounded-full h-max cursor-pointer ${isShadowMon ? 'text-white dark:text-white bg-sky-800/80 dark:bg-sky-600/70 hover:bg-sky-800 dark:hover:bg-sky-600/80' : 'text-sky-800 dark:text-sky-500/80 dark:hover:text-sky-500/90 bg-sky-300/20 dark:bg-sky-100/10 hover:bg-sky-300/30 dark:hover:bg-sky-200/10'} text-center uppercase font-semibold hover:drop-shadow-lg`} onClick={toggleShadowMon}>
+                            {isShadowMon ? <MdOutlineCheckCircle className='sm:my-0.25 size-5.25 sm:size-6' /> : <MdOutlineCancel className='sm:my-0.25 size-5.25 sm:size-6' />}
+                            <span>Shadow</span>
                         </button>}
-                        <button className={`relative flex items-center gap-0.75 text-md z-0 pl-0.25 pr-3 pt-0 pb-0.25 border-2 border-sky-700 dark:border-sky-600/80 dark:hover:border-sky-600/90 rounded-full h-max cursor-pointer ${isBestBuddy ? 'text-white dark:text-white bg-sky-800/80 dark:bg-sky-600/70 hover:bg-sky-800 dark:hover:bg-sky-600/80' : 'text-sky-800 dark:text-sky-500/80 dark:hover:text-sky-500/90 bg-sky-300/20 dark:bg-sky-100/10 hover:bg-sky-300/30 dark:hover:bg-sky-200/10'} text-center uppercase font-semibold hover:drop-shadow-lg`} onClick={() => { toggleBestBuddy(); (stats.lv > 50 && handleLevelChange(50)) }}>
-                            {isBestBuddy ? <MdOutlineCheckCircle className='h-6 w-6 mt-0.25' /> : <MdOutlineCancel className='h-6 w-6 mt-0.25' />}
+                        {(form && form.includes('Mega')) && <button className={`relative flex items-center gap-0.5 sm:gap-0.75 text-base sm:text-md z-0 sm:pl-0.25 pr-2 sm:pr-3 pt-0 border-2 border-sky-700 dark:border-sky-600/80 dark:hover:border-sky-600/90 rounded-full h-max cursor-pointer ${isMaxMega ? 'text-white dark:text-white bg-sky-800/80 dark:bg-sky-600/70 hover:bg-sky-800 dark:hover:bg-sky-600/80' : 'text-sky-800 dark:text-sky-500/80 dark:hover:text-sky-500/90 bg-sky-300/20 dark:bg-sky-100/10 hover:bg-sky-300/30 dark:hover:bg-sky-200/10'} text-center uppercase font-semibold hover:drop-shadow-lg`} onClick={() => { toggleMaxMega(); ((stats.lv > 50 && isMaxMega) && handleLevelChange(stats.lv - 2 > 50 ? stats.lv - 2 : 50)) }}>
+                            {isMaxMega ? <MdOutlineCheckCircle className='sm:my-0.25 size-5.25 sm:size-6' /> : <MdOutlineCancel className='sm:my-0.25 size-5.25 sm:size-6' />}
+                            <span>Max Mega</span>
+                        </button>}
+                        <button className={`relative flex items-center gap-0.5 sm:gap-0.75 text-base sm:text-md z-0 sm:pl-0.25 pr-2 sm:pr-3 pt-0 border-2 border-sky-700 dark:border-sky-600/80 dark:hover:border-sky-600/90 rounded-full h-max cursor-pointer ${isBestBuddy ? 'text-white dark:text-white bg-sky-800/80 dark:bg-sky-600/70 hover:bg-sky-800 dark:hover:bg-sky-600/80' : 'text-sky-800 dark:text-sky-500/80 dark:hover:text-sky-500/90 bg-sky-300/20 dark:bg-sky-100/10 hover:bg-sky-300/30 dark:hover:bg-sky-200/10'} text-center uppercase font-semibold hover:drop-shadow-lg`} onClick={() => { toggleBestBuddy(); ((stats.lv > 50 && isBestBuddy) && handleLevelChange(stats.lv - 1 > 50 ? stats.lv - 1 : 50)) }}>
+                            {isBestBuddy ? <MdOutlineCheckCircle className='sm:my-0.25 size-5.25 sm:size-6' /> : <MdOutlineCancel className='sm:my-0.25 size-5.25 sm:size-6' />}
                             Best Buddy
                         </button>
-                        <button className='p-1 border-2 text-sky-700 dark:text-sky-600/80 border-sky-700 dark:border-sky-600/80 rounded-full h-max cursor-pointer bg-sky-300/20 dark:bg-sky-100/10 hover:bg-sky-300/30 dark:hover:bg-sky-50/10 dark:hover:brightness-[1.2] hover:drop-shadow-lg' onClick={setModalOpen}>
-                            <FaPlus className='size-4.5' />
+                        <button className='p-0.5 sm:p-0.75 border-2 text-sky-700 dark:text-sky-600/80 border-sky-700 dark:border-sky-600/80 rounded-full h-max cursor-pointer bg-sky-300/20 dark:bg-sky-100/10 hover:bg-sky-300/30 dark:hover:bg-sky-50/10 dark:hover:brightness-[1.2] hover:drop-shadow-lg' onClick={setModalOpen}>
+                            <FaPlus className='size-4 sm:size-4.5' />
                         </button>
                     </div>
                 </div>
-                <input className='w-full mt-3 sm:mt-2 lg:mt-1' type="range" min="1" max={isBestBuddy ? 51 : 50} step={0.5} value={stats.lv} name="level" onChange={handleLevelChange} />
+                <input className='w-full mt-3 sm:mt-2 lg:mt-1' type="range" min="1" max={50 + (isBestBuddy ? 1 : 0) + (isMaxMega ? 2 : 0)} step={0.5} value={stats.lv} name="level" onChange={handleLevelChange} />
             </div>
 
             {family.length > 0 && <div className="mt-4 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 mb-4">
                 <h2 className='text-lg font-semibold leading-5 mr-3 text-sky-700 dark:text-sky-600'>{monName}'s <br className='hidden sm:block' /> Family</h2>
                 <div className="flex gap-4 items-center flex-wrap">
-                    {family.map((key) => <Link to={`/PokeRankerGO/ranking/${key}?${searchParams.toString()}`} key={key} className={`relative z-0 min-w-max text-center cursor-pointer text-gray-600/80 hover:text-gray-600 dark:text-gray-200/70 dark:hover:text-gray-200 ${monFamily[key][2] && monFamily[key][2].includes('Mega') && 'sm:ml-4'}`}>
+                    {family.map((key) => <Link to={`/ranking/${key}?${searchParams.toString()}`} key={key} className={`relative z-0 min-w-max text-center cursor-pointer text-gray-600/80 hover:text-gray-600 dark:text-gray-200/70 dark:hover:text-gray-200 ${monFamily[key][2] && monFamily[key][2].includes('Mega') && 'sm:ml-4'}`}>
                         <ImageBox id={monFamily[key][1]} form={monFamily[key][2]} name={monFamily[key][0]} megaClassName="h-14 w-14 opacity-30 left-[50%] transform-[translateX(-50%)]" imgClassName="h-14 w-full max-w-14 mx-auto" w="64" />
                         <p className='font-semibold text-sm leading-none'>{monFamily[key][0]}</p>
                     </Link>)}
@@ -253,12 +292,11 @@ const Ranking = () => {
                 </div>
             </div>
 
-            <MonSaveModal state={modalState} close={setModalClose} mon={[key, monName, id, form, type1, type2]} stats={stats} CP={selectedMonCP} ranking={familyRankings[key]} isBestBuddy={isBestBuddy} isShadow={isShadowMon} />
+            <MonSaveModal state={modalState} close={setModalClose} mon={[key, monName, id, form, type1, type2]} stats={stats} CP={selectedMonCP} ranking={familyRankings[key]} isBestBuddy={isBestBuddy} isShadow={isShadowMon} isMaxMega={isMaxMega} />
         </div>
     </div>}
+
     </>
-
-
 }
 
 export default Ranking
